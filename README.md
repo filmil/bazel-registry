@@ -1,16 +1,37 @@
-# bazel-registry
+# Bzl Bazel Registry
 
-A Bazel registry for my work.
+A personal Bazel registry.
 
-Bazel 9.0.0 will turn off support for `WORKSPACE`. This should happen later in 2025,
-so we need to migrate our own work away from `WORKSPACE` files.
+This registry hosts Bazel modules that are either not suitable for the Bazel Central Registry (BCR) or are under development. As Bazel moves towards Bzlmod and phases out `WORKSPACE` files, this registry provides a home for bespoke modules.
 
-Ideally, all your bazel modules can go to bazel central registy. However, some
-modules end up not really being acceptable to BCR, since they aren't general
-enough, or aren't important enough to others, or (as in my case) use approaches
-that don't work well in the BCR ecosystem.
+## Usage
 
-I spun up this registry to have a home for my modules. Feel free to use it
-under the terms of the enclosed [LICENSE][lic].
+To use this registry, add the following to your `MODULE.bazel` file:
 
-[lic]: ./LICENSE
+```bzl
+bazel_dep(name = "bazel_ebook", version = "0.0.5")
+bazel_dep(name = "bazel_rules_bid", version = "0.2.5")
+bazel_dep(name = "bazel_rules_bt", version = "0.0.3")
+```
+
+Then, add the registry to your `.bazelrc` file:
+
+```
+build --registry=https://bcr.bazel.build --registry=https://raw.githubusercontent.com/filmil/bazel-registry/main
+```
+
+## Modules
+
+This registry contains the following modules:
+
+*   `bazel_ebook`: A Bazel module for building ebooks.
+*   `bazel_rules_bid`: A Bazel module for BID.
+*   `bazel_rules_bt`: A Bazel module for BT.
+
+## Contributing
+
+Contributions are welcome! Please see the [contributing guidelines](GEMINI.md) for more information.
+
+## License
+
+This project is licensed under the terms of the [LICENSE](LICENSE) file.
