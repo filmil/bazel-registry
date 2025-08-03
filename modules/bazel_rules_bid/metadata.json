@@ -1,0 +1,22 @@
+{
+    "homepage": "https://github.com/filmil/bazel-rules-bid",
+    "maintainers": [
+        {
+            "email": "filmil@gmail.com",
+            "github": "filmil",
+            "name": "Filip Filmar"
+        }
+    ],
+    "repository": [
+        "github:filmil/bazel-rules-bid"
+    ],
+    "versions": [
+        "0.2.0",
+        "0.2.1",
+        "0.2.2",
+        "0.2.3",
+        "0.2.4",
+        "0.2.5"
+    ],
+    "yanked_versions": {}
+}

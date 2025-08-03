@@ -1,0 +1,20 @@
+{
+    "homepage": "https://github.com/filmil/bazel-ebook",
+    "maintainers": [
+        {
+            "email": "filmil@gmail.com",
+            "github": "filmil",
+            "name": "Filip Filmar"
+        }
+    ],
+    "repository": [
+        "github:filmil/bazel-ebook"
+    ],
+    "versions": [
+        "0.0.1",
+        "0.0.3",
+        "0.0.4",
+        "0.0.5"
+    ],
+    "yanked_versions": {}
+}

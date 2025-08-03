@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/filmil/bazel-ebook/archive/refs/tags/v0.0.4.zip",
+    "integrity": "sha256-aOCvpSe/b87YOuwCkyaqqPhh9GajIdeng6Z4cc0uV3I=",
+    "strip_prefix": "bazel-ebook-0.0.4",
+    "patch_strip": 0,
+    "patches": {
+        "module_dot_bazel.patch": "sha256-ScvQMoJoSfQXy7YuYLip9dr4fh8HCCgjkUVNPmldkqk="
+    }
+}

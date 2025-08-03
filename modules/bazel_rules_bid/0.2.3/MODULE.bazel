@@ -1,0 +1,5 @@
+module(
+    name = "bazel_rules_bid",
+    version = "0.2.3",
+    compatibility_level = 0,
+)
