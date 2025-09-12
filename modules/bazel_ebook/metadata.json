@@ -1,10 +1,11 @@
 {
-    "homepage": "https://github.com/filmil/bazel-ebook",
+    "homepage": "https://hdlfactory.com/post/2025/02/04/typeset-your-own-ebooks-easily-with-bazel-ebook",
     "maintainers": [
         {
-            "email": "filmil@gmail.com",
+            "name": "Filip Filmar",
+            "email": "246576+filmil@users.noreply.github.com",
             "github": "filmil",
-            "name": "Filip Filmar"
+            "github_user_id": 246576
         }
     ],
     "repository": [
@@ -14,7 +15,8 @@
         "0.0.1",
         "0.0.3",
         "0.0.4",
-        "0.0.5"
+        "0.0.5",
+        "0.1.1"
     ],
     "yanked_versions": {}
 }
