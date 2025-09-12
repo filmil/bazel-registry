@@ -7,16 +7,27 @@ Central Registry (BCR) or are under development. As Bazel moves towards Bzlmod
 and phases out `WORKSPACE` files, this registry provides a home for bespoke
 modules.
 
+None of the modules published here are published with any sort of guarantee
+whatsoever. Use at your own risk.
+
 ## Usage
 
-Add the registry to your `.bazelrc` file. Note that adding a custom registry
-removes the BCR default entry, so you must add it back to retain access to
-the items published in the BCR.
+Add the registry to your `.bazelrc` file. 
 
 ```
-build --registry=https://raw.githubusercontent.com/filmil/bazel-registry/main \
-      --registry=https://bcr.bazel.build
+build \
+      --registry=https://bcr.bazel.build \
+      --registry=https://raw.githubusercontent.com/filmil/bazel-registry/main
 ```
+
+### Notes
+
+* Adding a custom registry removes the BCR default entry, so you must add it
+  back to retain access to the items published in the BCR.
+* The first registry which has the required module is consulted. You may want
+  to adjust the ordering of registries.
+* Publishing to BCR can take a *long* time. I sometimes publish modules in advance
+  to my registry, where the publication bar is lower. Use at your own risk.
 
 ## License
 
