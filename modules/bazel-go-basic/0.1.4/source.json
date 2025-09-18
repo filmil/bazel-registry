@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-M9gYU8tydTxugs0USHdP7ssu15oNaPuk2g2XOM2qPM0=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel-go-basic/releases/download/v0.1.4/bazel-go-basic-v0.1.4.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-yChEMGmEWh2sgc1Yp/M0fVoZljnBoDi8AmqK7ZjshFE="
+    },
+    "patch_strip": 1
+}
