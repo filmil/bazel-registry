@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-csDwyZW9xDYsw+5s3hw/mkfvJOc4MPPipKDs3mtSiNs=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_libzstd/releases/download/v0.0.2/bazel_libzstd-v0.0.2.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-8I8GcxFaOAxeytzHuBn2/8W6vHoR4CXMq8dM6tdcYHw="
+    },
+    "patch_strip": 1
+}
