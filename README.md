@@ -10,6 +10,10 @@ modules.
 None of the modules published here are published with any sort of guarantee
 whatsoever. Use at your own risk.
 
+See the overall description at the [project page][pp].
+
+[pp]: https://hdlfactory.com/post/2025/09/29/getting-ready-for-the-brave-new-bazel-modules-world/
+
 ## Usage
 
 Add the registry to your `.bazelrc` file. 
