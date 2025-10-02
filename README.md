@@ -15,9 +15,8 @@ whatsoever. Use at your own risk.
 Add the registry to your `.bazelrc` file. 
 
 ```
-build \
-      --registry=https://bcr.bazel.build \
-      --registry=https://raw.githubusercontent.com/filmil/bazel-registry/main
+common --registry=https://bcr.bazel.build
+common --registry=https://raw.githubusercontent.com/filmil/bazel-registry/main
 ```
 
 ### Notes
