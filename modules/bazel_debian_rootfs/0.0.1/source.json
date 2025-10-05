@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-jEX63ju41Me32kSqqHT4MmJCsyhWWIa9yILTIRrDt4U=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_debian_rootfs/releases/download/v0.0.1/bazel_debian_rootfs-v0.0.1.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-16BcjAOcwdVCzdmdaPmRrkOUdwVHc+YKzVlZ6xI79+g="
+    },
+    "patch_strip": 1
+}
