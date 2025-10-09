@@ -12,7 +12,8 @@
         "github:filmil/bazel_rules_vivado"
     ],
     "versions": [
-        "0.0.4"
+        "0.0.4",
+        "0.0.5"
     ],
     "yanked_versions": {}
 }
