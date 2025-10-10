@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-jn9fZzZf1XrSBAOaAUuBfnIP7hCq8C5hdDA1D93ohkA=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_nvc/releases/download/v0.2.1/bazel_rules_nvc-v0.2.1.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-VDOJcSLl+IZB1pgw3W3DCqGN9UaK185JCYlZ8eG6boE="
+    },
+    "patch_strip": 1
+}
