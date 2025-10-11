@@ -12,7 +12,8 @@
         "github:filmil/bazel-go-basic"
     ],
     "versions": [
-        "0.1.4"
+        "0.1.4",
+        "0.2.19"
     ],
     "yanked_versions": {}
 }
