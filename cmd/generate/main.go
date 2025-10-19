@@ -231,19 +231,6 @@ const htmlTemplate = `
 		rel="stylesheet"
 	>
 	<link rel="icon" href="hdlfactory.png" type="image/png">
-	<link
-		rel="stylesheet"
-		type="text/css"
-		href="https://cdn.jsdelivr.net/gh/dreampulse/computer-modern-web-font@master/fonts.css"
-	>
-	<style>
-		body {
-			font-family: "Computer Modern Bright", sans-serif;
-		}
-		h1 {
-			font-family: "Computer Modern Sans", sans-serif;
-		}
-	</style>
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-BKGTF9GD1K"></script>
 	<script>
