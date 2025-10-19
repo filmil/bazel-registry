@@ -1,9 +1,9 @@
 # Bzl Bazel Registry
 
-Home page at: https://hdlfactory.com/bazel-registry
-
 ![Build](https://github.com/filmil/bazel-registry/actions/workflows/build.yml/badge.svg)
 ![Release](https://github.com/filmil/bazel-registry/actions/workflows/release.yml/badge.svg)
+
+Home page at: https://hdlfactory.com/bazel-registry
 
 A personal Bazel registry.
 
