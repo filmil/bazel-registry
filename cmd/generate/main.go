@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"html/template"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -13,8 +13,6 @@ import (
 	"sort"
 	"strings"
 )
-
-var modulesDir = flag.String("modules_dir", "", "The path to the modules directory.")
 
 const (
 	outputFile = "index.html"
@@ -39,19 +37,44 @@ type Version struct {
 }
 
 func main() {
+	var (
+		modulesDir string
+		outputFile string
+	)
+	flag.StringVar(&modulesDir, "modules_dir", "", "The path to the modules directory.")
+	flag.StringVar(&outputFile, "output", "", "The file name to output")
 	flag.Parse()
-	if *modulesDir == "" {
-		log.Fatalf("-modules_dir is required")
+	if modulesDir == "" {
+		log.Printf("flag --modules_dir=... is required")
+		os.Exit(1)
+	}
+	if outputFile == "" {
+		log.Printf("flag --output=... is required")
+		os.Exit(1)
 	}
 
-	modules, err := findModules(*modulesDir)
+	if err := run(modulesDir, outputFile); err != nil {
+		log.Printf("error: %v", err)
+		os.Exit(1)
+	}
+}
+
+func run(modulesDir, outputFile string) error {
+	modules, err := findModules(modulesDir)
 	if err != nil {
 		log.Fatalf("failed to find modules: %v", err)
 	}
 
-	if err := generateHTML(modules); err != nil {
+	o, err := os.Create(outputFile)
+	if err != nil {
+		log.Printf("could not create: %v: %v", outputFile, err)
+	}
+
+	if err := generateHTML(modules, o); err != nil {
 		log.Fatalf("failed to generate HTML: %v", err)
 	}
+
+	return nil
 }
 
 func findModules(dir string) ([]Module, error) {
@@ -151,7 +174,8 @@ func findVersions(modulePath string) ([]Version, error) {
 	return versions, nil
 }
 
-func generateHTML(modules []Module) error {
+func generateHTML(modules []Module, w io.WriteCloser) error {
+	defer w.Close()
 	tmpl, err := template.New("index").Funcs(template.FuncMap{
 		"isURL": func(s string) bool {
 			return strings.HasPrefix(s, "http")
@@ -161,22 +185,16 @@ func generateHTML(modules []Module) error {
 		return fmt.Errorf("failed to parse HTML template: %w", err)
 	}
 
-	var buf bytes.Buffer
+	var buf strings.Builder
 	if err := tmpl.Execute(&buf, modules); err != nil {
 		return fmt.Errorf("failed to execute HTML template: %w", err)
 	}
 
-	outputDir := os.Getenv("BUILD_WORKING_DIRECTORY")
-	if outputDir == "" {
-		outputDir = "."
-	}
-	outputPath := filepath.Join(outputDir, outputFile)
-
-	if err := ioutil.WriteFile(outputPath, buf.Bytes(), 0644); err != nil {
+	_, err = fmt.Fprintf(w, "%s", buf.String())
+	if err != nil {
 		return fmt.Errorf("failed to write output file: %w", err)
 	}
 
-	fmt.Printf("Generated %s successfully.\n", outputPath)
 	return nil
 }
 

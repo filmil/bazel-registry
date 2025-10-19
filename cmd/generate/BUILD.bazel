@@ -12,9 +12,5 @@ go_binary(
     name = "generate",
     embed = [":generate_lib"],
     visibility = ["//visibility:public"],
-    args = ["-modules_dir=$(location //modules:modules_dir)"],
-    data = [
-        "//modules:modules_dir",
-        "//modules:all_modules",
-    ],
 )
+
