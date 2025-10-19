@@ -229,7 +229,7 @@ const htmlTemplate = `
 <body>
     <div class="container">
 		<h1 class="mt-5"><a href="https://www.hdlfactory.com">My</a> <a
-		href="https://baze.build">Bazel</a> Registry</h1>
+		href="https://bazel.build">Bazel</a> Registry</h1>
 
 		<p>These modules are published in <a
 		href="https://github.com/filmil/bazel-registry">my private bazel
