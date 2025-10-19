@@ -226,9 +226,10 @@ const htmlTemplate = `
 <body>
     <div class="container">
         <h1 class="mt-5">Bzl Bazel Registry</h1>
-        <div class="row">
+        <input class="form-control mb-4" id="searchInput" type="text" placeholder="Search for modules...">
+        <div class="row" id="module-cards">
             {{range $module := .}}
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4 module-card">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -252,6 +253,22 @@ const htmlTemplate = `
             {{end}}
         </div>
     </div>
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const moduleCards = document.querySelectorAll('.module-card');
+
+        searchInput.addEventListener('keyup', (event) => {
+            const filter = event.target.value.toLowerCase();
+            moduleCards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                if (title.includes(filter)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 `

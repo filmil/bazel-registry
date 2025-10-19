@@ -49,3 +49,15 @@ home page.
   to its respective github repository URL.
 * Rebuild the project to ensure that the change is correct.
 
+## Subtask 4
+
+
+Modify the HTML template in `//cmd/generate/main.go` as follows:
+
+* At the beginning add a text input box. Use proper styling from bootstrap.
+* Add javascripting to the page that will fuzzy-filter the list of module cards
+  to show only those that match the fuzzy filter based on the text in the input
+  box.
+* Update the list of module cards on each change to the text input box.
+* Ensure that when the text input box is empty, that all cards are shown.
+
