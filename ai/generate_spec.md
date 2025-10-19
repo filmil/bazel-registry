@@ -2,6 +2,8 @@
 
 * Read the file //GEMINI.md for general rules and approaches.
 * Use `bazel build //...` to verify if the project builds.
+* For each task or subtask, ask user for confirmation if they want to create
+  a pull request, and upon positive answer, create a pull request.
 
 Then perform the task outlined below.
 
@@ -72,4 +74,14 @@ Modify the HTML template in `//cmd/generate/main.go` as follows:
   needed to add this module into `MODULE.bazel` when used. Add a "copy" icon
   that on click copies that text into the current clipboard.
 * Use double quotes for quoting strings in the mouse-over.
+
+
+## Subtask 6
+
+
+Modify the HTML template in `//cmd/generate/main.go` as follows:
+
+* Add a page bottom matter that has a copyright to Filip Filmar from year 2025
+  onwards, and add a note that the code to generate the page was created in
+  full with an automated coding assistant.
 
