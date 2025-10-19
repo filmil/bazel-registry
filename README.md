@@ -1,6 +1,6 @@
 # Bzl Bazel Registry
 
-Visit for content summary: https://hdlfactory.com/bazel-registry
+Home page at: https://hdlfactory.com/bazel-registry
 
 ![Build](https://github.com/filmil/bazel-registry/actions/workflows/build.yml/badge.svg)
 ![Release](https://github.com/filmil/bazel-registry/actions/workflows/release.yml/badge.svg)
