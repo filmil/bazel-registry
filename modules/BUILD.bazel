@@ -1,0 +1,11 @@
+filegroup(
+    name = "modules_dir",
+    srcs = ["."],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "all_modules",
+    srcs = glob(["**/*"]),
+    visibility = ["//visibility:public"],
+)
