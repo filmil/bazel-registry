@@ -13,8 +13,3 @@ buildifier(
     name = "buildifier",
 )
 
-filegroup(
-    name = "modules_files",
-    srcs = glob(["modules"]),
-    visibility = ["//visibility:public"],
-)
