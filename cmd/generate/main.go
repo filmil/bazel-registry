@@ -25,9 +25,10 @@ type Module struct {
 }
 
 type Metadata struct {
-	Homepage string   `json:"homepage"`
-	Repo     []string `json:"repository"`
-	Versions []string `json:"versions"`
+	Homepage       string            `json:"homepage"`
+	Repo           []string          `json:"repository"`
+	Versions       []string          `json:"versions"`
+	YankedVersions map[string]string `json:"yanked_versions"`
 }
 
 type Version struct {
@@ -192,6 +193,10 @@ func generateHTML(modules []Module, w io.WriteCloser) error {
 		"bazelDep": func(name, version string) string {
 			return fmt.Sprintf(`bazel_dep(name = "%s", version = "%s")`, name, version)
 		},
+		"isYanked": func(version string, metadata Metadata) bool {
+			_, ok := metadata.YankedVersions[version]
+			return ok
+		},
 	}).Parse(htmlTemplate)
 	if err != nil {
 		return fmt.Errorf("failed to parse HTML template: %w", err)
@@ -253,12 +258,16 @@ const htmlTemplate = `
                         <p class="card-text">
                             <strong>Versions:</strong>
                             {{range $i, $v := $module.Versions}}
-                                <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ bazelDep $module.Name $v.Name }}">
-                                    <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$v.Name}}">{{$v.Name}}</a>
-                                    <a href="#" onclick="copyToClipboard('{{ bazelDep $module.Name $v.Name }}'); return false;">
-                                        <i class="bi bi-clipboard"></i>
-                                    </a>
-                                </span>
+                                {{if isYanked $v.Name $module.Metadata}}
+                                    <span class="me-2"><del>{{$v.Name}}</del></span>
+                                {{else}}
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ bazelDep $module.Name $v.Name }}">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$v.Name}}">{{$v.Name}}</a>
+                                        <a href="#" onclick="copyToClipboard('{{ bazelDep $module.Name $v.Name }}'); return false;">
+                                            <i class="bi bi-clipboard"></i>
+                                        </a>
+                                    </span>
+                                {{end}}
                             {{end}}
                         </p>
                         <p class="card-text"><a href="{{$module.Metadata.Homepage}}">{{$module.Metadata.Homepage}}</a></p>
