@@ -1,0 +1,8 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "generate",
+    srcs = ["main.go"],
+    importpath = "github.com/filmil/bazel-registry/cmd/generate",
+    visibility = ["//visibility:public"],
+)
