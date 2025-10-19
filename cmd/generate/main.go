@@ -238,7 +238,7 @@ const htmlTemplate = `
 	>
 	<style>
 		body {
-			font-family: "Computer Modern Sans", sans-serif;
+			font-family: "Computer Modern Concrete", serif;
 		}
 	</style>
 	<!-- Google tag (gtag.js) -->
