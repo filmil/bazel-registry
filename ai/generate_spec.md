@@ -1,6 +1,7 @@
 # Create a program in //cmd/generate
 
-Read the file //GEMINI.md for general rules and approaches.
+* Read the file //GEMINI.md for general rules and approaches.
+* Use `bazel build //...` to verify if the project builds.
 
 Then perform the task outlined below.
 
@@ -60,4 +61,15 @@ Modify the HTML template in `//cmd/generate/main.go` as follows:
   box.
 * Update the list of module cards on each change to the text input box.
 * Ensure that when the text input box is empty, that all cards are shown.
+
+
+## Subtask 5
+
+
+Modify the HTML template in `//cmd/generate/main.go` as follows:
+
+* For each module version, add a mouse-over which on hover displays the text
+  needed to add this module into `MODULE.bazel` when used. Add a "copy" icon
+  that on click copies that text into the current clipboard.
+* Use double quotes for quoting strings in the mouse-over.
 
