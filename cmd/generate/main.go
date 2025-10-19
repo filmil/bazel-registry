@@ -228,12 +228,14 @@ const htmlTemplate = `
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">My Bazel Registry</h1>
+		<h1 class="mt-5"><a href="https://www.hdlfactory.com">My</a> <a
+		href="https://baze.build">Bazel</a> Registry</h1>
 
-		<p>These modules are published in my private bazel registry at
-		https://github.com/filmil/bazel-registry. See the <a
+		<p>These modules are published in <a
+		href="https://github.com/filmil/bazel-registry">my private bazel
+		registry</a> See the <a
 		href="https://github.com/filmil/bazel-registry#usage">usage details</a>
-		for how to use the registry. </p>
+		for how to configure bazel use this additional registry. </p>
 
 		<p> The bazel central registry is still available at <a
 		href="https://bcr.bazel.build"> https://bcr.bazel.build</a>. </p>
