@@ -1,5 +1,7 @@
 # Bzl Bazel Registry
 
+Visit for content summary: https://hdlfactory.com/bazel-registry
+
 ![Build](https://github.com/filmil/bazel-registry/actions/workflows/build.yml/badge.svg)
 ![Release](https://github.com/filmil/bazel-registry/actions/workflows/release.yml/badge.svg)
 
@@ -19,7 +21,7 @@ See the overall description at the [project page][pp].
 
 ## Usage
 
-Add the registry to your `.bazelrc` file. 
+Add the registry to your `.bazelrc` file.
 
 ```
 common --registry=https://bcr.bazel.build
