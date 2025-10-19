@@ -29,6 +29,23 @@ instead of computed from `BUILD_WORKING_DIRECTORY`.
 
 Modify the `go_binary` rule to load this file automatically through `args`.
 
+## Subtask 2
 
+Modify the HTML template in `//cmd/generate/main.go` as follows:
 
+* Convert each row into a bootstrap card.
+* Order all such card into a free flowing grid.
+* Order all versions one after another, separated by a comma.
+* Modify href for each version to point to the location of that version's
+  metadata in the repository https://github.com/filmil/bazel-registry.
+
+## Subtask 3
+
+Modify the HTML template in `//cmd/generate/main.go` as follows:
+
+* Add a link icon next to each module name that points to the respective module's
+home page.
+* Link each repository name (for example `github:filmil/bazel-bats` and similar)
+  to its respective github repository URL.
+* Rebuild the project to ensure that the change is correct.
 
