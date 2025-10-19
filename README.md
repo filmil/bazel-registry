@@ -1,4 +1,4 @@
-# Bzl Bazel Registry
+# My Bazel Registry
 
 ![Build](https://github.com/filmil/bazel-registry/actions/workflows/build.yml/badge.svg)
 ![Release](https://github.com/filmil/bazel-registry/actions/workflows/release.yml/badge.svg)
