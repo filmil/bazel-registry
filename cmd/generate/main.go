@@ -180,6 +180,15 @@ func generateHTML(modules []Module, w io.WriteCloser) error {
 		"isURL": func(s string) bool {
 			return strings.HasPrefix(s, "http")
 		},
+		"sub": func(a, b int) int {
+			return a - b
+		},
+		"repoURL": func(s string) string {
+			if strings.HasPrefix(s, "github:") {
+				return "https://github.com/" + strings.TrimPrefix(s, "github:")
+			}
+			return s
+		},
 	}).Parse(htmlTemplate)
 	if err != nil {
 		return fmt.Errorf("failed to parse HTML template: %w", err)
@@ -209,41 +218,39 @@ const htmlTemplate = `
 		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
 		rel="stylesheet"
 	>
+    <link
+		href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
+		rel="stylesheet"
+	>
 </head>
 <body>
     <div class="container">
         <h1 class="mt-5">Bzl Bazel Registry</h1>
-        <table class="table table-striped mt-4">
-            <thead>
-                <tr>
-                    <th>Module</th>
-                    <th>Versions</th>
-                    <th>Homepage</th>
-                    <th>Repository</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{range $module := .}}
-                <tr>
-                    <td>{{$module.Name}}</td>
-                    <td>
-                        {{range $module.Versions}}
-                        <a href="modules/{{$module.Name}}/{{.Name}}">{{.Name}}</a><br>
-                        {{end}}
-                    </td>
-                    <td><a href="{{$module.Metadata.Homepage}}">{{$module.Metadata.Homepage}}</a></td>
-                    <td>
-                        {{$repo := index $module.Metadata.Repo 0}}
-                        {{if isURL $repo}}
-                            <a href="{{$repo}}">{{$repo}}</a>
-                        {{else}}
-                            {{$repo}}
-                        {{end}}
-                    </td>
-                </tr>
-                {{end}}
-            </tbody>
-        </table>
+        <div class="row">
+            {{range $module := .}}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+							{{$module.Name}}
+							<a href="{{$module.Metadata.Homepage}}"><i class="bi bi-link-45deg"></i></a>
+						</h5>
+                        <p class="card-text">
+                            <strong>Versions:</strong>
+                            {{range $i, $v := $module.Versions}}
+                                <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$v.Name}}">{{$v.Name}}</a>{{if lt $i (sub (len $module.Versions) 1)}}, {{end}}
+                            {{end}}
+                        </p>
+                        <p class="card-text"><a href="{{$module.Metadata.Homepage}}">{{$module.Metadata.Homepage}}</a></p>
+                        <p class="card-text">
+                            {{$repo := index $module.Metadata.Repo 0}}
+							<a href="{{repoURL $repo}}">{{$repo}}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
     </div>
 </body>
 </html>
