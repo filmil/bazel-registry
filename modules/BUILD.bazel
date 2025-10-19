@@ -1,11 +1,22 @@
 filegroup(
-    name = "modules_dir",
-    srcs = ["."],
-    visibility = ["//visibility:public"],
-)
-
-filegroup(
     name = "all_modules",
     srcs = glob(["**/*"]),
     visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "index",
+    srcs = [
+        "//modules:all_modules",
+    ],
+    outs = [ "index.html"],
+    visibility = ["//visibility:public"],
+    cmd = """
+    $(location //cmd/generate) \
+        --modules_dir=modules \
+        --output=$(location index.html)
+    """,
+    tools = [
+        "//cmd/generate",
+    ],
 )
