@@ -189,6 +189,9 @@ func generateHTML(modules []Module, w io.WriteCloser) error {
 			}
 			return s
 		},
+		"bazelDep": func(name, version string) string {
+			return fmt.Sprintf(`bazel_dep(name = "%s", version = "%s")`, name, version)
+		},
 	}).Parse(htmlTemplate)
 	if err != nil {
 		return fmt.Errorf("failed to parse HTML template: %w", err)
@@ -239,7 +242,12 @@ const htmlTemplate = `
                         <p class="card-text">
                             <strong>Versions:</strong>
                             {{range $i, $v := $module.Versions}}
-                                <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$v.Name}}">{{$v.Name}}</a>{{if lt $i (sub (len $module.Versions) 1)}}, {{end}}
+                                <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ bazelDep $module.Name $v.Name }}">
+                                    <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$v.Name}}">{{$v.Name}}</a>
+                                    <a href="#" onclick="copyToClipboard('{{ bazelDep $module.Name $v.Name }}'); return false;">
+                                        <i class="bi bi-clipboard"></i>
+                                    </a>
+                                </span>
                             {{end}}
                         </p>
                         <p class="card-text"><a href="{{$module.Metadata.Homepage}}">{{$module.Metadata.Homepage}}</a></p>
@@ -253,6 +261,7 @@ const htmlTemplate = `
             {{end}}
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const searchInput = document.getElementById('searchInput');
         const moduleCards = document.querySelectorAll('.module-card');
@@ -268,6 +277,18 @@ const htmlTemplate = `
                 }
             });
         });
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                /* clipboard successfully set */
+            }, function() {
+                /* clipboard write failed */
+                alert('Failed to copy');
+            });
+        }
     </script>
 </body>
 </html>
