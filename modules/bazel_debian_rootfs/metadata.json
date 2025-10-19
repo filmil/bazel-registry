@@ -14,5 +14,7 @@
     "versions": [
         "0.0.1"
     ],
-    "yanked_versions": {}
+    "yanked_versions": {
+        "0.0.1"
+    }
 }
