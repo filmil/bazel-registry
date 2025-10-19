@@ -228,7 +228,16 @@ const htmlTemplate = `
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">Bzl Bazel Registry</h1>
+        <h1 class="mt-5">My Bazel Registry</h1>
+
+		<p>These modules are published in my private bazel registry at
+		https://github.com/filmil/bazel-registry. See the <a
+		href="https://github.com/filmil/bazel-registry#usage">usage details</a>
+		for how to use the registry. </p>
+
+		<p> The bazel central registry is still available at <a
+		href="https://bcr.bazel.build"> https://bcr.bazel.build</a>. </p>
+
         <input class="form-control mb-4" id="searchInput" type="text" placeholder="Search for modules...">
         <div class="row" id="module-cards">
             {{range $module := .}}
