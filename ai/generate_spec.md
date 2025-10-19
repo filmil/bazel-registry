@@ -85,3 +85,13 @@ Modify the HTML template in `//cmd/generate/main.go` as follows:
   onwards, and add a note that the code to generate the page was created in
   full with an automated coding assistant.
 
+
+## Subtask 7
+
+
+Modify the HTML template in `//cmd/generate/main.go` as follows:
+
+* If a module version appears in the respective module's metadata.json file
+  in `yanked_versions`, then render it as strikethrough and do not add any
+  links to the version text.
+
