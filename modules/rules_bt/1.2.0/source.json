@@ -1,0 +1,10 @@
+{
+    "integrity": "sha256-S1jM5kVlDdijGUF/k/gLfYk2vZ1Rty3ZJNVFj4NS9U8=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_bt/releases/download/v1.2.0/bazel_rules_bt-v1.2.0.zip",
+    "docs_url": "https://github.com/filmil/bazel_rules_bt/releases/download/v1.2.0/bazel_rules_bt-v1.2.0.docs.tar.gz",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-AscCVvzx3wtUJFdMAUxfq3R8B7AxGVL0vimQOkpIHHU="
+    },
+    "patch_strip": 1
+}
