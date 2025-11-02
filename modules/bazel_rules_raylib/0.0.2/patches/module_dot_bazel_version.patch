@@ -1,0 +1,12 @@
+===================================================================
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -1,7 +1,7 @@
+ module(
+     name = "bazel_rules_raylib",
+-    version = "0.0.1",
++    version = "0.0.2",
+ )
+ 
+ bazel_dep(name = "googletest", version = "1.16.0", repo_name = "gtest")
+ # This is a lie, this bazel dep is not hermetic.
