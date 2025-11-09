@@ -1,0 +1,32 @@
+module(
+    name = "bazel_rules_raylib",
+    version = "0.0.3",
+)
+
+bazel_dep(name = "googletest", version = "1.16.0", repo_name = "gtest")
+# This is a lie, this bazel dep is not hermetic.
+bazel_dep(name = "glfw", version = "3.3.9")
+# This is a lie too.
+bazel_dep(name = "glew", version = "2.2.0")
+bazel_dep(name = "glm", version = "1.0.0.bcr.1")
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "rules_cc", version = "0.1.1")
+bazel_dep(name = "rules_shell", version = "0.6.1")
+bazel_dep(name = "rules_foreign_cc", version = "0.14.0")
+bazel_dep(name = "platforms", version = "0.0.11")
+
+
+local = use_extension(":extensions.bzl", "raylib")
+use_repo(local, "raylib_src")
+
+
+
+bazel_dep(name = "hermetic_cc_toolchain", version = "3.1.0")
+
+toolchains = use_extension("@hermetic_cc_toolchain//toolchain:ext.bzl", "toolchains")
+use_repo(toolchains, "zig_sdk")
+
+register_toolchains(
+    "@zig_sdk//toolchain/...",
+    "@zig_sdk//libc_aware/toolchain/...",
+)
