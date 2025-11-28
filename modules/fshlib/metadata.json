@@ -12,7 +12,8 @@
         "github:filmil/fshlib"
     ],
     "versions": [
-        "0.0.1"
+        "0.0.1",
+        "0.1.1"
     ],
     "yanked_versions": {}
 }
