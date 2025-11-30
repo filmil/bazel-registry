@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-iC+xxcyg3HoglcTwlcYeq61GbM1HR18AQvZTboUAaeg=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_elfutils/releases/download/v0.4.14/bazel_elfutils-v0.4.14.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-1vZvshwNzawXRPtvsLqFS6vgVRqPshCgJA5psmX9j/E="
+    },
+    "patch_strip": 1
+}
