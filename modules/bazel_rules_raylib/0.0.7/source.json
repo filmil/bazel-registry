@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-VjB/hzQRwBTHwuZdtg+q1a4Z8QcnhypcEYEQcrx/s6g=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_raylib/releases/download/v0.0.7/bazel_rules_raylib-v0.0.7.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-eZvDEMJd35DvljQaD6SLv2m9FPZ8KY4qzj9dN7VQhjA="
+    },
+    "patch_strip": 1
+}
