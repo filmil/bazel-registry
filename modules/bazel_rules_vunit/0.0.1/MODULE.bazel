@@ -1,0 +1,28 @@
+# SPDX-License: Apache-2.0
+
+module(name = "bazel_rules_vunit", version = "0.0.1")
+
+
+bazel_dep(name = "bazel_rules_nvc", version = "0.5.2")
+bazel_dep(name = "bazel_rules_osvvm", version = "0.0.1")
+bazel_dep(name = "rules_shell", version = "0.6.1")
+
+
+bazel_dep(name = "toolchains_llvm", version = "1.5.0", dev_dependency = True)
+llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm", dev_dependency = True)
+llvm.toolchain(
+    name = "llvm_toolchain",
+    llvm_version = "20.1.4",
+)
+use_repo(llvm, "llvm_toolchain")
+register_toolchains("@llvm_toolchain//:all", dev_dependency = True)
+
+
+git_repository = use_repo_rule("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+git_repository(
+    name = "vunit",
+    build_file = "//third_party/vunit:vunit.BUILD.bazel",
+    commit = "4e30fa124ea84609af0f957dbc55b82adaed1d76",
+    remote = "https://github.com/VUnit/vunit",
+)
+
