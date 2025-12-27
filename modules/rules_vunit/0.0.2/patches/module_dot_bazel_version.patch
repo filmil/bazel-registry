@@ -1,0 +1,12 @@
+===================================================================
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -1,7 +1,7 @@
+ # SPDX-License: Apache-2.0
+ 
+-module(name = "rules_vunit", version = "0.0.0")
++module(name = "rules_vunit", version = "0.0.2")
+ 
+ 
+ bazel_dep(name = "bazel_rules_nvc", version = "0.5.2")
+ bazel_dep(name = "bazel_rules_osvvm", version = "0.0.1")
