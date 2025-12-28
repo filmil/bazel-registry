@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-Mm9ssV+s85bGbyF4x8xVfmZsf++c7lR2KLXSxpP6pHQ=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_hello_foreign/releases/download/v0.0.15/bazel_hello_foreign-v0.0.15.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-bPErXIMBCd9NkDrfe7K1ciDsiGMt7dKoYaZiOLFN7PQ="
+    },
+    "patch_strip": 1
+}
