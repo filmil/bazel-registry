@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-NhfNxsYAGAzvYdCaeSw2vHs04gVP+PzPF+KxW0VgEyw=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/rules_shar/releases/download/v0.5.1/rules_shar-v0.5.1.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-RY0vBXiK+gbNOSEI5bYHiXRT8f4kaBdDm0gAv49usPA="
+    },
+    "patch_strip": 1
+}
