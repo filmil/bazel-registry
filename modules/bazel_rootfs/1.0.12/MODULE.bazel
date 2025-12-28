@@ -1,0 +1,43 @@
+module(
+    name = "bazel_rootfs",
+    version = "1.0.12",
+)
+
+bazel_dep(name = "rules_distroless", version = "0.5.3")
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "gotopt2", version = "2.2.2")
+bazel_dep(name = "bazel_rules_bid", version = "0.3.0")
+bazel_dep(name = "rules_shell", version = "0.6.1")
+bazel_dep(name = "rules_oci", version = "2.2.6")
+bazel_dep(name = "rules_zstd", version = "1.0.0")
+
+
+# multitool
+bazel_dep(name = "rules_multitool", version = "1.9.0")
+multitool = use_extension("@rules_multitool//multitool:extension.bzl", "multitool")
+multitool.hub(lockfile = "//:multitool.lock.json")
+use_repo(multitool, "multitool")
+
+
+# apt
+apt = use_extension("@rules_distroless//apt:extensions.bzl", "apt")
+apt.install(
+    name = "rootfs",
+    #lock = "//image:rootfs_definition.lock.json",
+    manifest = "//image:rootfs_definition.yaml",
+)
+use_repo(apt, "rootfs")
+
+
+# some additional programs
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+http_archive(
+    name = "nvc_deb",
+    urls = [
+        "https://github.com/nickg/nvc/releases/download/r1.18.0/nvc_1.18.0-1_amd64_ubuntu-24.04.deb",
+    ],
+    integrity = "sha256-ffdR8qjPVCoe2xf/w+ZvbMa3Egpkvo6uNHDuJ3j4CBc=",
+    build_file_content = """exports_files(["data.tar.zst"])
+    """,
+)
+
