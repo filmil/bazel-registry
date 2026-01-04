@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-2HWs4wfow0sIs2H0s6ccMDDrnfzlPcqK+VWVYRTbIKg=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_fusesoc_2/releases/download/v0.7.0/bazel_rules_fusesoc_2-v0.7.0.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-IxuAfBucvoc13ic1wN5KasXIkOatC7rd3/vzN/U4M7M="
+    },
+    "patch_strip": 1
+}
