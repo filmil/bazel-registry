@@ -1,0 +1,10 @@
+{
+    "integrity": "sha256-SVgdBih6SfMGgMBqjEtObMCVxgUjQK54CAj4cPXq/ak=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/lit2md/releases/download/v1.1.8/lit2md-v1.1.8.zip",
+    "docs_url": "https://github.com/{OWNER}/{REPO}/releases/download/{TAG}/{REPO}-{TAG}.docs.tar.gz",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-NDyjfF1nW7uk2DdoGYh2QPY3gLBfg3FV/4QqGBllHmE="
+    },
+    "patch_strip": 1
+}
