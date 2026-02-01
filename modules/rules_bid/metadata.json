@@ -12,7 +12,8 @@
         "github:filmil/bazel-rules-bid"
     ],
     "versions": [
-        "2.0.0"
+        "2.0.0",
+        "2.0.2"
     ],
     "yanked_versions": {}
 }
