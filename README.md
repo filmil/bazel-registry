@@ -36,6 +36,8 @@ common --registry=https://raw.githubusercontent.com/filmil/bazel-registry/main
   to adjust the ordering of registries.
 * Publishing to BCR can take a *long* time. I sometimes publish modules in advance
   to my registry, where the publication bar is lower. Use at your own risk.
+* Some modules are simply **not appropriate** for BCR publication. Such modules will
+  remain published in this registry only. Again, use at your own risk.
 
 ## License
 
