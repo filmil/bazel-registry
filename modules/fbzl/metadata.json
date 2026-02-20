@@ -12,7 +12,8 @@
         "github:filmil/fbzl"
     ],
     "versions": [
-        "0.0.1"
+        "0.0.1",
+        "0.0.2"
     ],
     "yanked_versions": {}
 }

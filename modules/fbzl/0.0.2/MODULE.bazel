@@ -1,0 +1,20 @@
+module(
+    name = "fbzl",
+    version = "0.0.2",
+)
+
+
+bazel_dep(name = "bazel_lib", version = "3.2.1")
+single_version_override(
+    module_name = "bazel_lib",
+    patches = ["//third_party/bazel_lib:0001.patch"],
+    patch_strip = 1,
+)
+
+
+bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.8.2")
+bazel_dep(name = "buildifier_prebuilt", version = "8.2.0.2")
+bazel_dep(name = "gazelle", version = "0.47.0")
+bazel_dep(name = "protobuf", version = "33.4")
+bazel_dep(name = "rules_pkg", version = "1.1.0")
+bazel_dep(name = "stardoc", version = "0.8.1")
