@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-8sAMQTZHXAtCYL0Dcsj3KqbFXWOGMlNug0wzQrGCOmM=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_osvvm/releases/download/v1.1.3/bazel_rules_osvvm-v1.1.3.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-u2Ra8b3EzvheKrmuEmpicn+vRrRNvMn2VPCkPKzKj7M="
+    },
+    "patch_strip": 1
+}
