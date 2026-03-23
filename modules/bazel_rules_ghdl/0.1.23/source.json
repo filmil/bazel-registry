@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-5zgb2vr3XLxm6OWWSbEAcl+uY0eBfhLswwPj9Kukkec=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_ghdl/releases/download/v0.1.23/bazel_rules_ghdl-v0.1.23.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-om/sxStZnwETYl6J+60F+SfWqAXxn9pp1NvYT3MwhYY="
+    },
+    "patch_strip": 1
+}
