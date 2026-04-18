@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-2l8FHdWaDIhKV03nOyZ2fgRMpJCqy6Kg28z955j/oxo=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_vivado/releases/download/v3.3.1/bazel_rules_vivado-v3.3.1.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-Joe8ULhX0Wgv6UgcOSlgST5DHnkavw499HKyEkeh35w="
+    },
+    "patch_strip": 1
+}
