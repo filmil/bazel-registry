@@ -1,5 +1,5 @@
 {
-    "homepage": "https://github.com/filmil/upspin",
+    "homepage": "https://github.com/filmil/upspin-gdrive",
     "maintainers": [
         {
             "name": "Filip Filmar",
@@ -9,15 +9,10 @@
         }
     ],
     "repository": [
-        "github:filmil/upspin"
+        "github:filmil/upspin-gdrive"
     ],
     "versions": [
-        "42.1.4",
-        "42.1.5",
-        "42.1.6",
-        "42.1.8",
-        "42.1.9",
-        "42.2.0"
+        "0.1.2"
     ],
     "yanked_versions": {}
 }
