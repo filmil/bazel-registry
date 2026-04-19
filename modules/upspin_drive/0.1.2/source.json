@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-gHwpW6UPGE7Di0qBPFis8BgW9DbENnCHEg+0/mN7efY=",
+    "strip_prefix": "upspin-gdrive-0.1.2",
+    "url": "https://github.com/filmil/upspin-gdrive/archive/refs/tags/v0.1.2.tar.gz",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-es3zVbvI9IUIdhJIYlMrOoHiyIZRS7L/XTcZkcVRiF0="
+    },
+    "patch_strip": 1
+}
