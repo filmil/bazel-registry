@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-tqlFJJRIdK8C4VDtks6MbOZt/nbXo0S0pkQ/glaj/Fg=",
+    "strip_prefix": "upspin-43.0.1",
+    "url": "https://github.com/filmil/upspin/releases/download/v43.0.1/v43.0.1.tar.gz",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-ABYPJSKPT/6MQKlB6ZC0YX7aUMAmLt3+otC28t6BDH8="
+    },
+    "patch_strip": 1
+}
