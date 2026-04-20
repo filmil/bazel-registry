@@ -1,0 +1,53 @@
+module(
+    name = "upspin_drive",
+    version = "42.1.1",
+)
+
+bazel_dep(name = "rules_go", version = "0.60.0")
+bazel_dep(name = "gazelle", version = "0.50.0")
+bazel_dep(name = "upspin", version = "43.0.1")
+
+git_override(
+    module_name = "upspin",
+    commit = "a73a39e10e1e2995600c250d6e330c0e374ba7eb",
+    remote = "https://github.com/filmil/upspin.git",
+)
+
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
+
+go_sdk.download(version = "1.26.2")
+
+go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
+go_deps.from_file(go_mod = "//:go.mod")
+go_deps.gazelle_override(
+    build_file_generation = "off",
+    path = "upspin.io",
+)
+
+# Use this to generate the go_deps.bzl file
+use_repo(
+    go_deps,
+    "io_upspin",
+    "org_golang_google_api",
+    "org_golang_x_oauth2",
+)
+
+bazel_dep(name = "rules_oci", version = "2.2.0")
+bazel_dep(name = "rules_pkg", version = "1.0.1")
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "bazel_lib", version = "3.0.0")
+
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+oci.pull(
+    name = "distroless_base",
+    digest = "sha256:20bc6c0bc4d625a22a8fde3e55f6515709b32055ef8fb9cfbddaa06d1760f838",
+    image = "gcr.io/distroless/static-debian12",
+    platforms = [
+        "linux/amd64",
+        "linux/arm/v7",
+        "linux/arm64/v8",
+        "linux/ppc64le",
+        "linux/s390x",
+    ],
+)
+use_repo(oci, "distroless_base", "distroless_base_linux_amd64", "distroless_base_linux_arm64_v8", "distroless_base_linux_arm_v7", "distroless_base_linux_ppc64le", "distroless_base_linux_s390x")

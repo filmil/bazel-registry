@@ -12,7 +12,8 @@
         "github:filmil/upspin-gdrive"
     ],
     "versions": [
-        "0.1.2"
+        "0.1.2",
+        "42.1.1"
     ],
     "yanked_versions": {}
 }
