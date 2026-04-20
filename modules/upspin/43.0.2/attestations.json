@@ -1,0 +1,17 @@
+{
+    "mediaType": "application/vnd.build.bazel.registry.attestation+json;version=1.0.0",
+    "attestations": {
+        "source.json": {
+            "url": "https://github.com/filmil/upspin/releases/download/v43.0.2/source.json.intoto.jsonl",
+            "integrity": "sha256-xARBXS+/oSce54qUcR1bVYaCMiSlFCchoWwk4fmzh8A="
+        },
+        "MODULE.bazel": {
+            "url": "https://github.com/filmil/upspin/releases/download/v43.0.2/MODULE.bazel.intoto.jsonl",
+            "integrity": "sha256-kaU6Dib8PfvXbqdfWPyOco9wOKU5Qia7NFya2sGltPY="
+        },
+        "v43.0.2.tar.gz": {
+            "url": "https://github.com/filmil/upspin/releases/download/v43.0.2/v43.0.2.tar.gz.intoto.jsonl",
+            "integrity": "sha256-jpDj1GRQY+2/RC96OkP7R+kEH5nMrTem6miofL8+4AI="
+        }
+    }
+}
