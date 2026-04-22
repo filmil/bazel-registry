@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-f1cVRbs8iP9R+l/PX8CUXDolCttDEea8aLD1loojCJk=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/fshlib/releases/download/v0.2.6/fshlib-v0.2.6.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-7jApcNVKnYzkm57zFmVKWO6UWD6lTDm+vkoRDTIjJTo="
+    },
+    "patch_strip": 1
+}
