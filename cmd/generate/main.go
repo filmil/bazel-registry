@@ -276,11 +276,98 @@ const htmlTemplate = `
 
 	  gtag('config', 'G-BKGTF9GD1K');
 	</script>
+	<script>
+      function getPreferredTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          return savedTheme;
+        }
+        return 'system';
+      }
+
+      function resolveTheme(theme) {
+        if (theme === 'system') {
+          const currentHour = new Date().getHours();
+          return (currentHour >= 19 || currentHour < 7) ? 'dark' : 'light';
+        }
+        return theme;
+      }
+
+      function updateThemeIcon(theme) {
+        const toggleBtn = document.getElementById('themeToggle');
+        if (toggleBtn) {
+          if (theme === 'light') {
+            toggleBtn.innerHTML = '<i class="bi bi-sun"></i>';
+          } else if (theme === 'dark') {
+            toggleBtn.innerHTML = '<i class="bi bi-moon-stars"></i>';
+          } else {
+            toggleBtn.innerHTML = '<i class="bi bi-circle-half"></i>';
+          }
+        }
+      }
+
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-bs-theme', resolveTheme(theme));
+        localStorage.setItem('theme', theme);
+        updateThemeIcon(theme);
+      }
+
+      setTheme(getPreferredTheme());
+
+      document.addEventListener('DOMContentLoaded', () => {
+        updateThemeIcon(getPreferredTheme());
+      });
+
+      function toggleTheme() {
+        const currentTheme = getPreferredTheme();
+        let newTheme;
+        if (currentTheme === 'system') {
+          newTheme = 'light';
+        } else if (currentTheme === 'light') {
+          newTheme = 'dark';
+        } else {
+          newTheme = 'system';
+        }
+        setTheme(newTheme);
+      }
+	</script>
+	<style>
+      [data-bs-theme="dark"] {
+        --bs-body-color: #e9ecef;
+        --bs-secondary-color: #adb5bd;
+        --bs-tertiary-color: #dee2e6;
+        --bs-link-color: #6ea8fe;
+        --bs-link-hover-color: #9ec5fe;
+      }
+      [data-bs-theme="dark"] .card-title {
+        color: #6ea8fe;
+      }
+      [data-bs-theme="dark"] .text-secondary {
+        color: #ced4da !important;
+      }
+      [data-bs-theme="dark"] .text-muted {
+        color: #adb5bd !important;
+      }
+      [data-bs-theme="dark"] code:not(pre code) {
+        background-color: var(--bs-tertiary-bg);
+        color: #e6edf3;
+      }
+      [data-bs-theme="dark"] blockquote {
+        background-color: var(--bs-tertiary-bg);
+        border-left-color: var(--bs-border-color);
+        color: var(--bs-secondary-color);
+      }
+	</style>
 </head>
 <body>
     <div class="container">
-		<h1 class="mt-5"><a href="https://www.hdlfactory.com">My</a> <a
-		href="https://bazel.build">Bazel</a> Registry</h1>
+		<div class="d-flex justify-content-between align-items-center mt-5">
+			<h1 class="mb-0"><a href="https://www.hdlfactory.com">My</a> <a
+			href="https://bazel.build">Bazel</a> Registry</h1>
+			<button class="btn btn-outline-secondary" onclick="toggleTheme()" id="themeToggle" title="Toggle theme">
+				<i class="bi bi-circle-half"></i>
+			</button>
+		</div>
 
 		<p>These modules are published in <a
 		href="https://github.com/filmil/bazel-registry">my private bazel
