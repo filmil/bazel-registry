@@ -388,21 +388,44 @@ const htmlTemplate = `
 							{{$module.Name}}
 							<a href="{{$module.Metadata.Homepage}}"><i class="bi bi-link-45deg"></i></a>
 						</h5>
-                        <p class="card-text">
+                        <div class="card-text mb-2">
                             <strong>Versions:</strong>
-                            {{range $i, $v := $module.Versions}}
-                                {{if isYanked $v.Name $module.Metadata}}
-                                    <span class="me-2"><del>{{$v.Name}}</del></span>
+                            {{if gt (len $module.Versions) 0}}
+                                {{$latest := index $module.Versions 0}}
+                                {{if isYanked $latest.Name $module.Metadata}}
+                                    <span class="me-2"><del>{{$latest.Name}}</del></span>
                                 {{else}}
-                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ bazelDep $module.Name $v.Name }}">
-                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$v.Name}}">{{$v.Name}}</a>
-                                        <a href="#" onclick="copyToClipboard('{{ bazelDep $module.Name $v.Name }}'); return false;">
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ bazelDep $module.Name $latest.Name }}">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$latest.Name}}">{{$latest.Name}}</a>
+                                        <a href="#" onclick="copyToClipboard('{{ bazelDep $module.Name $latest.Name }}'); return false;">
                                             <i class="bi bi-clipboard"></i>
                                         </a>
                                     </span>
                                 {{end}}
+
+                                {{if gt (len $module.Versions) 1}}
+                                    <details>
+                                        <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
+                                        <div class="mt-2">
+                                        {{range $i, $v := $module.Versions}}
+                                            {{if gt $i 0}}
+                                                {{if isYanked $v.Name $module.Metadata}}
+                                                    <span class="me-2"><del>{{$v.Name}}</del></span>
+                                                {{else}}
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ bazelDep $module.Name $v.Name }}">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$v.Name}}">{{$v.Name}}</a>
+                                                        <a href="#" onclick="copyToClipboard('{{ bazelDep $module.Name $v.Name }}'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
+                                                {{end}}
+                                            {{end}}
+                                        {{end}}
+                                        </div>
+                                    </details>
+                                {{end}}
                             {{end}}
-                        </p>
+                        </div>
                         {{if gt (len $module.Versions) 0}}
                             {{$latest := index $module.Versions 0}}
                             {{if gt (len $latest.Dependencies) 0}}
