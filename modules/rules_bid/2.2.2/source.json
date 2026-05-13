@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-y8LqseKwYa/iJrNooTGv2CexUxALCc+vnbVV7M8QO5c=",
+    "strip_prefix": "bazel-rules-bid-2.2.2",
+    "url": "https://github.com/filmil/bazel-rules-bid/archive/refs/tags/v2.2.2.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-9fKCee6SEDQRndSjpLIOvFIUVQ3YtYlrMpr+8iz6aHk="
+    },
+    "patch_strip": 1
+}
