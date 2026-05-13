@@ -442,11 +442,16 @@ const htmlTemplate = `
                                 </details>
                             {{end}}
                         {{end}}
-                        <p class="card-text"><a href="{{$module.Metadata.Homepage}}">{{$module.Metadata.Homepage}}</a></p>
-                        <p class="card-text">
-                            {{$repo := index $module.Metadata.Repo 0}}
-							<a href="{{repoURL $repo}}">{{$repo}}</a>
-                        </p>
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="{{$module.Metadata.Homepage}}">{{$module.Metadata.Homepage}}</a></li>
+                            <li>
+                                {{$repo := index $module.Metadata.Repo 0}}
+                                <a href="{{repoURL $repo}}">{{$repo}}</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
