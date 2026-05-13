@@ -10,8 +10,16 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
+)
+
+var (
+	bazelDepRe = regexp.MustCompile(`(?s)bazel_dep\s*\((.*?)\)`)
+	nameRe     = regexp.MustCompile(`name\s*=\s*"([^"]+)"`)
+	versionRe  = regexp.MustCompile(`version\s*=\s*"([^"]+)"`)
+	devDepRe   = regexp.MustCompile(`dev_dependency\s*=\s*True`)
 )
 
 const (
@@ -32,9 +40,16 @@ type Metadata struct {
 }
 
 type Version struct {
-	Name       string
-	ModuleFile string
-	SourceFile string
+	Name         string
+	ModuleFile   string
+	SourceFile   string
+	Dependencies []Dependency
+}
+
+type Dependency struct {
+	Name          string
+	Version       string
+	DevDependency bool
 }
 
 func main() {
@@ -161,10 +176,31 @@ func findVersions(modulePath string) ([]Version, error) {
 			return nil, fmt.Errorf("failed to read source.json: %w", err)
 		}
 
+		var deps []Dependency
+		matches := bazelDepRe.FindAllStringSubmatch(string(moduleFileContent), -1)
+		for _, match := range matches {
+			content := match[1]
+			nameMatch := nameRe.FindStringSubmatch(content)
+			versionMatch := versionRe.FindStringSubmatch(content)
+			if len(nameMatch) > 1 && len(versionMatch) > 1 {
+				isDev := devDepRe.MatchString(content)
+				deps = append(deps, Dependency{
+					Name:          nameMatch[1],
+					Version:       versionMatch[1],
+					DevDependency: isDev,
+				})
+			}
+		}
+
+		sort.Slice(deps, func(i, j int) bool {
+			return deps[i].Name < deps[j].Name
+		})
+
 		versions = append(versions, Version{
-			Name:       versionDir.Name(),
-			ModuleFile: string(moduleFileContent),
-			SourceFile: string(sourceFileContent),
+			Name:         versionDir.Name(),
+			ModuleFile:   string(moduleFileContent),
+			SourceFile:   string(sourceFileContent),
+			Dependencies: deps,
 		})
 	}
 
@@ -280,6 +316,20 @@ const htmlTemplate = `
                                 {{end}}
                             {{end}}
                         </p>
+                        {{if gt (len $module.Versions) 0}}
+                            {{$latest := index $module.Versions 0}}
+                            {{if gt (len $latest.Dependencies) 0}}
+                                <p class="card-text mb-1"><strong>Dependencies (Latest):</strong></p>
+                                <ul class="list-unstyled mb-2 ms-2">
+                                {{range $dep := $latest.Dependencies}}
+                                    <li>
+                                        <code>{{$dep.Name}}</code> ({{$dep.Version}})
+                                        {{if $dep.DevDependency}}<span class="badge bg-secondary" style="font-size: 0.6em;">dev</span>{{end}}
+                                    </li>
+                                {{end}}
+                                </ul>
+                            {{end}}
+                        {{end}}
                         <p class="card-text"><a href="{{$module.Metadata.Homepage}}">{{$module.Metadata.Homepage}}</a></p>
                         <p class="card-text">
                             {{$repo := index $module.Metadata.Repo 0}}
