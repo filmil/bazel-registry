@@ -319,7 +319,8 @@ const htmlTemplate = `
                         {{if gt (len $module.Versions) 0}}
                             {{$latest := index $module.Versions 0}}
                             {{if gt (len $latest.Dependencies) 0}}
-                                <p class="card-text mb-1"><strong>Dependencies (Latest):</strong></p>
+                                <details>
+                                <summary class="card-text mb-1"><strong>Dependencies (Latest):</strong></summary>
                                 <ul class="list-unstyled mb-2 ms-2">
                                 {{range $dep := $latest.Dependencies}}
                                     <li>
@@ -328,6 +329,7 @@ const htmlTemplate = `
                                     </li>
                                 {{end}}
                                 </ul>
+                                </details>
                             {{end}}
                         {{end}}
                         <p class="card-text"><a href="{{$module.Metadata.Homepage}}">{{$module.Metadata.Homepage}}</a></p>
