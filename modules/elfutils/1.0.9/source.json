@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-/60EohPzKHlwXS74ADOozCzJOEOPBOg1Lr43BWAYboQ=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_elfutils/releases/download/v1.0.9/bazel_elfutils-v1.0.9.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-u81i95yY8yn9My5ANKlyB6W+aMLDYSa90OgHUQVzbCU="
+    },
+    "patch_strip": 1
+}
