@@ -1,4 +1,4 @@
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@bazel_lib//lib:write_source_files.bzl", "write_source_files")
 
 # Run bazel run //third_party/samples:write_dag to update the sample dag.
 write_source_files(
