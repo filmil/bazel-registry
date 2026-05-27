@@ -54,7 +54,7 @@ type Dependency struct {
 
 type TemplateData struct {
 	Modules []Module
-	Mermaid string
+	Mermaid template.HTML
 }
 
 func main() {
@@ -115,6 +115,10 @@ func buildMermaid(modules []Module) string {
 	edges := make(map[string]bool)
 	allNodes := make(map[string]bool)
 
+	escape := func(s string) string {
+		return strings.ReplaceAll(s, "\"", "\\\"")
+	}
+
 	for _, m := range modules {
 		if len(m.Versions) == 0 {
 			continue
@@ -122,7 +126,7 @@ func buildMermaid(modules []Module) string {
 		latest := m.Versions[0]
 		mID := sanitizeID(m.Name)
 		if !nodes[mID] {
-			sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", mID, m.Name, latest.Name))
+			sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", mID, escape(m.Name), escape(latest.Name)))
 			nodes[mID] = true
 			allNodes[mID] = true
 		}
@@ -139,7 +143,7 @@ func buildMermaid(modules []Module) string {
 				if v, ok := registryLatest[dep.Name]; ok {
 					version = v
 				}
-				sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", depID, dep.Name, version))
+				sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", depID, escape(dep.Name), escape(version)))
 				nodes[depID] = true
 				allNodes[depID] = true
 				if _, ok := registryLatest[dep.Name]; !ok {
@@ -150,7 +154,7 @@ func buildMermaid(modules []Module) string {
 			edgeID := fmt.Sprintf("%s->%s", mID, depID)
 			if !edges[edgeID] {
 				// Use "jump" label on edges for navigation
-				sb.WriteString(fmt.Sprintf("    %s -- \"jump\" --&gt; %s\n", mID, depID))
+				sb.WriteString(fmt.Sprintf("    %s -- \"jump\" --> %s\n", mID, depID))
 				edges[edgeID] = true
 			}
 		}
@@ -169,11 +173,10 @@ func buildMermaid(modules []Module) string {
 	return sb.String()
 }
 
+var sanitizeRe = regexp.MustCompile(`[^a-zA-Z0-9_]`)
+
 func sanitizeID(s string) string {
-	s = strings.ReplaceAll(s, "-", "_")
-	s = strings.ReplaceAll(s, ".", "_")
-	s = strings.ReplaceAll(s, "/", "_")
-	return s
+	return sanitizeRe.ReplaceAllString(s, "_")
 }
 
 func findModules(dir string) ([]Module, error) {
@@ -325,7 +328,7 @@ func generateHTML(modules []Module, mermaid string, w io.WriteCloser) error {
 	var buf strings.Builder
 	data := TemplateData{
 		Modules: modules,
-		Mermaid: mermaid,
+		Mermaid: template.HTML(mermaid),
 	}
 	if err := tmpl.Execute(&buf, data); err != nil {
 		return fmt.Errorf("failed to execute HTML template: %w", err)
