@@ -9,8 +9,7 @@ genrule(
     srcs = [
         "//modules:all_modules",
     ],
-    outs = [ "index.html"],
-    visibility = ["//visibility:public"],
+    outs = ["index.html"],
     cmd = """
     $(location //cmd/generate) \
         --modules_dir=modules \
@@ -19,4 +18,5 @@ genrule(
     tools = [
         "//cmd/generate",
     ],
+    visibility = ["//visibility:public"],
 )
