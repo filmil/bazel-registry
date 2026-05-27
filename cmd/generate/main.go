@@ -154,8 +154,8 @@ func buildMermaid(modules []Module) string {
 		for _, name := range externalNames {
 			labelLabels = append(labelLabels, fmt.Sprintf("%s (%s)", name, externalModulesSet[name]))
 		}
-		label := strings.Join(labelLabels, "<br/>")
-		sb.WriteString(fmt.Sprintf("    %s(\"%s\")\n", externalNodeID, escape(label)))
+		label := strings.Join(labelLabels, "\n")
+		sb.WriteString(fmt.Sprintf("    %s[\"%s\"]\n", externalNodeID, escape(label)))
 		sb.WriteString(fmt.Sprintf("    class %s inverted\n", externalNodeID))
 		allNodes[externalNodeID] = true
 	}
@@ -167,7 +167,7 @@ func buildMermaid(modules []Module) string {
 		latest := m.Versions[0]
 		mID := sanitizeID(m.Name)
 		if !nodes[mID] {
-			sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", mID, escape(m.Name), escape(latest.Name)))
+			sb.WriteString(fmt.Sprintf("    %s[\"%s\n%s\"]\n", mID, escape(m.Name), escape(latest.Name)))
 			nodes[mID] = true
 			allNodes[mID] = true
 		}
@@ -180,7 +180,7 @@ func buildMermaid(modules []Module) string {
 				hasInternalDeps = true
 				if !nodes[depID] {
 					version := registryLatest[dep.Name]
-					sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", depID, escape(dep.Name), escape(version)))
+					sb.WriteString(fmt.Sprintf("    %s[\"%s\n%s\"]\n", depID, escape(dep.Name), escape(version)))
 					nodes[depID] = true
 					allNodes[depID] = true
 				}
