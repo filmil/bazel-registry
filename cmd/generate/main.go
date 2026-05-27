@@ -113,6 +113,7 @@ func buildMermaid(modules []Module) string {
 
 	nodes := make(map[string]bool)
 	edges := make(map[string]bool)
+	allNodes := make(map[string]bool)
 
 	for _, m := range modules {
 		if len(m.Versions) == 0 {
@@ -123,10 +124,16 @@ func buildMermaid(modules []Module) string {
 		if !nodes[mID] {
 			sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", mID, m.Name, latest.Name))
 			nodes[mID] = true
+			allNodes[mID] = true
 		}
 
+		hasInternalDeps := false
 		for _, dep := range latest.Dependencies {
 			depID := sanitizeID(dep.Name)
+			if _, ok := registryLatest[dep.Name]; ok {
+				hasInternalDeps = true
+			}
+
 			if !nodes[depID] {
 				version := dep.Version
 				if v, ok := registryLatest[dep.Name]; ok {
@@ -134,6 +141,7 @@ func buildMermaid(modules []Module) string {
 				}
 				sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", depID, dep.Name, version))
 				nodes[depID] = true
+				allNodes[depID] = true
 				if _, ok := registryLatest[dep.Name]; !ok {
 					sb.WriteString(fmt.Sprintf("    class %s inverted\n", depID))
 				}
@@ -141,12 +149,23 @@ func buildMermaid(modules []Module) string {
 
 			edgeID := fmt.Sprintf("%s->%s", mID, depID)
 			if !edges[edgeID] {
-				sb.WriteString(fmt.Sprintf("    %s --> %s\n", mID, depID))
+				// Use "jump" label on edges for navigation
+				sb.WriteString(fmt.Sprintf("    %s -- \"jump\" --&gt; %s\n", mID, depID))
 				edges[edgeID] = true
 			}
 		}
+
+		if !hasInternalDeps {
+			sb.WriteString(fmt.Sprintf("    class %s leaf\n", mID))
+		}
 	}
+
+	for nID := range allNodes {
+		sb.WriteString(fmt.Sprintf("    click %s \"#card-%s\"\n", nID, nID))
+	}
+
 	sb.WriteString("    classDef inverted fill:#333,color:#fff\n")
+	sb.WriteString("    classDef leaf fill:#28a745,color:#fff\n")
 	return sb.String()
 }
 
@@ -297,6 +316,7 @@ func generateHTML(modules []Module, mermaid string, w io.WriteCloser) error {
 			_, ok := metadata.YankedVersions[version]
 			return ok
 		},
+		"sanitizeID": sanitizeID,
 	}).Parse(htmlTemplate)
 	if err != nil {
 		return fmt.Errorf("failed to parse HTML template: %w", err)
@@ -428,15 +448,26 @@ const htmlTemplate = `
       /* Mermaid DAG styling */
       .mermaid {
         overflow-x: auto;
+        max-width: 100%;
+      }
+      .mermaid svg {
+        height: auto !important;
+        max-width: 100% !important;
       }
       .mermaid .inverted rect {
         fill: #333 !important;
         stroke: #000 !important;
       }
-      .mermaid .inverted .label {
+      .mermaid .inverted .label, .mermaid .inverted span {
         color: #fff !important;
       }
-      .mermaid .inverted span {
+
+      /* Leaf nodes styling */
+      .mermaid .leaf rect {
+        fill: #28a745 !important;
+        stroke: #1e7e34 !important;
+      }
+      .mermaid .leaf .label, .mermaid .leaf span {
         color: #fff !important;
       }
 
@@ -444,10 +475,7 @@ const htmlTemplate = `
         fill: #eee !important;
         stroke: #fff !important;
       }
-      [data-bs-theme="dark"] .mermaid .inverted .label {
-        color: #111 !important;
-      }
-      [data-bs-theme="dark"] .mermaid .inverted span {
+      [data-bs-theme="dark"] .mermaid .inverted .label, [data-bs-theme="dark"] .mermaid .inverted span {
         color: #111 !important;
       }
 	</style>
@@ -474,7 +502,7 @@ const htmlTemplate = `
         <input class="form-control mb-4" id="searchInput" type="text" placeholder="Search for modules...">
         <div class="row" id="module-cards">
             {{range $module := .Modules}}
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-{{sanitizeID $module.Name}}">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
