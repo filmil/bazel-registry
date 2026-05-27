@@ -14,3 +14,11 @@ go_binary(
     visibility = ["//visibility:public"],
 )
 
+load("@rules_go//go:def.bzl", "go_test")
+
+go_test(
+    name = "generate_test",
+    srcs = ["main_test.go"],
+    embed = [":generate_lib"],
+)
+
