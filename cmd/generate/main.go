@@ -102,6 +102,7 @@ func run(modulesDir, outputFile string) error {
 
 func buildMermaid(modules []Module) string {
 	var sb strings.Builder
+	sb.WriteString("%%{init: {\"flowchart\": {\"defaultRenderer\": \"elk\"}} }%%\n")
 	sb.WriteString("graph TB\n")
 
 	registryLatest := make(map[string]string)
@@ -114,10 +115,41 @@ func buildMermaid(modules []Module) string {
 	nodes := make(map[string]bool)
 	edges := make(map[string]bool)
 	allNodes := make(map[string]bool)
-	registryModuleIDs := []string{}
+	
+	// Collect all external modules
+	externalModulesSet := make(map[string]string) // Name -> Version
+	for _, m := range modules {
+		if len(m.Versions) == 0 {
+			continue
+		}
+		latest := m.Versions[0]
+		for _, dep := range latest.Dependencies {
+			if _, ok := registryLatest[dep.Name]; !ok {
+				externalModulesSet[dep.Name] = dep.Version
+			}
+		}
+	}
+
+	var externalNames []string
+	for name := range externalModulesSet {
+		externalNames = append(externalNames, name)
+	}
+	sort.Strings(externalNames)
 
 	escape := func(s string) string {
 		return strings.ReplaceAll(s, "\"", "\\\"")
+	}
+
+	externalNodeID := "ExternalModules"
+	if len(externalNames) > 0 {
+		labelLabels := []string{}
+		for _, name := range externalNames {
+			labelLabels = append(labelLabels, fmt.Sprintf("%s (%s)", name, externalModulesSet[name]))
+		}
+		label := strings.Join(labelLabels, "<br/>")
+		sb.WriteString(fmt.Sprintf("    %s(\"%s\")\n", externalNodeID, escape(label)))
+		sb.WriteString(fmt.Sprintf("    class %s inverted\n", externalNodeID))
+		allNodes[externalNodeID] = true
 	}
 
 	for _, m := range modules {
@@ -130,31 +162,27 @@ func buildMermaid(modules []Module) string {
 			sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", mID, escape(m.Name), escape(latest.Name)))
 			nodes[mID] = true
 			allNodes[mID] = true
-			registryModuleIDs = append(registryModuleIDs, mID)
 		}
 
 		hasInternalDeps := false
 		for _, dep := range latest.Dependencies {
-			depID := sanitizeID(dep.Name)
+			var depID string
 			if _, ok := registryLatest[dep.Name]; ok {
+				depID = sanitizeID(dep.Name)
 				hasInternalDeps = true
-			}
-
-			if !nodes[depID] {
-				version := dep.Version
-				if v, ok := registryLatest[dep.Name]; ok {
-					version = v
+				if !nodes[depID] {
+					version := registryLatest[dep.Name]
+					sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", depID, escape(dep.Name), escape(version)))
+					nodes[depID] = true
+					allNodes[depID] = true
 				}
-				sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", depID, escape(dep.Name), escape(version)))
-				nodes[depID] = true
-				allNodes[depID] = true
-				if _, ok := registryLatest[dep.Name]; !ok {
-					sb.WriteString(fmt.Sprintf("    class %s inverted\n", depID))
-				}
+			} else {
+				depID = externalNodeID
 			}
 
 			edgeID := fmt.Sprintf("%s->%s", mID, depID)
 			if !edges[edgeID] {
+				// Use "jump" label on edges for navigation
 				sb.WriteString(fmt.Sprintf("    %s -- \"jump\" --> %s\n", mID, depID))
 				edges[edgeID] = true
 			}
@@ -165,27 +193,10 @@ func buildMermaid(modules []Module) string {
 		}
 	}
 
-	// Group modules into subgraphs of 5 to force a narrower layout
-	batchSize := 5
-	var lastSubgraphID string
-	for i := 0; i < len(registryModuleIDs); i += batchSize {
-		end := i + batchSize
-		if end > len(registryModuleIDs) {
-			end = len(registryModuleIDs)
-		}
-		subgraphID := fmt.Sprintf("Batch%d", i/batchSize)
-		sb.WriteString(fmt.Sprintf("    subgraph %s\n", subgraphID))
-		for _, mID := range registryModuleIDs[i:end] {
-			sb.WriteString(fmt.Sprintf("        %s\n", mID))
-		}
-		sb.WriteString("    end\n")
-		if lastSubgraphID != "" {
-			sb.WriteString(fmt.Sprintf("    %s ~~~ %s\n", lastSubgraphID, subgraphID))
-		}
-		lastSubgraphID = subgraphID
-	}
-
 	for nID := range allNodes {
+		if nID == externalNodeID {
+			continue
+		}
 		sb.WriteString(fmt.Sprintf("    click %s \"#card-%s\"\n", nID, nID))
 	}
 
