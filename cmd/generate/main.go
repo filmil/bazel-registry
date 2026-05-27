@@ -513,7 +513,27 @@ const htmlTemplate = `
       [data-bs-theme="dark"] .mermaid .inverted .label, [data-bs-theme="dark"] .mermaid .inverted span {
         color: #111 !important;
       }
+	      /* Zoom widget styling */
+      #mermaid-container {
+        border: 1px solid var(--bs-border-color);
+        border-radius: 4px;
+        background-color: var(--bs-body-bg);
+        position: relative;
+        height: 600px;
+        width: 100%;
+        overflow: hidden;
+      }
+      #mermaid-zoom-controls {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
 	</style>
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -616,15 +636,51 @@ const htmlTemplate = `
 
 		<div class="mt-5">
 			<h3>Module Dependency DAG (Latest Versions)</h3>
-			<div class="mermaid">
-				{{.Mermaid}}
+			<div id="mermaid-container">
+				<div id="mermaid-zoom-controls">
+					<button class="btn btn-sm btn-secondary" onclick="panZoom.zoomIn()"><i class="bi bi-plus-lg"></i></button>
+					<button class="btn btn-sm btn-secondary" onclick="panZoom.zoomOut()"><i class="bi bi-dash-lg"></i></button>
+					<button class="btn btn-sm btn-secondary" onclick="panZoom.reset()"><i class="bi bi-arrows-fullscreen"></i></button>
+				</div>
+				<div class="mermaid" id="dag-mermaid">
+					{{.Mermaid}}
+				</div>
 			</div>
 		</div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 	<script type="module">
 		import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-		mermaid.initialize({ startOnLoad: true });
+		mermaid.initialize({ 
+            startOnLoad: false,
+            flowchart: { useMaxWidth: false }
+        });
+
+        // Use a global variable to store the panZoom instance
+        window.panZoom = null;
+
+        async function initMermaid() {
+            const container = document.getElementById('dag-mermaid');
+            const { svg } = await mermaid.render('dag-svg', container.textContent);
+            container.innerHTML = svg;
+
+            const svgElement = container.querySelector('svg');
+            svgElement.style.width = '100%';
+            svgElement.style.height = '100%';
+
+            window.panZoom = svgPanZoom(svgElement, {
+                zoomEnabled: true,
+                controlIconsEnabled: false,
+                fit: true,
+                center: true,
+                minZoom: 0.1,
+                maxZoom: 10,
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initMermaid();
+        });
 	</script>
     <script>
         const searchInput = document.getElementById('searchInput');
