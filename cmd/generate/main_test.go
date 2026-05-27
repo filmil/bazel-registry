@@ -135,3 +135,25 @@ func TestBuildMermaid_Robustness(t *testing.T) {
 		t.Errorf("Expected escaped label %s, got: %s", expectedLabel, mermaid)
 	}
 }
+
+func TestBuildMermaid_NewlineRendering(t *testing.T) {
+	modules := []Module{
+		{
+			Name: "my_module",
+			Versions: []Version{
+				{
+					Name: "1.2.3",
+				},
+			},
+		},
+	}
+
+	mermaid := buildMermaid(modules)
+	
+	// We want to ensure that there is a literal newline character between 
+	// the module name and the version within the node label brackets.
+	expected := "my_module[\"my_module\n1.2.3\"]"
+	if !strings.Contains(mermaid, expected) {
+		t.Errorf("Expected mermaid to contain label with literal newline %q, but it was not found. Full mermaid:\n%s", expected, mermaid)
+	}
+}
