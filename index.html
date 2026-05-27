@@ -104,6 +104,39 @@
         border-left-color: var(--bs-border-color);
         color: var(--bs-secondary-color);
       }
+
+      .mermaid {
+        overflow-x: auto;
+        max-width: 100%;
+      }
+      .mermaid svg {
+        height: auto !important;
+        max-width: 100% !important;
+      }
+      .mermaid .inverted rect {
+        fill: #333 !important;
+        stroke: #000 !important;
+      }
+      .mermaid .inverted .label, .mermaid .inverted span {
+        color: #fff !important;
+      }
+
+
+      .mermaid .leaf rect {
+        fill: #28a745 !important;
+        stroke: #1e7e34 !important;
+      }
+      .mermaid .leaf .label, .mermaid .leaf span {
+        color: #fff !important;
+      }
+
+      [data-bs-theme="dark"] .mermaid .inverted rect {
+        fill: #eee !important;
+        stroke: #fff !important;
+      }
+      [data-bs-theme="dark"] .mermaid .inverted .label, [data-bs-theme="dark"] .mermaid .inverted span {
+        color: #111 !important;
+      }
 	</style>
 </head>
 <body>
@@ -128,7 +161,7 @@
         <input class="form-control mb-4" id="searchInput" type="text" placeholder="Search for modules...">
         <div class="row" id="module-cards">
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_go_basic">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -224,16 +257,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel-go-basic">https://github.com/filmil/bazel-go-basic</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel-go-basic">https://github.com/filmil/bazel-go-basic</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel-go-basic">github:filmil/bazel-go-basic</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel-go-basic">github:filmil/bazel-go-basic</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_bats">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -351,16 +389,104 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://www.hdlfactory.com">https://www.hdlfactory.com</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://www.hdlfactory.com">https://www.hdlfactory.com</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel-bats">github:filmil/bazel-bats</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel-bats">github:filmil/bazel-bats</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_debian_rootfs">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+							bazel_debian_rootfs
+							<a href="https://github.com/filmil/bazel_debian_rootfs"><i class="bi bi-link-45deg"></i></a>
+						</h5>
+                        <div class="card-text mb-2">
+                            <strong>Versions:</strong>
+
+
+
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;bazel_debian_rootfs&#34;, version = &#34;0.0.1&#34;)">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/bazel_debian_rootfs/0.0.1">0.0.1</a>
+                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022bazel_debian_rootfs\u0022, version = \u00220.0.1\u0022)'); return false;">
+                                            <i class="bi bi-clipboard"></i>
+                                        </a>
+                                    </span>
+
+
+
+
+                        </div>
+
+
+
+                                <details>
+                                <summary class="card-text mb-1"><strong>Dependencies (Latest):</strong></summary>
+                                <ul class="list-unstyled mb-2 ms-2">
+
+                                    <li>
+                                        <code>bazel_rules_bid</code> (0.3.0)
+
+                                    </li>
+
+                                    <li>
+                                        <code>bazel_skylib</code> (1.7.1)
+
+                                    </li>
+
+                                    <li>
+                                        <code>gotopt2</code> (2.2.2)
+
+                                    </li>
+
+                                    <li>
+                                        <code>rules_distroless</code> (0.5.3)
+
+                                    </li>
+
+                                    <li>
+                                        <code>rules_multitool</code> (1.9.0)
+
+                                    </li>
+
+                                    <li>
+                                        <code>rules_oci</code> (2.2.6)
+
+                                    </li>
+
+                                    <li>
+                                        <code>rules_shell</code> (0.6.1)
+
+                                    </li>
+
+                                </ul>
+                                </details>
+
+
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_debian_rootfs">https://github.com/filmil/bazel_debian_rootfs</a></li>
+                            <li>
+
+                                <a href="https://github.com/filmil/bazel_debian_rootfs">github:filmil/bazel_debian_rootfs</a>
+                            </li>
+                        </ul>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_ebook">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -584,16 +710,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://hdlfactory.com/post/2025/02/04/typeset-your-own-ebooks-easily-with-bazel-ebook">https://hdlfactory.com/post/2025/02/04/typeset-your-own-ebooks-easily-with-bazel-ebook</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://hdlfactory.com/post/2025/02/04/typeset-your-own-ebooks-easily-with-bazel-ebook">https://hdlfactory.com/post/2025/02/04/typeset-your-own-ebooks-easily-with-bazel-ebook</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel-ebook">github:filmil/bazel-ebook</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel-ebook">github:filmil/bazel-ebook</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_rootfs">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -617,6 +748,17 @@
                                     <details>
                                         <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
                                         <div class="mt-2">
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;bazel_rootfs&#34;, version = &#34;1.0.26&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/bazel_rootfs/1.0.26">1.0.26</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022bazel_rootfs\u0022, version = \u00221.0.26\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
 
 
 
@@ -731,16 +873,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://hdlfactory.com/tags/bazel-modules">https://hdlfactory.com/tags/bazel-modules</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://hdlfactory.com/tags/bazel-modules">https://hdlfactory.com/tags/bazel-modules</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_debian_rootfs">github:filmil/bazel_debian_rootfs</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_debian_rootfs">github:filmil/bazel_debian_rootfs</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_rules_bid">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -1055,16 +1202,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://hdlfactory.com/post/2025/02/11/bazel-rules-for-build-in-docker-or-bid/">https://hdlfactory.com/post/2025/02/11/bazel-rules-for-build-in-docker-or-bid/</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://hdlfactory.com/post/2025/02/11/bazel-rules-for-build-in-docker-or-bid/">https://hdlfactory.com/post/2025/02/11/bazel-rules-for-build-in-docker-or-bid/</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel-rules-bid">github:filmil/bazel-rules-bid</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel-rules-bid">github:filmil/bazel-rules-bid</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_rules_bt">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -1123,16 +1275,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://www.hdlfactory.com">https://www.hdlfactory.com</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://www.hdlfactory.com">https://www.hdlfactory.com</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_rules_bt">github:filmil/bazel_rules_bt</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_rules_bt">github:filmil/bazel_rules_bt</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_rules_ghdl">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -1144,9 +1301,9 @@
 
 
 
-                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;bazel_rules_ghdl&#34;, version = &#34;0.1.7&#34;)">
-                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/bazel_rules_ghdl/0.1.7">0.1.7</a>
-                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022bazel_rules_ghdl\u0022, version = \u00220.1.7\u0022)'); return false;">
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;bazel_rules_ghdl&#34;, version = &#34;1.0.0&#34;)">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/bazel_rules_ghdl/1.0.0">1.0.0</a>
+                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022bazel_rules_ghdl\u0022, version = \u00221.0.0\u0022)'); return false;">
                                             <i class="bi bi-clipboard"></i>
                                         </a>
                                     </span>
@@ -1156,6 +1313,17 @@
                                     <details>
                                         <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
                                         <div class="mt-2">
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;bazel_rules_ghdl&#34;, version = &#34;0.1.7&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/bazel_rules_ghdl/0.1.7">0.1.7</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022bazel_rules_ghdl\u0022, version = \u00220.1.7\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
 
 
 
@@ -1337,37 +1505,37 @@
                                 <ul class="list-unstyled mb-2 ms-2">
 
                                     <li>
-                                        <code>bazel_rules_bid</code> (0.3.0)
+                                        <code>bazel_rules_bid</code> (1.4.0)
 
                                     </li>
 
                                     <li>
-                                        <code>bazel_skylib</code> (1.7.1)
+                                        <code>bazel_skylib</code> (1.9.0)
 
                                     </li>
 
                                     <li>
-                                        <code>gotopt2</code> (2.2.2)
+                                        <code>gotopt2</code> (2.3.3)
 
                                     </li>
 
                                     <li>
-                                        <code>rules_distroless</code> (0.5.3)
+                                        <code>rules_distroless</code> (0.8.0)
 
                                     </li>
 
                                     <li>
-                                        <code>rules_multitool</code> (1.9.0)
+                                        <code>rules_multitool</code> (1.11.1)
 
                                     </li>
 
                                     <li>
-                                        <code>rules_oci</code> (2.2.6)
+                                        <code>rules_oci</code> (2.3.0)
 
                                     </li>
 
                                     <li>
-                                        <code>rules_shell</code> (0.6.1)
+                                        <code>rules_shell</code> (0.8.0)
 
                                     </li>
 
@@ -1375,16 +1543,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_rules_ghdl">https://github.com/filmil/bazel_rules_ghdl</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_rules_ghdl">https://github.com/filmil/bazel_rules_ghdl</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_go_basic">github:filmil/bazel_go_basic</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_go_basic">github:filmil/bazel_go_basic</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_rules_nvc">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -1722,16 +1895,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_rules_nvc">https://github.com/filmil/bazel_rules_nvc</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_rules_nvc">https://github.com/filmil/bazel_rules_nvc</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_rules_nvc">github:filmil/bazel_rules_nvc</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_rules_nvc">github:filmil/bazel_rules_nvc</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_rules_osvvm">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -1775,16 +1953,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_nvc_osvvm">https://github.com/filmil/bazel_nvc_osvvm</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_nvc_osvvm">https://github.com/filmil/bazel_nvc_osvvm</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_nvc_osvvm">github:filmil/bazel_nvc_osvvm</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_nvc_osvvm">github:filmil/bazel_nvc_osvvm</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_rules_raylib">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -1816,6 +1999,17 @@
                                                     <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;bazel_rules_raylib&#34;, version = &#34;0.0.4&#34;)">
                                                         <a href="https://github.com/filmil/bazel-registry/tree/main/modules/bazel_rules_raylib/0.0.4">0.0.4</a>
                                                         <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022bazel_rules_raylib\u0022, version = \u00220.0.4\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;bazel_rules_raylib&#34;, version = &#34;0.0.20&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/bazel_rules_raylib/0.0.20">0.0.20</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022bazel_rules_raylib\u0022, version = \u00220.0.20\u0022)'); return false;">
                                                             <i class="bi bi-clipboard"></i>
                                                         </a>
                                                     </span>
@@ -1932,16 +2126,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_rules_raylib">https://github.com/filmil/bazel_rules_raylib</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_rules_raylib">https://github.com/filmil/bazel_rules_raylib</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_rules_raylib">github:filmil/bazel_rules_raylib</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_rules_raylib">github:filmil/bazel_rules_raylib</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazel_rules_vivado">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -2217,16 +2416,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_rules_vivado">https://github.com/filmil/bazel_rules_vivado</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_rules_vivado">https://github.com/filmil/bazel_rules_vivado</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_rules_vivado">github:filmil/bazel_rules_vivado</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_rules_vivado">github:filmil/bazel_rules_vivado</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-bazoekt">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -2238,9 +2442,9 @@
 
 
 
-                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;bazoekt&#34;, version = &#34;0.1.5&#34;)">
-                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/bazoekt/0.1.5">0.1.5</a>
-                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022bazoekt\u0022, version = \u00220.1.5\u0022)'); return false;">
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;bazoekt&#34;, version = &#34;0.1.7&#34;)">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/bazoekt/0.1.7">0.1.7</a>
+                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022bazoekt\u0022, version = \u00220.1.7\u0022)'); return false;">
                                             <i class="bi bi-clipboard"></i>
                                         </a>
                                     </span>
@@ -2250,6 +2454,28 @@
                                     <details>
                                         <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
                                         <div class="mt-2">
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;bazoekt&#34;, version = &#34;0.1.6&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/bazoekt/0.1.6">0.1.6</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022bazoekt\u0022, version = \u00220.1.6\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;bazoekt&#34;, version = &#34;0.1.5&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/bazoekt/0.1.5">0.1.5</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022bazoekt\u0022, version = \u00220.1.5\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
 
 
 
@@ -2310,12 +2536,12 @@
                                 <ul class="list-unstyled mb-2 ms-2">
 
                                     <li>
-                                        <code>buildifier_prebuilt</code> (8.0.1)
+                                        <code>buildifier_prebuilt</code> (8.5.1.2)
 
                                     </li>
 
                                     <li>
-                                        <code>gazelle</code> (0.42.0)
+                                        <code>gazelle</code> (0.51.0)
 
                                     </li>
 
@@ -2325,7 +2551,12 @@
                                     </li>
 
                                     <li>
-                                        <code>protobuf</code> (33.4)
+                                        <code>protobuf</code> (34.1)
+
+                                    </li>
+
+                                    <li>
+                                        <code>rules_android</code> (0.7.2)
 
                                     </li>
 
@@ -2335,17 +2566,17 @@
                                     </li>
 
                                     <li>
-                                        <code>rules_pkg</code> (1.0.1)
+                                        <code>rules_pkg</code> (1.2.0)
 
                                     </li>
 
                                     <li>
-                                        <code>rules_python</code> (1.7.0)
+                                        <code>rules_python</code> (2.0.1)
 
                                     </li>
 
                                     <li>
-                                        <code>rules_shell</code> (0.6.1)
+                                        <code>rules_shell</code> (0.8.0)
 
                                     </li>
 
@@ -2353,16 +2584,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazoekt">https://github.com/filmil/bazoekt</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazoekt">https://github.com/filmil/bazoekt</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazoekt">github:filmil/bazoekt</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazoekt">github:filmil/bazoekt</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-elfutils">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -2374,9 +2610,9 @@
 
 
 
-                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;elfutils&#34;, version = &#34;1.0.8&#34;)">
-                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/elfutils/1.0.8">1.0.8</a>
-                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022elfutils\u0022, version = \u00221.0.8\u0022)'); return false;">
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;elfutils&#34;, version = &#34;1.0.9&#34;)">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/elfutils/1.0.9">1.0.9</a>
+                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022elfutils\u0022, version = \u00221.0.9\u0022)'); return false;">
                                             <i class="bi bi-clipboard"></i>
                                         </a>
                                     </span>
@@ -2386,6 +2622,17 @@
                                     <details>
                                         <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
                                         <div class="mt-2">
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;elfutils&#34;, version = &#34;1.0.8&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/elfutils/1.0.8">1.0.8</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022elfutils\u0022, version = \u00221.0.8\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
 
 
 
@@ -2688,16 +2935,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_elfutils">https://github.com/filmil/bazel_elfutils</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_elfutils">https://github.com/filmil/bazel_elfutils</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_elfutils">github:filmil/bazel_elfutils</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_elfutils">github:filmil/bazel_elfutils</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-fbzl">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -2808,16 +3060,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="#ZgotmplZ">https.://github.com/filmil/fbzl</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="#ZgotmplZ">https.://github.com/filmil/fbzl</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/fbzl">github:filmil/fbzl</a>
-                        </p>
+                                <a href="https://github.com/filmil/fbzl">github:filmil/fbzl</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-fshlib">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -2829,9 +3086,9 @@
 
 
 
-                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;fshlib&#34;, version = &#34;0.2.6&#34;)">
-                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/fshlib/0.2.6">0.2.6</a>
-                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022fshlib\u0022, version = \u00220.2.6\u0022)'); return false;">
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;fshlib&#34;, version = &#34;0.2.7&#34;)">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/fshlib/0.2.7">0.2.7</a>
+                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022fshlib\u0022, version = \u00220.2.7\u0022)'); return false;">
                                             <i class="bi bi-clipboard"></i>
                                         </a>
                                     </span>
@@ -2841,6 +3098,17 @@
                                     <details>
                                         <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
                                         <div class="mt-2">
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;fshlib&#34;, version = &#34;0.2.6&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/fshlib/0.2.6">0.2.6</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022fshlib\u0022, version = \u00220.2.6\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
 
 
 
@@ -3019,16 +3287,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/fshlib">https://github.com/filmil/fshlib</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/fshlib">https://github.com/filmil/fshlib</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/fshlib">github:filmil/fshlib</a>
-                        </p>
+                                <a href="https://github.com/filmil/fshlib">github:filmil/fshlib</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-futility">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -3093,6 +3366,17 @@
                                                     <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;futility&#34;, version = &#34;0.3.2&#34;)">
                                                         <a href="https://github.com/filmil/bazel-registry/tree/main/modules/futility/0.3.2">0.3.2</a>
                                                         <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022futility\u0022, version = \u00220.3.2\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;futility&#34;, version = &#34;0.3.14&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/futility/0.3.14">0.3.14</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022futility\u0022, version = \u00220.3.14\u0022)'); return false;">
                                                             <i class="bi bi-clipboard"></i>
                                                         </a>
                                                     </span>
@@ -3239,16 +3523,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/futility">https://github.com/filmil/futility</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/futility">https://github.com/filmil/futility</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/futility">github:filmil/futility</a>
-                        </p>
+                                <a href="https://github.com/filmil/futility">github:filmil/futility</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-gotopt2">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -3260,9 +3549,9 @@
 
 
 
-                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;gotopt2&#34;, version = &#34;2.3.3&#34;)">
-                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/gotopt2/2.3.3">2.3.3</a>
-                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022gotopt2\u0022, version = \u00222.3.3\u0022)'); return false;">
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;gotopt2&#34;, version = &#34;2.6.0&#34;)">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/gotopt2/2.6.0">2.6.0</a>
+                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022gotopt2\u0022, version = \u00222.6.0\u0022)'); return false;">
                                             <i class="bi bi-clipboard"></i>
                                         </a>
                                     </span>
@@ -3272,6 +3561,28 @@
                                     <details>
                                         <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
                                         <div class="mt-2">
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;gotopt2&#34;, version = &#34;2.5.1&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/gotopt2/2.5.1">2.5.1</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022gotopt2\u0022, version = \u00222.5.1\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;gotopt2&#34;, version = &#34;2.3.3&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/gotopt2/2.3.3">2.3.3</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022gotopt2\u0022, version = \u00222.3.3\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
 
 
 
@@ -3343,18 +3654,38 @@
                                 <ul class="list-unstyled mb-2 ms-2">
 
                                     <li>
-                                        <code>bazel_bats</code> (0.37.1)
+                                        <code>bazel_bats</code> (0.38.23)
 
                                     </li>
 
                                     <li>
-                                        <code>buildifier_prebuilt</code> (7.3.1)
+                                        <code>bazel_lib</code> (3.0.0)
+                                        <span class="badge bg-secondary" style="font-size: 0.6em;">dev</span>
+                                    </li>
+
+                                    <li>
+                                        <code>bazel_skylib</code> (1.8.2)
+                                        <span class="badge bg-secondary" style="font-size: 0.6em;">dev</span>
+                                    </li>
+
+                                    <li>
+                                        <code>bazel_skylib_gazelle_plugin</code> (1.8.2)
+                                        <span class="badge bg-secondary" style="font-size: 0.6em;">dev</span>
+                                    </li>
+
+                                    <li>
+                                        <code>buildifier_prebuilt</code> (8.5.1.2)
 
                                     </li>
 
                                     <li>
-                                        <code>gazelle</code> (0.42.0)
+                                        <code>gazelle</code> (0.51.0)
 
+                                    </li>
+
+                                    <li>
+                                        <code>protobuf</code> (33.4)
+                                        <span class="badge bg-secondary" style="font-size: 0.6em;">dev</span>
                                     </li>
 
                                     <li>
@@ -3363,34 +3694,44 @@
                                     </li>
 
                                     <li>
-                                        <code>rules_multitool</code> (1.9.0)
+                                        <code>rules_multitool</code> (1.11.1)
 
                                     </li>
 
                                     <li>
-                                        <code>rules_pkg</code> (1.0.1)
+                                        <code>rules_pkg</code> (1.2.0)
 
                                     </li>
 
                                     <li>
-                                        <code>rules_shell</code> (0.6.1)
+                                        <code>rules_shell</code> (0.8.0)
 
+                                    </li>
+
+                                    <li>
+                                        <code>stardoc</code> (0.8.1)
+                                        <span class="badge bg-secondary" style="font-size: 0.6em;">dev</span>
                                     </li>
 
                                 </ul>
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/gotopt2">https://github.com/filmil/gotopt2</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/gotopt2">https://github.com/filmil/gotopt2</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/gotopt2">github:filmil/gotopt2</a>
-                        </p>
+                                <a href="https://github.com/filmil/gotopt2">github:filmil/gotopt2</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-graphviz">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -3449,16 +3790,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_graphviz_foreign">https://github.com/filmil/bazel_graphviz_foreign</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_graphviz_foreign">https://github.com/filmil/bazel_graphviz_foreign</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_graphviz_foreign">github:filmil/bazel_graphviz_foreign</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_graphviz_foreign">github:filmil/bazel_graphviz_foreign</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-graphviz_foreign">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -3517,16 +3863,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_graphviz_foreign">https://github.com/filmil/bazel_graphviz_foreign</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_graphviz_foreign">https://github.com/filmil/bazel_graphviz_foreign</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_graphviz_foreign">github:filmil/bazel_graphviz_foreign</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_graphviz_foreign">github:filmil/bazel_graphviz_foreign</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-hello_foreign">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -3569,6 +3920,17 @@
                                                     <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;hello_foreign&#34;, version = &#34;0.0.4&#34;)">
                                                         <a href="https://github.com/filmil/bazel-registry/tree/main/modules/hello_foreign/0.0.4">0.0.4</a>
                                                         <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022hello_foreign\u0022, version = \u00220.0.4\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;hello_foreign&#34;, version = &#34;0.0.25&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/hello_foreign/0.0.25">0.0.25</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022hello_foreign\u0022, version = \u00220.0.25\u0022)'); return false;">
                                                             <i class="bi bi-clipboard"></i>
                                                         </a>
                                                     </span>
@@ -3671,16 +4033,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_hello_foreign">https://github.com/filmil/bazel_hello_foreign</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_hello_foreign">https://github.com/filmil/bazel_hello_foreign</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_hello_foreign">github:filmil/bazel_hello_foreign</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_hello_foreign">github:filmil/bazel_hello_foreign</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-libzstd">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -3729,16 +4096,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_elfutils">https://github.com/filmil/bazel_elfutils</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_elfutils">https://github.com/filmil/bazel_elfutils</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_elfutils">github:filmil/bazel_elfutils</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_elfutils">github:filmil/bazel_elfutils</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-libzstd_foreign">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -3807,16 +4179,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_libzstd">https://github.com/filmil/bazel_libzstd</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_libzstd">https://github.com/filmil/bazel_libzstd</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_libzstd">github:filmil/bazel_libzstd</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_libzstd">github:filmil/bazel_libzstd</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-lit2md">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -4101,16 +4478,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="#ZgotmplZ">https.://github.com/filmil/lit2md</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="#ZgotmplZ">https.://github.com/filmil/lit2md</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/lit2md">github:filmil/lit2md</a>
-                        </p>
+                                <a href="https://github.com/filmil/lit2md">github:filmil/lit2md</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-rules_bid">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -4306,16 +4688,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://hdlfactory.com/post/2025/02/11/bazel-rules-for-build-in-docker-or-bid/">https://hdlfactory.com/post/2025/02/11/bazel-rules-for-build-in-docker-or-bid/</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://hdlfactory.com/post/2025/02/11/bazel-rules-for-build-in-docker-or-bid/">https://hdlfactory.com/post/2025/02/11/bazel-rules-for-build-in-docker-or-bid/</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel-rules-bid">github:filmil/bazel-rules-bid</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel-rules-bid">github:filmil/bazel-rules-bid</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-rules_bt">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -4358,6 +4745,17 @@
                                                     <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;rules_bt&#34;, version = &#34;1.2.3&#34;)">
                                                         <a href="https://github.com/filmil/bazel-registry/tree/main/modules/rules_bt/1.2.3">1.2.3</a>
                                                         <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022rules_bt\u0022, version = \u00221.2.3\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;rules_bt&#34;, version = &#34;1.2.22&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/rules_bt/1.2.22">1.2.22</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022rules_bt\u0022, version = \u00221.2.22\u0022)'); return false;">
                                                             <i class="bi bi-clipboard"></i>
                                                         </a>
                                                     </span>
@@ -4498,16 +4896,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://www.hdlfactory.com">https://www.hdlfactory.com</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://www.hdlfactory.com">https://www.hdlfactory.com</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_rules_bt">github:filmil/bazel_rules_bt</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_rules_bt">github:filmil/bazel_rules_bt</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-rules_fusesoc">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -4519,9 +4922,9 @@
 
 
 
-                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;rules_fusesoc&#34;, version = &#34;1.0.2&#34;)">
-                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/rules_fusesoc/1.0.2">1.0.2</a>
-                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022rules_fusesoc\u0022, version = \u00221.0.2\u0022)'); return false;">
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;rules_fusesoc&#34;, version = &#34;1.0.3&#34;)">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/rules_fusesoc/1.0.3">1.0.3</a>
+                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022rules_fusesoc\u0022, version = \u00221.0.3\u0022)'); return false;">
                                             <i class="bi bi-clipboard"></i>
                                         </a>
                                     </span>
@@ -4531,6 +4934,17 @@
                                     <details>
                                         <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
                                         <div class="mt-2">
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;rules_fusesoc&#34;, version = &#34;1.0.2&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/rules_fusesoc/1.0.2">1.0.2</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022rules_fusesoc\u0022, version = \u00221.0.2\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
 
 
 
@@ -4695,16 +5109,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_rules_fusesoc_2">https://github.com/filmil/bazel_rules_fusesoc_2</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_rules_fusesoc_2">https://github.com/filmil/bazel_rules_fusesoc_2</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_rules_fusesoc_2">github:filmil/bazel_rules_fusesoc_2</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_rules_fusesoc_2">github:filmil/bazel_rules_fusesoc_2</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-rules_nvc">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -5025,16 +5444,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_rules_nvc">https://github.com/filmil/bazel_rules_nvc</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_rules_nvc">https://github.com/filmil/bazel_rules_nvc</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_rules_nvc">github:filmil/bazel_rules_nvc</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_rules_nvc">github:filmil/bazel_rules_nvc</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-rules_osvvm">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -5158,16 +5582,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_rules_osvvm">https://github.com/filmil/bazel_rules_osvvm</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_rules_osvvm">https://github.com/filmil/bazel_rules_osvvm</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_rules_osvvm">github:filmil/bazel_rules_osvvm</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_rules_osvvm">github:filmil/bazel_rules_osvvm</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-rules_shar">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -5179,9 +5608,9 @@
 
 
 
-                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;rules_shar&#34;, version = &#34;1.0.6&#34;)">
-                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/rules_shar/1.0.6">1.0.6</a>
-                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022rules_shar\u0022, version = \u00221.0.6\u0022)'); return false;">
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;rules_shar&#34;, version = &#34;1.0.7&#34;)">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/rules_shar/1.0.7">1.0.7</a>
+                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022rules_shar\u0022, version = \u00221.0.7\u0022)'); return false;">
                                             <i class="bi bi-clipboard"></i>
                                         </a>
                                     </span>
@@ -5191,6 +5620,17 @@
                                     <details>
                                         <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
                                         <div class="mt-2">
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;rules_shar&#34;, version = &#34;1.0.6&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/rules_shar/1.0.6">1.0.6</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022rules_shar\u0022, version = \u00221.0.6\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
 
 
 
@@ -5451,16 +5891,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://www.hdlfactory.com/post/2025/11/22/rules_shar-bazel-rules-for-creating-self-extracting-archives-shars/">https://www.hdlfactory.com/post/2025/11/22/rules_shar-bazel-rules-for-creating-self-extracting-archives-shars/</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://www.hdlfactory.com/post/2025/11/22/rules_shar-bazel-rules-for-creating-self-extracting-archives-shars/">https://www.hdlfactory.com/post/2025/11/22/rules_shar-bazel-rules-for-creating-self-extracting-archives-shars/</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/rules_shar">github:filmil/rules_shar</a>
-                        </p>
+                                <a href="https://github.com/filmil/rules_shar">github:filmil/rules_shar</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-rules_vivado">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -5695,16 +6140,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_rules_vivado">https://github.com/filmil/bazel_rules_vivado</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_rules_vivado">https://github.com/filmil/bazel_rules_vivado</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_rules_vivado">github:filmil/bazel_rules_vivado</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_rules_vivado">github:filmil/bazel_rules_vivado</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-rules_vunit">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -5833,16 +6283,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_rules_vunit">https://github.com/filmil/bazel_rules_vunit</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_rules_vunit">https://github.com/filmil/bazel_rules_vunit</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_rules_vunit">github:filmil/bazel_rules_vunit</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_rules_vunit">github:filmil/bazel_rules_vunit</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-upspin">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -5997,16 +6452,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/upspin">https://github.com/filmil/upspin</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/upspin">https://github.com/filmil/upspin</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/upspin">github:filmil/upspin</a>
-                        </p>
+                                <a href="https://github.com/filmil/upspin">github:filmil/upspin</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-upspin_drive">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -6018,9 +6478,9 @@
 
 
 
-                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;upspin_drive&#34;, version = &#34;42.1.1&#34;)">
-                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/upspin_drive/42.1.1">42.1.1</a>
-                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022upspin_drive\u0022, version = \u002242.1.1\u0022)'); return false;">
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;upspin_drive&#34;, version = &#34;42.1.2&#34;)">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/upspin_drive/42.1.2">42.1.2</a>
+                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022upspin_drive\u0022, version = \u002242.1.2\u0022)'); return false;">
                                             <i class="bi bi-clipboard"></i>
                                         </a>
                                     </span>
@@ -6030,6 +6490,17 @@
                                     <details>
                                         <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
                                         <div class="mt-2">
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;upspin_drive&#34;, version = &#34;42.1.1&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/upspin_drive/42.1.1">42.1.1</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022upspin_drive\u0022, version = \u002242.1.1\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
 
 
 
@@ -6095,16 +6566,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/upspin-gdrive">https://github.com/filmil/upspin-gdrive</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/upspin-gdrive">https://github.com/filmil/upspin-gdrive</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/upspin-gdrive">github:filmil/upspin-gdrive</a>
-                        </p>
+                                <a href="https://github.com/filmil/upspin-gdrive">github:filmil/upspin-gdrive</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-vhdl_ls_gen">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -6116,9 +6592,9 @@
 
 
 
-                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;vhdl_ls_gen&#34;, version = &#34;0.3.0&#34;)">
-                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/vhdl_ls_gen/0.3.0">0.3.0</a>
-                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022vhdl_ls_gen\u0022, version = \u00220.3.0\u0022)'); return false;">
+                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;vhdl_ls_gen&#34;, version = &#34;0.3.1&#34;)">
+                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/vhdl_ls_gen/0.3.1">0.3.1</a>
+                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022vhdl_ls_gen\u0022, version = \u00220.3.1\u0022)'); return false;">
                                             <i class="bi bi-clipboard"></i>
                                         </a>
                                     </span>
@@ -6128,6 +6604,17 @@
                                     <details>
                                         <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
                                         <div class="mt-2">
+
+
+
+
+
+                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="bazel_dep(name = &#34;vhdl_ls_gen&#34;, version = &#34;0.3.0&#34;)">
+                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/vhdl_ls_gen/0.3.0">0.3.0</a>
+                                                        <a href="#" onclick="copyToClipboard('bazel_dep(name = \u0022vhdl_ls_gen\u0022, version = \u00220.3.0\u0022)'); return false;">
+                                                            <i class="bi bi-clipboard"></i>
+                                                        </a>
+                                                    </span>
 
 
 
@@ -6283,16 +6770,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_vhdl_ls_gen">https://github.com/filmil/bazel_vhdl_ls_gen</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_vhdl_ls_gen">https://github.com/filmil/bazel_vhdl_ls_gen</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_vhdl_ls_gen">github:filmil/bazel_vhdl_ls_gen</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_vhdl_ls_gen">github:filmil/bazel_vhdl_ls_gen</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-xrootfs">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -6486,16 +6978,21 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/xrootfs">https://github.com/filmil/xrootfs</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/xrootfs">https://github.com/filmil/xrootfs</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/xrootfs">github:filmil/xrootfs</a>
-                        </p>
+                                <a href="https://github.com/filmil/xrootfs">github:filmil/xrootfs</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4 module-card">
+            <div class="col-md-4 mb-4 module-card" id="card-zlib_foreign">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -6544,18 +7041,483 @@
                                 </details>
 
 
-                        <p class="card-text"><a href="https://github.com/filmil/bazel_zlib_foreign">https://github.com/filmil/bazel_zlib_foreign</a></p>
-                        <p class="card-text">
+                        <details>
+                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li><a href="https://github.com/filmil/bazel_zlib_foreign">https://github.com/filmil/bazel_zlib_foreign</a></li>
+                            <li>
 
-							<a href="https://github.com/filmil/bazel_zlib_foreign">github:filmil/bazel_zlib_foreign</a>
-                        </p>
+                                <a href="https://github.com/filmil/bazel_zlib_foreign">github:filmil/bazel_zlib_foreign</a>
+                            </li>
+                        </ul>
+                        </details>
                     </div>
                 </div>
             </div>
 
         </div>
+
+		<div class="mt-5">
+			<h3>Module Dependency DAG (Latest Versions)</h3>
+			<div class="mermaid">
+				graph TB
+    bazel_go_basic(&#34;bazel-go-basic&lt;br/&gt;0.2.21&#34;)
+    buildifier_prebuilt(&#34;buildifier_prebuilt&lt;br/&gt;8.2.0.2&#34;)
+    class buildifier_prebuilt inverted
+    bazel_go_basic -- &#34;jump&#34; --&amp;gt; buildifier_prebuilt
+    gazelle(&#34;gazelle&lt;br/&gt;0.45.0&#34;)
+    class gazelle inverted
+    bazel_go_basic -- &#34;jump&#34; --&amp;gt; gazelle
+    rules_go(&#34;rules_go&lt;br/&gt;0.57.0&#34;)
+    class rules_go inverted
+    bazel_go_basic -- &#34;jump&#34; --&amp;gt; rules_go
+    rules_pkg(&#34;rules_pkg&lt;br/&gt;1.0.1&#34;)
+    class rules_pkg inverted
+    bazel_go_basic -- &#34;jump&#34; --&amp;gt; rules_pkg
+    class bazel_go_basic leaf
+    bazel_bats(&#34;bazel_bats&lt;br/&gt;0.38.23&#34;)
+    bazel_skylib(&#34;bazel_skylib&lt;br/&gt;1.7.1&#34;)
+    class bazel_skylib inverted
+    bazel_bats -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    bazel_skylib_gazelle_plugin(&#34;bazel_skylib_gazelle_plugin&lt;br/&gt;1.7.1&#34;)
+    class bazel_skylib_gazelle_plugin inverted
+    bazel_bats -- &#34;jump&#34; --&amp;gt; bazel_skylib_gazelle_plugin
+    bazel_bats -- &#34;jump&#34; --&amp;gt; gazelle
+    rules_shell(&#34;rules_shell&lt;br/&gt;0.6.1&#34;)
+    class rules_shell inverted
+    bazel_bats -- &#34;jump&#34; --&amp;gt; rules_shell
+    class bazel_bats leaf
+    bazel_debian_rootfs(&#34;bazel_debian_rootfs&lt;br/&gt;0.0.1&#34;)
+    bazel_rules_bid(&#34;bazel_rules_bid&lt;br/&gt;1.4.0&#34;)
+    bazel_debian_rootfs -- &#34;jump&#34; --&amp;gt; bazel_rules_bid
+    bazel_debian_rootfs -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    gotopt2(&#34;gotopt2&lt;br/&gt;2.6.0&#34;)
+    bazel_debian_rootfs -- &#34;jump&#34; --&amp;gt; gotopt2
+    rules_distroless(&#34;rules_distroless&lt;br/&gt;0.5.3&#34;)
+    class rules_distroless inverted
+    bazel_debian_rootfs -- &#34;jump&#34; --&amp;gt; rules_distroless
+    rules_multitool(&#34;rules_multitool&lt;br/&gt;1.9.0&#34;)
+    class rules_multitool inverted
+    bazel_debian_rootfs -- &#34;jump&#34; --&amp;gt; rules_multitool
+    rules_oci(&#34;rules_oci&lt;br/&gt;2.2.6&#34;)
+    class rules_oci inverted
+    bazel_debian_rootfs -- &#34;jump&#34; --&amp;gt; rules_oci
+    bazel_debian_rootfs -- &#34;jump&#34; --&amp;gt; rules_shell
+    bazel_ebook(&#34;bazel_ebook&lt;br/&gt;2.0.15&#34;)
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; bazel_bats
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; bazel_rules_bid
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; buildifier_prebuilt
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; gazelle
+    platforms(&#34;platforms&lt;br/&gt;1.0.0&#34;)
+    class platforms inverted
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; platforms
+    rules_cc(&#34;rules_cc&lt;br/&gt;0.2.16&#34;)
+    class rules_cc inverted
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; rules_cc
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; rules_multitool
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; rules_pkg
+    rules_python(&#34;rules_python&lt;br/&gt;1.8.0&#34;)
+    class rules_python inverted
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; rules_python
+    rules_python_gazelle_plugin(&#34;rules_python_gazelle_plugin&lt;br/&gt;1.8.0&#34;)
+    class rules_python_gazelle_plugin inverted
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; rules_python_gazelle_plugin
+    bazel_ebook -- &#34;jump&#34; --&amp;gt; rules_shell
+    bazel_rootfs(&#34;bazel_rootfs&lt;br/&gt;1.0.3&#34;)
+    bazel_rootfs -- &#34;jump&#34; --&amp;gt; bazel_rules_bid
+    bazel_rootfs -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    bazel_rootfs -- &#34;jump&#34; --&amp;gt; gotopt2
+    bazel_rootfs -- &#34;jump&#34; --&amp;gt; rules_distroless
+    bazel_rootfs -- &#34;jump&#34; --&amp;gt; rules_multitool
+    bazel_rootfs -- &#34;jump&#34; --&amp;gt; rules_oci
+    bazel_rootfs -- &#34;jump&#34; --&amp;gt; rules_shell
+    rules_zstd(&#34;rules_zstd&lt;br/&gt;1.0.0&#34;)
+    class rules_zstd inverted
+    bazel_rootfs -- &#34;jump&#34; --&amp;gt; rules_zstd
+    bazel_rules_bid -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    bazel_rules_bid -- &#34;jump&#34; --&amp;gt; bazel_skylib_gazelle_plugin
+    bazel_rules_bid -- &#34;jump&#34; --&amp;gt; buildifier_prebuilt
+    fshlib(&#34;fshlib&lt;br/&gt;0.2.7&#34;)
+    bazel_rules_bid -- &#34;jump&#34; --&amp;gt; fshlib
+    bazel_rules_bid -- &#34;jump&#34; --&amp;gt; rules_multitool
+    bazel_rules_bid -- &#34;jump&#34; --&amp;gt; rules_shell
+    bazel_rules_bt(&#34;bazel_rules_bt&lt;br/&gt;0.0.3&#34;)
+    bazel_rules_bt -- &#34;jump&#34; --&amp;gt; rules_multitool
+    class bazel_rules_bt leaf
+    bazel_rules_ghdl(&#34;bazel_rules_ghdl&lt;br/&gt;1.0.0&#34;)
+    bazel_rules_ghdl -- &#34;jump&#34; --&amp;gt; bazel_rules_bid
+    bazel_rules_ghdl -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    bazel_rules_ghdl -- &#34;jump&#34; --&amp;gt; gotopt2
+    bazel_rules_ghdl -- &#34;jump&#34; --&amp;gt; rules_distroless
+    bazel_rules_ghdl -- &#34;jump&#34; --&amp;gt; rules_multitool
+    bazel_rules_ghdl -- &#34;jump&#34; --&amp;gt; rules_oci
+    bazel_rules_ghdl -- &#34;jump&#34; --&amp;gt; rules_shell
+    bazel_rules_nvc(&#34;bazel_rules_nvc&lt;br/&gt;0.5.2&#34;)
+    bazel_lib(&#34;bazel_lib&lt;br/&gt;3.0.0&#34;)
+    class bazel_lib inverted
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; bazel_lib
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; bazel_skylib_gazelle_plugin
+    elfutils(&#34;elfutils&lt;br/&gt;1.0.9&#34;)
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; elfutils
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; fshlib
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; gazelle
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; gotopt2
+    libffi(&#34;libffi&lt;br/&gt;3.4.7.bcr.3&#34;)
+    class libffi inverted
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; libffi
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; platforms
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; rules_cc
+    rules_foreign_cc(&#34;rules_foreign_cc&lt;br/&gt;0.15.1&#34;)
+    class rules_foreign_cc inverted
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; rules_foreign_cc
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; rules_shell
+    toolchains_llvm(&#34;toolchains_llvm&lt;br/&gt;1.5.0&#34;)
+    class toolchains_llvm inverted
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; toolchains_llvm
+    zlib(&#34;zlib&lt;br/&gt;1.3.1.bcr.7&#34;)
+    class zlib inverted
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; zlib
+    zstd(&#34;zstd&lt;br/&gt;1.5.7&#34;)
+    class zstd inverted
+    bazel_rules_nvc -- &#34;jump&#34; --&amp;gt; zstd
+    bazel_rules_osvvm(&#34;bazel_rules_osvvm&lt;br/&gt;0.0.1&#34;)
+    bazel_rules_osvvm -- &#34;jump&#34; --&amp;gt; bazel_rules_nvc
+    bazel_rules_osvvm -- &#34;jump&#34; --&amp;gt; toolchains_llvm
+    bazel_rules_raylib(&#34;bazel_rules_raylib&lt;br/&gt;0.0.7&#34;)
+    bazel_rules_raylib -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    glew(&#34;glew&lt;br/&gt;2.2.0&#34;)
+    class glew inverted
+    bazel_rules_raylib -- &#34;jump&#34; --&amp;gt; glew
+    glfw(&#34;glfw&lt;br/&gt;3.3.9&#34;)
+    class glfw inverted
+    bazel_rules_raylib -- &#34;jump&#34; --&amp;gt; glfw
+    glm(&#34;glm&lt;br/&gt;1.0.0.bcr.1&#34;)
+    class glm inverted
+    bazel_rules_raylib -- &#34;jump&#34; --&amp;gt; glm
+    googletest(&#34;googletest&lt;br/&gt;1.16.0&#34;)
+    class googletest inverted
+    bazel_rules_raylib -- &#34;jump&#34; --&amp;gt; googletest
+    hermetic_cc_toolchain(&#34;hermetic_cc_toolchain&lt;br/&gt;3.1.0&#34;)
+    class hermetic_cc_toolchain inverted
+    bazel_rules_raylib -- &#34;jump&#34; --&amp;gt; hermetic_cc_toolchain
+    bazel_rules_raylib -- &#34;jump&#34; --&amp;gt; platforms
+    bazel_rules_raylib -- &#34;jump&#34; --&amp;gt; rules_cc
+    bazel_rules_raylib -- &#34;jump&#34; --&amp;gt; rules_foreign_cc
+    bazel_rules_raylib -- &#34;jump&#34; --&amp;gt; rules_shell
+    class bazel_rules_raylib leaf
+    bazel_rules_vivado(&#34;bazel_rules_vivado&lt;br/&gt;3.0.0&#34;)
+    bazel_rules_vivado -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    bazel_rules_vivado -- &#34;jump&#34; --&amp;gt; fshlib
+    bazel_rules_vivado -- &#34;jump&#34; --&amp;gt; gazelle
+    bazel_rules_vivado -- &#34;jump&#34; --&amp;gt; gotopt2
+    rules_bid(&#34;rules_bid&lt;br/&gt;2.2.2&#34;)
+    bazel_rules_vivado -- &#34;jump&#34; --&amp;gt; rules_bid
+    bazel_rules_vivado -- &#34;jump&#34; --&amp;gt; rules_go
+    bazel_rules_vivado -- &#34;jump&#34; --&amp;gt; rules_shell
+    bazoekt(&#34;bazoekt&lt;br/&gt;0.1.7&#34;)
+    bazoekt -- &#34;jump&#34; --&amp;gt; buildifier_prebuilt
+    bazoekt -- &#34;jump&#34; --&amp;gt; gazelle
+    bazoekt -- &#34;jump&#34; --&amp;gt; gotopt2
+    protobuf(&#34;protobuf&lt;br/&gt;34.1&#34;)
+    class protobuf inverted
+    bazoekt -- &#34;jump&#34; --&amp;gt; protobuf
+    rules_android(&#34;rules_android&lt;br/&gt;0.7.2&#34;)
+    class rules_android inverted
+    bazoekt -- &#34;jump&#34; --&amp;gt; rules_android
+    bazoekt -- &#34;jump&#34; --&amp;gt; rules_go
+    bazoekt -- &#34;jump&#34; --&amp;gt; rules_pkg
+    bazoekt -- &#34;jump&#34; --&amp;gt; rules_python
+    bazoekt -- &#34;jump&#34; --&amp;gt; rules_shell
+    gcc_toolchain(&#34;gcc_toolchain&lt;br/&gt;0.9.0&#34;)
+    class gcc_toolchain inverted
+    elfutils -- &#34;jump&#34; --&amp;gt; gcc_toolchain
+    elfutils -- &#34;jump&#34; --&amp;gt; platforms
+    elfutils -- &#34;jump&#34; --&amp;gt; rules_cc
+    elfutils -- &#34;jump&#34; --&amp;gt; rules_foreign_cc
+    rules_m4(&#34;rules_m4&lt;br/&gt;0.3&#34;)
+    class rules_m4 inverted
+    elfutils -- &#34;jump&#34; --&amp;gt; rules_m4
+    elfutils -- &#34;jump&#34; --&amp;gt; zlib
+    class elfutils leaf
+    fbzl(&#34;fbzl&lt;br/&gt;0.0.5&#34;)
+    fbzl -- &#34;jump&#34; --&amp;gt; bazel_lib
+    fbzl -- &#34;jump&#34; --&amp;gt; bazel_skylib_gazelle_plugin
+    fbzl -- &#34;jump&#34; --&amp;gt; buildifier_prebuilt
+    fbzl -- &#34;jump&#34; --&amp;gt; gazelle
+    fbzl -- &#34;jump&#34; --&amp;gt; protobuf
+    fbzl -- &#34;jump&#34; --&amp;gt; rules_pkg
+    stardoc(&#34;stardoc&lt;br/&gt;0.8.1&#34;)
+    class stardoc inverted
+    fbzl -- &#34;jump&#34; --&amp;gt; stardoc
+    class fbzl leaf
+    fshlib -- &#34;jump&#34; --&amp;gt; rules_shell
+    class fshlib leaf
+    futility(&#34;futility&lt;br/&gt;0.3.9&#34;)
+    futility -- &#34;jump&#34; --&amp;gt; buildifier_prebuilt
+    futility -- &#34;jump&#34; --&amp;gt; gazelle
+    futility -- &#34;jump&#34; --&amp;gt; rules_go
+    futility -- &#34;jump&#34; --&amp;gt; rules_multitool
+    futility -- &#34;jump&#34; --&amp;gt; rules_pkg
+    class futility leaf
+    gotopt2 -- &#34;jump&#34; --&amp;gt; bazel_bats
+    gotopt2 -- &#34;jump&#34; --&amp;gt; bazel_lib
+    gotopt2 -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    gotopt2 -- &#34;jump&#34; --&amp;gt; bazel_skylib_gazelle_plugin
+    gotopt2 -- &#34;jump&#34; --&amp;gt; buildifier_prebuilt
+    gotopt2 -- &#34;jump&#34; --&amp;gt; gazelle
+    gotopt2 -- &#34;jump&#34; --&amp;gt; protobuf
+    gotopt2 -- &#34;jump&#34; --&amp;gt; rules_go
+    gotopt2 -- &#34;jump&#34; --&amp;gt; rules_multitool
+    gotopt2 -- &#34;jump&#34; --&amp;gt; rules_pkg
+    gotopt2 -- &#34;jump&#34; --&amp;gt; rules_shell
+    gotopt2 -- &#34;jump&#34; --&amp;gt; stardoc
+    graphviz(&#34;graphviz&lt;br/&gt;0.0.2&#34;)
+    graphviz -- &#34;jump&#34; --&amp;gt; hermetic_cc_toolchain
+    graphviz -- &#34;jump&#34; --&amp;gt; rules_cc
+    graphviz -- &#34;jump&#34; --&amp;gt; rules_foreign_cc
+    graphviz -- &#34;jump&#34; --&amp;gt; rules_shell
+    zlib_foreign(&#34;zlib_foreign&lt;br/&gt;0.0.1&#34;)
+    graphviz -- &#34;jump&#34; --&amp;gt; zlib_foreign
+    graphviz_foreign(&#34;graphviz_foreign&lt;br/&gt;0.0.1&#34;)
+    graphviz_foreign -- &#34;jump&#34; --&amp;gt; hermetic_cc_toolchain
+    graphviz_foreign -- &#34;jump&#34; --&amp;gt; rules_cc
+    graphviz_foreign -- &#34;jump&#34; --&amp;gt; rules_foreign_cc
+    graphviz_foreign -- &#34;jump&#34; --&amp;gt; rules_shell
+    graphviz_foreign -- &#34;jump&#34; --&amp;gt; zlib_foreign
+    hello_foreign(&#34;hello_foreign&lt;br/&gt;0.0.6&#34;)
+    hello_foreign -- &#34;jump&#34; --&amp;gt; hermetic_cc_toolchain
+    hello_foreign -- &#34;jump&#34; --&amp;gt; rules_cc
+    hello_foreign -- &#34;jump&#34; --&amp;gt; rules_foreign_cc
+    hello_foreign -- &#34;jump&#34; --&amp;gt; rules_shell
+    hello_foreign -- &#34;jump&#34; --&amp;gt; zlib_foreign
+    libzstd(&#34;libzstd&lt;br/&gt;0.0.1&#34;)
+    libzstd -- &#34;jump&#34; --&amp;gt; hermetic_cc_toolchain
+    libzstd -- &#34;jump&#34; --&amp;gt; rules_cc
+    libzstd -- &#34;jump&#34; --&amp;gt; rules_foreign_cc
+    class libzstd leaf
+    libzstd_foreign(&#34;libzstd_foreign&lt;br/&gt;0.0.3&#34;)
+    libzstd_foreign -- &#34;jump&#34; --&amp;gt; hermetic_cc_toolchain
+    libzstd_foreign -- &#34;jump&#34; --&amp;gt; rules_cc
+    libzstd_foreign -- &#34;jump&#34; --&amp;gt; rules_foreign_cc
+    class libzstd_foreign leaf
+    lit2md(&#34;lit2md&lt;br/&gt;1.2.2&#34;)
+    aspect_bazel_lib(&#34;aspect_bazel_lib&lt;br/&gt;2.21.1&#34;)
+    class aspect_bazel_lib inverted
+    lit2md -- &#34;jump&#34; --&amp;gt; aspect_bazel_lib
+    lit2md -- &#34;jump&#34; --&amp;gt; bazel_lib
+    lit2md -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    lit2md -- &#34;jump&#34; --&amp;gt; bazel_skylib_gazelle_plugin
+    lit2md -- &#34;jump&#34; --&amp;gt; buildifier_prebuilt
+    lit2md -- &#34;jump&#34; --&amp;gt; gazelle
+    lit2md -- &#34;jump&#34; --&amp;gt; protobuf
+    lit2md -- &#34;jump&#34; --&amp;gt; rules_go
+    lit2md -- &#34;jump&#34; --&amp;gt; rules_multitool
+    lit2md -- &#34;jump&#34; --&amp;gt; rules_pkg
+    lit2md -- &#34;jump&#34; --&amp;gt; stardoc
+    class lit2md leaf
+    rules_bid -- &#34;jump&#34; --&amp;gt; aspect_bazel_lib
+    rules_bid -- &#34;jump&#34; --&amp;gt; bazel_lib
+    rules_bid -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    rules_bid -- &#34;jump&#34; --&amp;gt; bazel_skylib_gazelle_plugin
+    rules_bid -- &#34;jump&#34; --&amp;gt; buildifier_prebuilt
+    rules_bid -- &#34;jump&#34; --&amp;gt; fshlib
+    rules_bid -- &#34;jump&#34; --&amp;gt; gazelle
+    rules_bid -- &#34;jump&#34; --&amp;gt; protobuf
+    rules_bid -- &#34;jump&#34; --&amp;gt; rules_go
+    rules_bid -- &#34;jump&#34; --&amp;gt; rules_multitool
+    rules_bid -- &#34;jump&#34; --&amp;gt; rules_pkg
+    rules_bid -- &#34;jump&#34; --&amp;gt; rules_shell
+    rules_bid -- &#34;jump&#34; --&amp;gt; stardoc
+    rules_bt(&#34;rules_bt&lt;br/&gt;1.2.6&#34;)
+    rules_bt -- &#34;jump&#34; --&amp;gt; bazel_lib
+    rules_bt -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    rules_bt -- &#34;jump&#34; --&amp;gt; bazel_skylib_gazelle_plugin
+    rules_bt -- &#34;jump&#34; --&amp;gt; gazelle
+    rules_bt -- &#34;jump&#34; --&amp;gt; rules_multitool
+    rules_bt -- &#34;jump&#34; --&amp;gt; rules_pkg
+    class rules_bt leaf
+    rules_fusesoc(&#34;rules_fusesoc&lt;br/&gt;1.0.3&#34;)
+    rules_fusesoc -- &#34;jump&#34; --&amp;gt; bazel_rules_bid
+    rules_fusesoc -- &#34;jump&#34; --&amp;gt; gazelle
+    rules_fusesoc -- &#34;jump&#34; --&amp;gt; rules_go
+    rules_fusesoc -- &#34;jump&#34; --&amp;gt; rules_pkg
+    rules_fusesoc -- &#34;jump&#34; --&amp;gt; rules_python
+    rules_shar(&#34;rules_shar&lt;br/&gt;1.0.7&#34;)
+    rules_fusesoc -- &#34;jump&#34; --&amp;gt; rules_shar
+    rules_fusesoc -- &#34;jump&#34; --&amp;gt; rules_shell
+    rules_nvc(&#34;rules_nvc&lt;br/&gt;4.2.2&#34;)
+    rules_nvc -- &#34;jump&#34; --&amp;gt; bazel_lib
+    bazel_linux_packages(&#34;bazel_linux_packages&lt;br/&gt;0.3.1&#34;)
+    class bazel_linux_packages inverted
+    rules_nvc -- &#34;jump&#34; --&amp;gt; bazel_linux_packages
+    rules_nvc -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    rules_nvc -- &#34;jump&#34; --&amp;gt; bazel_skylib_gazelle_plugin
+    rules_nvc -- &#34;jump&#34; --&amp;gt; gazelle
+    rules_nvc -- &#34;jump&#34; --&amp;gt; gotopt2
+    rules_nvc -- &#34;jump&#34; --&amp;gt; platforms
+    portable_cc_toolchain(&#34;portable_cc_toolchain&lt;br/&gt;2025.12.16&#34;)
+    class portable_cc_toolchain inverted
+    rules_nvc -- &#34;jump&#34; --&amp;gt; portable_cc_toolchain
+    rules_nvc -- &#34;jump&#34; --&amp;gt; protobuf
+    rules_nvc -- &#34;jump&#34; --&amp;gt; rules_android
+    rules_nvc -- &#34;jump&#34; --&amp;gt; rules_cc
+    rules_nvc -- &#34;jump&#34; --&amp;gt; rules_go
+    rules_nvc -- &#34;jump&#34; --&amp;gt; rules_shell
+    rules_verilator(&#34;rules_verilator&lt;br/&gt;0.3.2&#34;)
+    class rules_verilator inverted
+    rules_nvc -- &#34;jump&#34; --&amp;gt; rules_verilator
+    rules_verilog(&#34;rules_verilog&lt;br/&gt;1.1.1&#34;)
+    class rules_verilog inverted
+    rules_nvc -- &#34;jump&#34; --&amp;gt; rules_verilog
+    rules_nvc -- &#34;jump&#34; --&amp;gt; stardoc
+    rules_osvvm(&#34;rules_osvvm&lt;br/&gt;1.1.5&#34;)
+    rules_osvvm -- &#34;jump&#34; --&amp;gt; rules_nvc
+    rules_osvvm -- &#34;jump&#34; --&amp;gt; rules_shell
+    rules_osvvm -- &#34;jump&#34; --&amp;gt; toolchains_llvm
+    rules_shar -- &#34;jump&#34; --&amp;gt; rules_pkg
+    rules_shar -- &#34;jump&#34; --&amp;gt; rules_shell
+    class rules_shar leaf
+    rules_vivado(&#34;rules_vivado&lt;br/&gt;3.5.0&#34;)
+    rules_vivado -- &#34;jump&#34; --&amp;gt; bazel_lib
+    rules_vivado -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    rules_vivado -- &#34;jump&#34; --&amp;gt; bazel_skylib_gazelle_plugin
+    rules_vivado -- &#34;jump&#34; --&amp;gt; buildifier_prebuilt
+    rules_vivado -- &#34;jump&#34; --&amp;gt; fshlib
+    rules_vivado -- &#34;jump&#34; --&amp;gt; gazelle
+    rules_vivado -- &#34;jump&#34; --&amp;gt; gotopt2
+    rules_vivado -- &#34;jump&#34; --&amp;gt; protobuf
+    rules_vivado -- &#34;jump&#34; --&amp;gt; rules_bid
+    rules_vivado -- &#34;jump&#34; --&amp;gt; rules_go
+    rules_vivado -- &#34;jump&#34; --&amp;gt; rules_shell
+    rules_vivado -- &#34;jump&#34; --&amp;gt; stardoc
+    rules_vunit(&#34;rules_vunit&lt;br/&gt;1.2.2&#34;)
+    rules_vunit -- &#34;jump&#34; --&amp;gt; rules_nvc
+    rules_vunit -- &#34;jump&#34; --&amp;gt; rules_osvvm
+    rules_vunit -- &#34;jump&#34; --&amp;gt; rules_shell
+    rules_vunit -- &#34;jump&#34; --&amp;gt; toolchains_llvm
+    upspin(&#34;upspin&lt;br/&gt;43.0.2&#34;)
+    upspin -- &#34;jump&#34; --&amp;gt; gazelle
+    upspin -- &#34;jump&#34; --&amp;gt; protobuf
+    upspin -- &#34;jump&#34; --&amp;gt; rules_android
+    upspin -- &#34;jump&#34; --&amp;gt; rules_go
+    upspin -- &#34;jump&#34; --&amp;gt; rules_oci
+    upspin -- &#34;jump&#34; --&amp;gt; rules_pkg
+    rules_proto(&#34;rules_proto&lt;br/&gt;7.1.0&#34;)
+    class rules_proto inverted
+    upspin -- &#34;jump&#34; --&amp;gt; rules_proto
+    class upspin leaf
+    upspin_drive(&#34;upspin_drive&lt;br/&gt;42.1.2&#34;)
+    upspin_drive -- &#34;jump&#34; --&amp;gt; bazel_lib
+    upspin_drive -- &#34;jump&#34; --&amp;gt; gazelle
+    upspin_drive -- &#34;jump&#34; --&amp;gt; platforms
+    upspin_drive -- &#34;jump&#34; --&amp;gt; rules_go
+    upspin_drive -- &#34;jump&#34; --&amp;gt; rules_oci
+    upspin_drive -- &#34;jump&#34; --&amp;gt; rules_pkg
+    upspin_drive -- &#34;jump&#34; --&amp;gt; upspin
+    vhdl_ls_gen(&#34;vhdl_ls_gen&lt;br/&gt;0.3.1&#34;)
+    vhdl_ls_gen -- &#34;jump&#34; --&amp;gt; bazel_lib
+    vhdl_ls_gen -- &#34;jump&#34; --&amp;gt; bazel_skylib
+    vhdl_ls_gen -- &#34;jump&#34; --&amp;gt; rules_shell
+    class vhdl_ls_gen leaf
+    xrootfs(&#34;xrootfs&lt;br/&gt;0.2.9&#34;)
+    xrootfs -- &#34;jump&#34; --&amp;gt; buildifier_prebuilt
+    xrootfs -- &#34;jump&#34; --&amp;gt; gazelle
+    xrootfs -- &#34;jump&#34; --&amp;gt; rules_go
+    xrootfs -- &#34;jump&#34; --&amp;gt; rules_multitool
+    xrootfs -- &#34;jump&#34; --&amp;gt; rules_pkg
+    xrootfs -- &#34;jump&#34; --&amp;gt; rules_shell
+    class xrootfs leaf
+    zlib_foreign -- &#34;jump&#34; --&amp;gt; hermetic_cc_toolchain
+    zlib_foreign -- &#34;jump&#34; --&amp;gt; rules_cc
+    zlib_foreign -- &#34;jump&#34; --&amp;gt; rules_foreign_cc
+    class zlib_foreign leaf
+    click rules_shell &#34;#card-rules_shell&#34;
+    click platforms &#34;#card-platforms&#34;
+    click rules_osvvm &#34;#card-rules_osvvm&#34;
+    click rules_proto &#34;#card-rules_proto&#34;
+    click rules_python_gazelle_plugin &#34;#card-rules_python_gazelle_plugin&#34;
+    click bazel_rootfs &#34;#card-bazel_rootfs&#34;
+    click hermetic_cc_toolchain &#34;#card-hermetic_cc_toolchain&#34;
+    click stardoc &#34;#card-stardoc&#34;
+    click libzstd &#34;#card-libzstd&#34;
+    click libzstd_foreign &#34;#card-libzstd_foreign&#34;
+    click gazelle &#34;#card-gazelle&#34;
+    click rules_pkg &#34;#card-rules_pkg&#34;
+    click glew &#34;#card-glew&#34;
+    click aspect_bazel_lib &#34;#card-aspect_bazel_lib&#34;
+    click rules_oci &#34;#card-rules_oci&#34;
+    click fbzl &#34;#card-fbzl&#34;
+    click bazel_skylib &#34;#card-bazel_skylib&#34;
+    click bazel_rules_osvvm &#34;#card-bazel_rules_osvvm&#34;
+    click lit2md &#34;#card-lit2md&#34;
+    click rules_shar &#34;#card-rules_shar&#34;
+    click upspin &#34;#card-upspin&#34;
+    click elfutils &#34;#card-elfutils&#34;
+    click rules_multitool &#34;#card-rules_multitool&#34;
+    click gcc_toolchain &#34;#card-gcc_toolchain&#34;
+    click rules_m4 &#34;#card-rules_m4&#34;
+    click rules_bt &#34;#card-rules_bt&#34;
+    click rules_nvc &#34;#card-rules_nvc&#34;
+    click rules_python &#34;#card-rules_python&#34;
+    click graphviz_foreign &#34;#card-graphviz_foreign&#34;
+    click rules_vunit &#34;#card-rules_vunit&#34;
+    click xrootfs &#34;#card-xrootfs&#34;
+    click bazel_rules_bid &#34;#card-bazel_rules_bid&#34;
+    click bazel_ebook &#34;#card-bazel_ebook&#34;
+    click zstd &#34;#card-zstd&#34;
+    click rules_verilator &#34;#card-rules_verilator&#34;
+    click bazel_bats &#34;#card-bazel_bats&#34;
+    click fshlib &#34;#card-fshlib&#34;
+    click bazel_rules_ghdl &#34;#card-bazel_rules_ghdl&#34;
+    click rules_foreign_cc &#34;#card-rules_foreign_cc&#34;
+    click googletest &#34;#card-googletest&#34;
+    click protobuf &#34;#card-protobuf&#34;
+    click graphviz &#34;#card-graphviz&#34;
+    click upspin_drive &#34;#card-upspin_drive&#34;
+    click toolchains_llvm &#34;#card-toolchains_llvm&#34;
+    click bazel_linux_packages &#34;#card-bazel_linux_packages&#34;
+    click rules_vivado &#34;#card-rules_vivado&#34;
+    click buildifier_prebuilt &#34;#card-buildifier_prebuilt&#34;
+    click rules_cc &#34;#card-rules_cc&#34;
+    click bazel_rules_raylib &#34;#card-bazel_rules_raylib&#34;
+    click rules_bid &#34;#card-rules_bid&#34;
+    click rules_fusesoc &#34;#card-rules_fusesoc&#34;
+    click zlib &#34;#card-zlib&#34;
+    click futility &#34;#card-futility&#34;
+    click bazel_go_basic &#34;#card-bazel_go_basic&#34;
+    click bazel_debian_rootfs &#34;#card-bazel_debian_rootfs&#34;
+    click rules_zstd &#34;#card-rules_zstd&#34;
+    click libffi &#34;#card-libffi&#34;
+    click glfw &#34;#card-glfw&#34;
+    click glm &#34;#card-glm&#34;
+    click bazoekt &#34;#card-bazoekt&#34;
+    click hello_foreign &#34;#card-hello_foreign&#34;
+    click bazel_skylib_gazelle_plugin &#34;#card-bazel_skylib_gazelle_plugin&#34;
+    click bazel_rules_bt &#34;#card-bazel_rules_bt&#34;
+    click bazel_rules_nvc &#34;#card-bazel_rules_nvc&#34;
+    click rules_verilog &#34;#card-rules_verilog&#34;
+    click vhdl_ls_gen &#34;#card-vhdl_ls_gen&#34;
+    click rules_distroless &#34;#card-rules_distroless&#34;
+    click rules_android &#34;#card-rules_android&#34;
+    click zlib_foreign &#34;#card-zlib_foreign&#34;
+    click gotopt2 &#34;#card-gotopt2&#34;
+    click bazel_lib &#34;#card-bazel_lib&#34;
+    click bazel_rules_vivado &#34;#card-bazel_rules_vivado&#34;
+    click portable_cc_toolchain &#34;#card-portable_cc_toolchain&#34;
+    click rules_go &#34;#card-rules_go&#34;
+    classDef inverted fill:#333,color:#fff
+    classDef leaf fill:#28a745,color:#fff
+
+			</div>
+		</div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+	<script type="module">
+		import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+		mermaid.initialize({ startOnLoad: true });
+	</script>
     <script>
         const searchInput = document.getElementById('searchInput');
         const moduleCards = document.querySelectorAll('.module-card');
