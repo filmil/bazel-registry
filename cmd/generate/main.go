@@ -52,6 +52,11 @@ type Dependency struct {
 	DevDependency bool
 }
 
+type TemplateData struct {
+	Modules []Module
+	Mermaid string
+}
+
 func main() {
 	var (
 		modulesDir string
@@ -86,11 +91,70 @@ func run(modulesDir, outputFile string) error {
 		log.Printf("could not create: %v: %v", outputFile, err)
 	}
 
-	if err := generateHTML(modules, o); err != nil {
+	mermaid := buildMermaid(modules)
+
+	if err := generateHTML(modules, mermaid, o); err != nil {
 		log.Fatalf("failed to generate HTML: %v", err)
 	}
 
 	return nil
+}
+
+func buildMermaid(modules []Module) string {
+	var sb strings.Builder
+	sb.WriteString("graph TD\n")
+
+	registryLatest := make(map[string]string)
+	for _, m := range modules {
+		if len(m.Versions) > 0 {
+			registryLatest[m.Name] = m.Versions[0].Name
+		}
+	}
+
+	nodes := make(map[string]bool)
+	edges := make(map[string]bool)
+
+	for _, m := range modules {
+		if len(m.Versions) == 0 {
+			continue
+		}
+		latest := m.Versions[0]
+		mID := sanitizeID(m.Name)
+		if !nodes[mID] {
+			sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", mID, m.Name, latest.Name))
+			nodes[mID] = true
+		}
+
+		for _, dep := range latest.Dependencies {
+			depID := sanitizeID(dep.Name)
+			if !nodes[depID] {
+				version := dep.Version
+				if v, ok := registryLatest[dep.Name]; ok {
+					version = v
+				}
+				sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", depID, dep.Name, version))
+				nodes[depID] = true
+				if _, ok := registryLatest[dep.Name]; !ok {
+					sb.WriteString(fmt.Sprintf("    class %s inverted\n", depID))
+				}
+			}
+
+			edgeID := fmt.Sprintf("%s->%s", mID, depID)
+			if !edges[edgeID] {
+				sb.WriteString(fmt.Sprintf("    %s --> %s\n", mID, depID))
+				edges[edgeID] = true
+			}
+		}
+	}
+	sb.WriteString("    classDef inverted fill:#333,color:#fff\n")
+	return sb.String()
+}
+
+func sanitizeID(s string) string {
+	s = strings.ReplaceAll(s, "-", "_")
+	s = strings.ReplaceAll(s, ".", "_")
+	s = strings.ReplaceAll(s, "/", "_")
+	return s
 }
 
 func findModules(dir string) ([]Module, error) {
@@ -211,7 +275,7 @@ func findVersions(modulePath string) ([]Version, error) {
 	return versions, nil
 }
 
-func generateHTML(modules []Module, w io.WriteCloser) error {
+func generateHTML(modules []Module, mermaid string, w io.WriteCloser) error {
 	defer w.Close()
 	tmpl, err := template.New("index").Funcs(template.FuncMap{
 		"isURL": func(s string) bool {
@@ -239,7 +303,11 @@ func generateHTML(modules []Module, w io.WriteCloser) error {
 	}
 
 	var buf strings.Builder
-	if err := tmpl.Execute(&buf, modules); err != nil {
+	data := TemplateData{
+		Modules: modules,
+		Mermaid: mermaid,
+	}
+	if err := tmpl.Execute(&buf, data); err != nil {
 		return fmt.Errorf("failed to execute HTML template: %w", err)
 	}
 
@@ -357,6 +425,31 @@ const htmlTemplate = `
         border-left-color: var(--bs-border-color);
         color: var(--bs-secondary-color);
       }
+      /* Mermaid DAG styling */
+      .mermaid {
+        overflow-x: auto;
+      }
+      .mermaid .inverted rect {
+        fill: #333 !important;
+        stroke: #000 !important;
+      }
+      .mermaid .inverted .label {
+        color: #fff !important;
+      }
+      .mermaid .inverted span {
+        color: #fff !important;
+      }
+
+      [data-bs-theme="dark"] .mermaid .inverted rect {
+        fill: #eee !important;
+        stroke: #fff !important;
+      }
+      [data-bs-theme="dark"] .mermaid .inverted .label {
+        color: #111 !important;
+      }
+      [data-bs-theme="dark"] .mermaid .inverted span {
+        color: #111 !important;
+      }
 	</style>
 </head>
 <body>
@@ -380,7 +473,7 @@ const htmlTemplate = `
 
         <input class="form-control mb-4" id="searchInput" type="text" placeholder="Search for modules...">
         <div class="row" id="module-cards">
-            {{range $module := .}}
+            {{range $module := .Modules}}
             <div class="col-md-4 mb-4 module-card">
                 <div class="card">
                     <div class="card-body">
@@ -457,8 +550,19 @@ const htmlTemplate = `
             </div>
             {{end}}
         </div>
+
+		<div class="mt-5">
+			<h3>Module Dependency DAG (Latest Versions)</h3>
+			<div class="mermaid">
+				{{.Mermaid}}
+			</div>
+		</div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+	<script type="module">
+		import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+		mermaid.initialize({ startOnLoad: true });
+	</script>
     <script>
         const searchInput = document.getElementById('searchInput');
         const moduleCards = document.querySelectorAll('.module-card');
