@@ -114,6 +114,7 @@ func buildMermaid(modules []Module) string {
 	nodes := make(map[string]bool)
 	edges := make(map[string]bool)
 	allNodes := make(map[string]bool)
+	registryModuleIDs := []string{}
 
 	escape := func(s string) string {
 		return strings.ReplaceAll(s, "\"", "\\\"")
@@ -129,6 +130,7 @@ func buildMermaid(modules []Module) string {
 			sb.WriteString(fmt.Sprintf("    %s(\"%s<br/>%s\")\n", mID, escape(m.Name), escape(latest.Name)))
 			nodes[mID] = true
 			allNodes[mID] = true
+			registryModuleIDs = append(registryModuleIDs, mID)
 		}
 
 		hasInternalDeps := false
@@ -153,7 +155,6 @@ func buildMermaid(modules []Module) string {
 
 			edgeID := fmt.Sprintf("%s->%s", mID, depID)
 			if !edges[edgeID] {
-				// Use "jump" label on edges for navigation
 				sb.WriteString(fmt.Sprintf("    %s -- \"jump\" --> %s\n", mID, depID))
 				edges[edgeID] = true
 			}
@@ -162,6 +163,26 @@ func buildMermaid(modules []Module) string {
 		if !hasInternalDeps {
 			sb.WriteString(fmt.Sprintf("    class %s leaf\n", mID))
 		}
+	}
+
+	// Group modules into subgraphs of 5 to force a narrower layout
+	batchSize := 5
+	var lastSubgraphID string
+	for i := 0; i < len(registryModuleIDs); i += batchSize {
+		end := i + batchSize
+		if end > len(registryModuleIDs) {
+			end = len(registryModuleIDs)
+		}
+		subgraphID := fmt.Sprintf("Batch%d", i/batchSize)
+		sb.WriteString(fmt.Sprintf("    subgraph %s\n", subgraphID))
+		for _, mID := range registryModuleIDs[i:end] {
+			sb.WriteString(fmt.Sprintf("        %s\n", mID))
+		}
+		sb.WriteString("    end\n")
+		if lastSubgraphID != "" {
+			sb.WriteString(fmt.Sprintf("    %s ~~~ %s\n", lastSubgraphID, subgraphID))
+		}
+		lastSubgraphID = subgraphID
 	}
 
 	for nID := range allNodes {
@@ -173,7 +194,7 @@ func buildMermaid(modules []Module) string {
 	return sb.String()
 }
 
-var sanitizeRe = regexp.MustCompile(`[^a-zA-Z0-9_]`)
+var sanitizeRe = regexp.MustCompile("[^a-zA-Z0-9_]")
 
 func sanitizeID(s string) string {
 	return sanitizeRe.ReplaceAllString(s, "_")
