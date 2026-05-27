@@ -494,7 +494,6 @@ const htmlTemplate = `
         max-width: 100%;
       }
       .mermaid svg {
-        height: auto !important;
         max-width: 100% !important;
       }
       .mermaid .inverted rect {
@@ -527,7 +526,8 @@ const htmlTemplate = `
         border-radius: 4px;
         background-color: var(--bs-body-bg);
         position: relative;
-        height: 600px;
+        height: 80vh; /* Use 80% of viewport height */
+        min-height: 600px;
         width: 100%;
         overflow: hidden;
       }
