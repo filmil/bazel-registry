@@ -102,7 +102,7 @@ func run(modulesDir, outputFile string) error {
 
 func buildMermaid(modules []Module) string {
 	var sb strings.Builder
-	sb.WriteString("graph TD\n")
+	sb.WriteString("graph TB\n")
 
 	registryLatest := make(map[string]string)
 	for _, m := range modules {
