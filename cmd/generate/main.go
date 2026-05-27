@@ -61,9 +61,11 @@ func main() {
 	var (
 		modulesDir string
 		outputFile string
+		mode       string
 	)
 	flag.StringVar(&modulesDir, "modules_dir", "", "The path to the modules directory.")
 	flag.StringVar(&outputFile, "output", "", "The file name to output")
+	flag.StringVar(&mode, "mode", "html", "The output mode: html or mermaid")
 	flag.Parse()
 	if modulesDir == "" {
 		log.Printf("flag --modules_dir=... is required")
@@ -74,13 +76,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := run(modulesDir, outputFile); err != nil {
+	if err := run(modulesDir, outputFile, mode); err != nil {
 		log.Printf("error: %v", err)
 		os.Exit(1)
 	}
 }
 
-func run(modulesDir, outputFile string) error {
+func run(modulesDir, outputFile, mode string) error {
 	modules, err := findModules(modulesDir)
 	if err != nil {
 		log.Fatalf("failed to find modules: %v", err)
@@ -93,8 +95,14 @@ func run(modulesDir, outputFile string) error {
 
 	mermaid := buildMermaid(modules)
 
-	if err := generateHTML(modules, mermaid, o); err != nil {
-		log.Fatalf("failed to generate HTML: %v", err)
+	if mode == "mermaid" {
+		if _, err := o.Write([]byte(mermaid)); err != nil {
+			log.Fatalf("failed to write mermaid: %v", err)
+		}
+	} else {
+		if err := generateHTML(modules, mermaid, o); err != nil {
+			log.Fatalf("failed to generate HTML: %v", err)
+		}
 	}
 
 	return nil
