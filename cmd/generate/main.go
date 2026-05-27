@@ -526,10 +526,18 @@ const htmlTemplate = `
         border-radius: 4px;
         background-color: var(--bs-body-bg);
         position: relative;
-        height: 80vh; /* Use 80% of viewport height */
+        height: 85vh; /* Increased slightly */
         min-height: 600px;
         width: 100%;
         overflow: hidden;
+      }
+      #dag-mermaid {
+        width: 100%;
+        height: 100%;
+      }
+      #dag-mermaid {
+        width: 100%;
+        height: 100%;
       }
       #mermaid-zoom-controls {
         position: absolute;
@@ -673,16 +681,32 @@ const htmlTemplate = `
             container.innerHTML = svg;
 
             const svgElement = container.querySelector('svg');
+            svgElement.removeAttribute('height');
+            svgElement.removeAttribute('width');
             svgElement.style.width = '100%';
             svgElement.style.height = '100%';
+            svgElement.style.maxWidth = '100%';
 
             window.panZoom = svgPanZoom(svgElement, {
                 zoomEnabled: true,
-                controlIconsEnabled: false,
+                controlIconsEnabled: true,
                 fit: true,
                 center: true,
-                minZoom: 0.1,
-                maxZoom: 10,
+                minZoom: 0.01,
+                maxZoom: 50,
+                refreshRate: 'auto',
+            });
+
+            // Re-fit and center after rendering is complete
+            window.panZoom.resize();
+            window.panZoom.fit();
+            window.panZoom.center();
+            
+            // Also add a resize listener
+            window.addEventListener('resize', () => {
+                window.panZoom.resize();
+                window.panZoom.fit();
+                window.panZoom.center();
             });
         }
 
