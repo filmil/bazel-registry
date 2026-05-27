@@ -1,0 +1,166 @@
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+graph TB
+    ExternalModules("aspect_bazel_lib (2.22.5)<br/>bazel_lib (3.1.0)<br/>bazel_linux_packages (0.3.1)<br/>bazel_skylib (1.8.1)<br/>bazel_skylib_gazelle_plugin (1.8.2)<br/>buildifier_prebuilt (8.2.0.2)<br/>gazelle (0.45.0)<br/>gcc_toolchain (0.9.0)<br/>glew (2.2.0)<br/>glfw (3.3.9)<br/>glm (1.0.0.bcr.1)<br/>googletest (1.16.0)<br/>hermetic_cc_toolchain (3.1.0)<br/>libffi (3.4.7.bcr.3)<br/>platforms (1.0.0)<br/>portable_cc_toolchain (2025.12.16)<br/>protobuf (34.1)<br/>rules_android (0.7.1)<br/>rules_cc (0.2.8)<br/>rules_distroless (0.8.0)<br/>rules_foreign_cc (0.15.1)<br/>rules_go (0.57.0)<br/>rules_m4 (0.3)<br/>rules_multitool (1.9.0)<br/>rules_oci (2.2.0)<br/>rules_pkg (1.0.1)<br/>rules_proto (7.1.0)<br/>rules_python (1.6.3)<br/>rules_python_gazelle_plugin (1.8.0)<br/>rules_shell (0.6.1)<br/>rules_verilator (0.3.2)<br/>rules_verilog (1.1.1)<br/>rules_zstd (1.0.0)<br/>stardoc (0.8.1)<br/>toolchains_llvm (1.5.0)<br/>zlib (1.3.1.bcr.7)<br/>zstd (1.5.7)")
+    class ExternalModules inverted
+    bazel_go_basic("bazel-go-basic<br/>0.2.21")
+    bazel_go_basic -- "jump" --> ExternalModules
+    class bazel_go_basic leaf
+    bazel_bats("bazel_bats<br/>0.38.23")
+    bazel_bats -- "jump" --> ExternalModules
+    class bazel_bats leaf
+    bazel_debian_rootfs("bazel_debian_rootfs<br/>0.0.1")
+    bazel_rules_bid("bazel_rules_bid<br/>1.4.0")
+    bazel_debian_rootfs -- "jump" --> bazel_rules_bid
+    bazel_debian_rootfs -- "jump" --> ExternalModules
+    gotopt2("gotopt2<br/>2.6.0")
+    bazel_debian_rootfs -- "jump" --> gotopt2
+    bazel_ebook("bazel_ebook<br/>2.0.15")
+    bazel_ebook -- "jump" --> bazel_bats
+    bazel_ebook -- "jump" --> bazel_rules_bid
+    bazel_ebook -- "jump" --> ExternalModules
+    bazel_rootfs("bazel_rootfs<br/>1.0.3")
+    bazel_rootfs -- "jump" --> bazel_rules_bid
+    bazel_rootfs -- "jump" --> ExternalModules
+    bazel_rootfs -- "jump" --> gotopt2
+    bazel_rules_bid -- "jump" --> ExternalModules
+    fshlib("fshlib<br/>0.2.7")
+    bazel_rules_bid -- "jump" --> fshlib
+    bazel_rules_bt("bazel_rules_bt<br/>0.0.3")
+    bazel_rules_bt -- "jump" --> ExternalModules
+    class bazel_rules_bt leaf
+    bazel_rules_ghdl("bazel_rules_ghdl<br/>1.0.0")
+    bazel_rules_ghdl -- "jump" --> bazel_rules_bid
+    bazel_rules_ghdl -- "jump" --> ExternalModules
+    bazel_rules_ghdl -- "jump" --> gotopt2
+    bazel_rules_nvc("bazel_rules_nvc<br/>0.5.2")
+    bazel_rules_nvc -- "jump" --> ExternalModules
+    elfutils("elfutils<br/>1.0.9")
+    bazel_rules_nvc -- "jump" --> elfutils
+    bazel_rules_nvc -- "jump" --> fshlib
+    bazel_rules_nvc -- "jump" --> gotopt2
+    bazel_rules_osvvm("bazel_rules_osvvm<br/>0.0.1")
+    bazel_rules_osvvm -- "jump" --> bazel_rules_nvc
+    bazel_rules_osvvm -- "jump" --> ExternalModules
+    bazel_rules_raylib("bazel_rules_raylib<br/>0.0.7")
+    bazel_rules_raylib -- "jump" --> ExternalModules
+    class bazel_rules_raylib leaf
+    bazel_rules_vivado("bazel_rules_vivado<br/>3.0.0")
+    bazel_rules_vivado -- "jump" --> ExternalModules
+    bazel_rules_vivado -- "jump" --> fshlib
+    bazel_rules_vivado -- "jump" --> gotopt2
+    rules_bid("rules_bid<br/>2.2.2")
+    bazel_rules_vivado -- "jump" --> rules_bid
+    bazoekt("bazoekt<br/>0.1.7")
+    bazoekt -- "jump" --> ExternalModules
+    bazoekt -- "jump" --> gotopt2
+    elfutils -- "jump" --> ExternalModules
+    class elfutils leaf
+    fbzl("fbzl<br/>0.0.5")
+    fbzl -- "jump" --> ExternalModules
+    class fbzl leaf
+    fshlib -- "jump" --> ExternalModules
+    class fshlib leaf
+    futility("futility<br/>0.3.9")
+    futility -- "jump" --> ExternalModules
+    class futility leaf
+    gotopt2 -- "jump" --> bazel_bats
+    gotopt2 -- "jump" --> ExternalModules
+    graphviz("graphviz<br/>0.0.2")
+    graphviz -- "jump" --> ExternalModules
+    zlib_foreign("zlib_foreign<br/>0.0.1")
+    graphviz -- "jump" --> zlib_foreign
+    graphviz_foreign("graphviz_foreign<br/>0.0.1")
+    graphviz_foreign -- "jump" --> ExternalModules
+    graphviz_foreign -- "jump" --> zlib_foreign
+    hello_foreign("hello_foreign<br/>0.0.6")
+    hello_foreign -- "jump" --> ExternalModules
+    hello_foreign -- "jump" --> zlib_foreign
+    libzstd("libzstd<br/>0.0.1")
+    libzstd -- "jump" --> ExternalModules
+    class libzstd leaf
+    libzstd_foreign("libzstd_foreign<br/>0.0.3")
+    libzstd_foreign -- "jump" --> ExternalModules
+    class libzstd_foreign leaf
+    lit2md("lit2md<br/>1.2.2")
+    lit2md -- "jump" --> ExternalModules
+    class lit2md leaf
+    rules_bid -- "jump" --> ExternalModules
+    rules_bid -- "jump" --> fshlib
+    rules_bt("rules_bt<br/>1.2.6")
+    rules_bt -- "jump" --> ExternalModules
+    class rules_bt leaf
+    rules_fusesoc("rules_fusesoc<br/>1.0.3")
+    rules_fusesoc -- "jump" --> bazel_rules_bid
+    rules_fusesoc -- "jump" --> ExternalModules
+    rules_shar("rules_shar<br/>1.0.7")
+    rules_fusesoc -- "jump" --> rules_shar
+    rules_nvc("rules_nvc<br/>4.2.2")
+    rules_nvc -- "jump" --> ExternalModules
+    rules_nvc -- "jump" --> gotopt2
+    rules_osvvm("rules_osvvm<br/>1.1.5")
+    rules_osvvm -- "jump" --> rules_nvc
+    rules_osvvm -- "jump" --> ExternalModules
+    rules_shar -- "jump" --> ExternalModules
+    class rules_shar leaf
+    rules_vivado("rules_vivado<br/>3.5.0")
+    rules_vivado -- "jump" --> ExternalModules
+    rules_vivado -- "jump" --> fshlib
+    rules_vivado -- "jump" --> gotopt2
+    rules_vivado -- "jump" --> rules_bid
+    rules_vunit("rules_vunit<br/>1.2.2")
+    rules_vunit -- "jump" --> rules_nvc
+    rules_vunit -- "jump" --> rules_osvvm
+    rules_vunit -- "jump" --> ExternalModules
+    upspin("upspin<br/>43.0.2")
+    upspin -- "jump" --> ExternalModules
+    class upspin leaf
+    upspin_drive("upspin_drive<br/>42.1.2")
+    upspin_drive -- "jump" --> ExternalModules
+    upspin_drive -- "jump" --> upspin
+    vhdl_ls_gen("vhdl_ls_gen<br/>0.3.1")
+    vhdl_ls_gen -- "jump" --> ExternalModules
+    class vhdl_ls_gen leaf
+    xrootfs("xrootfs<br/>0.2.9")
+    xrootfs -- "jump" --> ExternalModules
+    class xrootfs leaf
+    zlib_foreign -- "jump" --> ExternalModules
+    class zlib_foreign leaf
+    click bazel_rules_vivado "#card-bazel_rules_vivado"
+    click hello_foreign "#card-hello_foreign"
+    click lit2md "#card-lit2md"
+    click rules_vivado "#card-rules_vivado"
+    click vhdl_ls_gen "#card-vhdl_ls_gen"
+    click bazel_go_basic "#card-bazel_go_basic"
+    click bazel_debian_rootfs "#card-bazel_debian_rootfs"
+    click fshlib "#card-fshlib"
+    click bazel_bats "#card-bazel_bats"
+    click gotopt2 "#card-gotopt2"
+    click futility "#card-futility"
+    click upspin_drive "#card-upspin_drive"
+    click xrootfs "#card-xrootfs"
+    click elfutils "#card-elfutils"
+    click bazel_rules_raylib "#card-bazel_rules_raylib"
+    click rules_nvc "#card-rules_nvc"
+    click bazel_ebook "#card-bazel_ebook"
+    click graphviz "#card-graphviz"
+    click libzstd "#card-libzstd"
+    click rules_bt "#card-rules_bt"
+    click upspin "#card-upspin"
+    click fbzl "#card-fbzl"
+    click libzstd_foreign "#card-libzstd_foreign"
+    click rules_shar "#card-rules_shar"
+    click bazel_rules_nvc "#card-bazel_rules_nvc"
+    click rules_bid "#card-rules_bid"
+    click bazoekt "#card-bazoekt"
+    click zlib_foreign "#card-zlib_foreign"
+    click bazel_rootfs "#card-bazel_rootfs"
+    click bazel_rules_bt "#card-bazel_rules_bt"
+    click bazel_rules_osvvm "#card-bazel_rules_osvvm"
+    click graphviz_foreign "#card-graphviz_foreign"
+    click rules_fusesoc "#card-rules_fusesoc"
+    click rules_osvvm "#card-rules_osvvm"
+    click rules_vunit "#card-rules_vunit"
+    click bazel_rules_bid "#card-bazel_rules_bid"
+    click bazel_rules_ghdl "#card-bazel_rules_ghdl"
+    classDef inverted fill:#333,color:#fff
+    classDef leaf fill:#28a745,color:#fff

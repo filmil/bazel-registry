@@ -1,0 +1,17 @@
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+
+# Run bazel run //third_party/samples:write_dag to update the sample dag.
+write_source_files(
+    name = "write_dag",
+    files = {
+        "dag.mmd": ":generate_mmd",
+    },
+)
+
+genrule(
+    name = "generate_mmd",
+    srcs = ["//modules:all_modules"],
+    outs = ["dag.mmd.out"],
+    cmd = "$(location //cmd/generate) --modules_dir modules --output $@ --mode mermaid",
+    tools = ["//cmd/generate"],
+)
