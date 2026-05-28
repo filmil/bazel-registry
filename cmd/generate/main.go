@@ -111,12 +111,13 @@ func run(modulesDir, outputFile, mode string) error {
 func buildMermaid(modules []Module) string {
 	var sb strings.Builder
 	sb.WriteString(`---
-layout: elk
-elk:
+config:
+  layout: elk
+  elk:
     mergeEdges: true
 ---
 `)
-	sb.WriteString("graph TB\n")
+	sb.WriteString("flowchart TB\n")
 
 	registryLatest := make(map[string]string)
 	for _, m := range modules {
