@@ -110,7 +110,13 @@ func run(modulesDir, outputFile, mode string) error {
 
 func buildMermaid(modules []Module) string {
 	var sb strings.Builder
-	sb.WriteString("%%{init: {\"flowchart\": {\"defaultRenderer\": \"elk\"}} }%%\n")
+	sb.WriteString(`---
+layout: elk
+elk:
+    mergeEdges: true
+    nodePlacementStrategy: LINEAR_SEGMENTS
+---
+`)
 	sb.WriteString("graph TB\n")
 
 	registryLatest := make(map[string]string)
@@ -123,7 +129,7 @@ func buildMermaid(modules []Module) string {
 	nodes := make(map[string]bool)
 	edges := make(map[string]bool)
 	allNodes := make(map[string]bool)
-	
+
 	// Collect all external modules
 	externalModulesSet := make(map[string]string) // Name -> Version
 	for _, m := range modules {
@@ -667,7 +673,7 @@ const htmlTemplate = `
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 	<script type="module">
 		import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-		mermaid.initialize({ 
+		mermaid.initialize({
             startOnLoad: false,
             flowchart: { useMaxWidth: false }
         });
@@ -701,7 +707,7 @@ const htmlTemplate = `
             window.panZoom.resize();
             window.panZoom.fit();
             window.panZoom.center();
-            
+
             // Also add a resize listener
             window.addEventListener('resize', () => {
                 window.panZoom.resize();
