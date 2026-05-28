@@ -114,7 +114,6 @@ func buildMermaid(modules []Module) string {
 layout: elk
 elk:
     mergeEdges: true
-    nodePlacementStrategy: LINEAR_SEGMENTS
 ---
 `)
 	sb.WriteString("graph TB\n")
