@@ -1,0 +1,10 @@
+{
+    "integrity": "sha256-d1uVRA00xrqxs6i1ReVXVqI/B/tiPyo8YXIcJDj4ADc=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_local_nix/releases/download/v0.2.1/bazel_local_nix-v0.2.1.zip",
+    "docs_url": "https://github.com/{OWNER}/{REPO}/releases/download/{TAG}/{REPO}-{TAG}.docs.tar.gz",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-JPY3CVcveXPAwFcY6Dyp8JehGq5meqeisVUUR7caOrU="
+    },
+    "patch_strip": 1
+}
