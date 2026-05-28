@@ -1,5 +1,5 @@
 {
-    "homepage": "https://github.com/filmil/bazel_graphviz_foreign",
+    "homepage": "https://github.com/filmil/bazel_graphviz",
     "maintainers": [
         {
             "name": "Filip Filmar",
@@ -9,11 +9,12 @@
         }
     ],
     "repository": [
-        "github:filmil/bazel_graphviz_foreign"
+        "github:filmil/bazel_graphviz"
     ],
     "versions": [
         "0.0.2",
-        "0.0.38"
+        "0.0.38",
+        "0.0.39"
     ],
     "yanked_versions": {}
 }
