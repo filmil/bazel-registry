@@ -1,0 +1,6 @@
+Remove obsolete module bazel_rules_nvc.
+
+This pull request has been created by an automated coding assistant, with
+human supervision.
+
+Prompt: also send a PR to remove module bazel_rules_nvc, that one is also obsolete

@@ -1,0 +1,6 @@
+Remove obsolete module bazel_rules_osvvm.
+
+This pull request has been created by an automated coding assistant, with
+human supervision.
+
+Prompt: check out my repo bazel-repository and remove modules dir bazel_rules_osvvm, those are obsolete
