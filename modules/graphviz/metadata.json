@@ -12,7 +12,8 @@
         "github:filmil/bazel_graphviz_foreign"
     ],
     "versions": [
-        "0.0.2"
+        "0.0.2",
+        "0.0.38"
     ],
     "yanked_versions": {}
 }
