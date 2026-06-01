@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-fki8gxyPs4guGtw2HkxXAaC+IX6mEEcakqHFVuV5+1c=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_vunit/releases/download/v1.2.3/bazel_rules_vunit-v1.2.3.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-7WT22MpLuGGUX6MSoe6Wwg/AWAEI81SU3ir3EIuS3iI="
+    },
+    "patch_strip": 1
+}
