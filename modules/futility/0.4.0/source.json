@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-hGH2ZueEx9uibB8NhM8fWHSHOoHsQ+twnt/upvhoxsc=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/futility/releases/download/v0.4.0/futility-v0.4.0.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-n81jqeWAjbEjZh5XhTzb5Vit0hcV/07fqz8K7AW60m8="
+    },
+    "patch_strip": 1
+}
