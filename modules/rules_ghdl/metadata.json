@@ -9,11 +9,12 @@
         }
     ],
     "repository": [
-        "github:filmil/bazel_go_basic"
+        "github:filmil/bazel_rules_ghdl"
     ],
     "versions": [
         "1.0.1",
-        "1.1.0"
+        "1.1.0",
+        "1.1.1"
     ],
     "yanked_versions": {}
 }
