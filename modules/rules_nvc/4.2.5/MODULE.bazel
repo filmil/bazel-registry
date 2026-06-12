@@ -1,0 +1,58 @@
+module(
+    name = "rules_nvc",
+    version = "4.2.5",
+)
+
+bazel_dep(name = "bazel_lib", version = "3.3.1")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
+bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.9.0")
+bazel_dep(name = "gazelle", version = "0.51.3")
+bazel_dep(name = "gotopt2", version = "2.7.1")
+
+# The NVC VHDL compiler and simulator, built from source as a hermetic Bazel
+# module (no LLVM, all third-party deps from the BCR). Provides @nvc//:nvc (the
+# compiler binary) and @nvc//:std (the bootstrapped VHDL standard libraries).
+bazel_dep(name = "nvc", version = "1.22.0.bcr.0")
+
+# Carry the fix for nickg/nvc issue #1537 until it lands upstream and in the
+# registry. Derived from https://github.com/filmil/nvc/pull/1 (src/lower.c
+# only). Applied on top of the patches already declared in the registry.
+single_version_override(
+    module_name = "nvc",
+    patch_strip = 1,
+    patches = ["//third_party/nvc:issue1537_lower.patch"],
+)
+
+bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "protobuf", version = "35.0")
+
+# If not mentioned here, build will fail on github actions. :/
+bazel_dep(name = "rules_android", version = "0.7.3")
+bazel_dep(name = "rules_cc", version = "0.2.19")
+bazel_dep(name = "rules_go", version = "0.61.1")
+bazel_dep(name = "rules_shell", version = "0.8.0")
+bazel_dep(name = "rules_verilator", version = "1.1.0")
+bazel_dep(name = "rules_verilog", version = "1.1.1")
+bazel_dep(name = "stardoc", version = "0.8.1")
+
+register_toolchains("//build/nvc:nvc_linux_toolchain")
+
+# Hermetic C/C++ toolchain (dev-only: consumers bring their own). A pinned LLVM
+# from the BCR, downloaded rather than taken from the host. Modern clang/lld
+# build nvc from source cleanly: lld accepts --dynamic-list, the standard
+# library is recent enough for memfd_create/gettid, and clang's compiler-rt
+# provides __cpu_model for the SIMD code paths.
+bazel_dep(name = "toolchains_llvm", version = "1.7.0", dev_dependency = True)
+
+llvm = use_extension(
+    "@toolchains_llvm//toolchain/extensions:llvm.bzl",
+    "llvm",
+    dev_dependency = True,
+)
+llvm.toolchain(
+    name = "llvm_toolchain",
+    llvm_version = "17.0.6",
+)
+use_repo(llvm, "llvm_toolchain")
+
+register_toolchains("@llvm_toolchain//:all", dev_dependency = True)
