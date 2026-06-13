@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-wj55//IPSyzgKbrvHPtJCIi5LEw6FsspwJnio9J6bvA=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/xrootfs/releases/download/v0.2.22/xrootfs-v0.2.22.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-fPb4h4k4oBwD920hJJhMso+bry0ji1+Gvaq4Wd10tgY="
+    },
+    "patch_strip": 1
+}
