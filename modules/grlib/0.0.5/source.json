@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-/mkJGjwmXtICBc99KMNWezGvow/vrYOKwB7NeltqKk0=",
+    "strip_prefix": "bazel_grlib-0.0.5",
+    "url": "https://github.com/filmil/bazel_grlib/archive/refs/tags/v0.0.5.tar.gz",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-Z9SYrfN5oz8WtHsyGf7GIzqMg0ou3I36Tuiglae6w8w="
+    },
+    "patch_strip": 1
+}
