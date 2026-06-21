@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-Cm5AzzHif30O6jEyTtnfgOfunJLkfuXsDyS4vss2dAE=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_vhdl_ls_gen/releases/download/v0.3.2/bazel_vhdl_ls_gen-v0.3.2.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-lktHhqCmi5ngzsVQNktbrYxle89gbG3eZ/BoK9pCkqc="
+    },
+    "patch_strip": 1
+}
