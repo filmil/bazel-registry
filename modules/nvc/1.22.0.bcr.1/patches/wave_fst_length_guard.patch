@@ -1,0 +1,20 @@
+--- a/src/rt/wave.c
++++ b/src/rt/wave.c
+@@ -656,6 +656,17 @@
+    if ((type_is_enum(elem) && ft->fn == fst_fmt_chars)
+        || ft->fn == fst_fmt_verilog) {
+       // Character-mapped enums like std_logic
++      // fst_fmt_chars builds a stack VLA `char buf[data->size]` and reads
++      // data->size bytes from the signal.  A mis-computed length (e.g. a stray
++      // pointer value returned by fst_get_array_range for a mis-read signal)
++      // yields a multi-GB VLA and an out-of-bounds read -> SIGSEGV.  The true
++      // storage size is the signal width; skip the signal if it disagrees.
++      const int swidth = signal_width(s);
++      if (length * ft->size > swidth) {
++         warn_at(tree_loc(d), "not dumping %s: computed length %"PRIi64
++                 " exceeds signal width %d", istr(tree_ident(d)), length, swidth);
++         return;
++      }
+       data = xcalloc(sizeof(fst_data_t) + sizeof(fstHandle));
+       data->type  = ft;
+       data->size  = length * ft->size;

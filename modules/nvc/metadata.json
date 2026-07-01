@@ -12,7 +12,8 @@
         "github:nickg/nvc"
     ],
     "versions": [
-        "1.22.0.bcr.0"
+        "1.22.0.bcr.0",
+        "1.22.0.bcr.1"
     ],
     "yanked_versions": {}
 }
