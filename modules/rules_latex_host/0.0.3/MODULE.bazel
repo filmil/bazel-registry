@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+module(
+    name = "rules_latex_host",
+    version = "0.0.3",
+    compatibility_level = 1,
+)
+
+# For the `install_tools` sh_binary convenience target (sh_* rules are no longer
+# built into Bazel 9).
+bazel_dep(name = "rules_shell", version = "0.4.1")
+
+# Auto-register the system (host-tools) LaTeX toolchain for consumers. A
+# consumer that does `bazel_dep(name = "rules_latex_host", ...)` gets this
+# toolchain for free; to go hermetic, register a different `latex_toolchain`
+# ahead of it.
+register_toolchains("//latex:system_latex_toolchain")
