@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-u0sTK31sB0nsBO8pwsizjcXrsLGpC8hkqJLRBe/x9XQ=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_graphviz/releases/download/v0.0.46/bazel_graphviz-v0.0.46.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-bQQYCny+4FQ3ylD5/o5OtgRZZ8y0X4jbfCK44VxENDg="
+    },
+    "patch_strip": 1
+}
