@@ -12,7 +12,8 @@
         "github:filmil/bazel_hello_foreign"
     ],
     "versions": [
-        "0.0.26"
+        "0.0.26",
+        "0.0.27"
     ],
     "yanked_versions": {}
 }
