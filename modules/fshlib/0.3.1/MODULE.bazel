@@ -1,0 +1,10 @@
+module(
+    name = "fshlib",
+    version = "0.3.1",
+    bazel_compatibility = [">=7.0.0"],
+)
+
+bazel_dep(name = "rules_shell", version = "0.8.0")
+
+
+bazel_dep(name = "protobuf", version = "34.1")
