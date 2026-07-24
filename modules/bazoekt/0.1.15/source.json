@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-iObtB31au6DJMImKlTfcRazd4uQQvohNEUqpcN21D/4=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazoekt/releases/download/v0.1.15/bazoekt-v0.1.15.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-nyAZ/01+4RugXPoAjY193uJgWsFPFbRV3AtyQiIarnY="
+    },
+    "patch_strip": 1
+}
