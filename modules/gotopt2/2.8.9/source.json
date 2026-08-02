@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-5j6d612AXg+pgxvZXd8TqKWMwMRgRNB3d3XZvidO5ms=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/gotopt2/releases/download/v2.8.9/gotopt2-v2.8.9.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-PPA9GPg26sF5a28y0tgFKvMsXVjQ3N4Y3yq4Si8gqfQ="
+    },
+    "patch_strip": 1
+}
