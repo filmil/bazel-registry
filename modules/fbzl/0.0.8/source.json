@@ -1,0 +1,10 @@
+{
+    "integrity": "sha256-5Jg5uq7cnnyRJtTjZFK/KwFhmHFFI+uTSvUH3TmIEo0=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/fbzl/releases/download/v0.0.8/fbzl-v0.0.8.zip",
+    "docs_url": "https://github.com/{OWNER}/{REPO}/releases/download/{TAG}/{REPO}-{TAG}.docs.tar.gz",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-VcV6SFzkbq5UzHYZU0CGPLCC+KGBz3pIxgspMkgVIz8="
+    },
+    "patch_strip": 1
+}
