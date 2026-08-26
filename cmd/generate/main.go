@@ -418,7 +418,7 @@ const htmlTemplate = `
     <!-- Styled by the site theme (hdlfactory.com.template, themes/hdlfactory);
          this page is served from /bazel-registry/ on the same host. -->
     <link rel="stylesheet" href="/css/theme.css">
-    <link rel="icon" href="/hdlfactory.png" type="image/png">
+    <link rel="icon" href="/logo/hf-mark.svg" type="image/svg+xml">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BKGTF9GD1K"></script>
     <script>
@@ -553,7 +553,7 @@ const htmlTemplate = `
     <header class="site-header">
       <nav class="container nav-row" aria-label="Site">
         <a class="brand" href="https://www.hdlfactory.com/">
-          <img src="/hdlfactory.png" alt="" width="28" height="28">
+          <img src="/logo/hf-logo.svg" alt="" width="40" height="40">
           <span>HDL Factory Home</span>
         </a>
         <ul class="menu">
