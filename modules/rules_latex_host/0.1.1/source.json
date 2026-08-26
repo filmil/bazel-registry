@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-j4HxmDzN7lBJNvlbrbP4UpcP6tMJYpNEeGbnO4o+4P8=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_latex_host/releases/download/v0.1.1/bazel_rules_latex_host-v0.1.1.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-K3WTeTeV/oSDInZ8P0KcqB4/qpRcH1gXs6+lmiTQGEo="
+    },
+    "patch_strip": 1
+}
