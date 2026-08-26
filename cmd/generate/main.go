@@ -442,6 +442,18 @@ const htmlTemplate = `
       })();
     </script>
     <style>
+      /* The nav mark is an <img>, so the SVG inside cannot see the page's
+         palette: its embedded prefers-color-scheme stylesheet picks the ink
+         from the OS scheme, while this page's data-theme can be toggled away
+         from it. Invert the mark exactly when the two disagree -- the same
+         rules the site theme's head_custom carries. */
+      @media (prefers-color-scheme: light) {
+        html[data-theme="dark"] .brand img { filter: invert(0.85); }
+      }
+      @media (prefers-color-scheme: dark) {
+        html[data-theme="light"] .brand img { filter: invert(0.85); }
+      }
+
       /* Registry-page additions on top of the site theme's tokens. */
       .registry-head {
         display: flex;
