@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: Apache-2.0
+module(
+    name = "rules_hugo",
+    version = "0.1.0",
+    compatibility_level = 1,
+)
+
+# rules_hugo has no module dependencies: its rules use only @bazel_tools.
+#
+# The `hugo` extension provides the hugo binary repository. The default
+# `@hugo//:hugo` the rules depend on must be visible from THIS module's
+# repo mapping, so the extension is used here; a root module that declares
+# its own `hugo.download(...)` tag wins over the default below, because
+# extension tags are iterated root-first.
+hugo = use_extension("//hugo:extensions.bzl", "hugo")
+hugo.download(
+    version = "0.91.2",
+    extended = True,
+    sha256 = "e9e2b35ebef6ed41581eb18909b8ee02ee9285d209f7d9ecc5caf5207b7dc8e5",
+)
+use_repo(hugo, "hugo")
