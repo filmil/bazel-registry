@@ -65,7 +65,10 @@ jobs:
 
           cd site-template
           test -s static/bazel-registry/index.html
-          git add static/bazel-registry/index.html
+          # -f: the deploy is unconditional by intent; it must not depend on
+          # the consuming repository's .gitignore (an unanchored bazel-* there
+          # is exactly what caused the 2026-08-26 outage).
+          git add -f static/bazel-registry/index.html
           if git diff --cached --quiet; then
             echo "index.html unchanged; nothing to deploy."
             exit 0
