@@ -394,157 +394,105 @@ const htmlTemplate = `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bazel Registry</title>
-    <link
-		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-		rel="stylesheet"
-	>
-    <link
-		href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
-		rel="stylesheet"
-	>
-	<link rel="icon" href="hdlfactory.png" type="image/png">
-	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-BKGTF9GD1K"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-
-	  gtag('config', 'G-BKGTF9GD1K');
-	</script>
-	<script>
-      function getPreferredTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-          return savedTheme;
+    <title>Bazel Registry | HDL Factory</title>
+    <!-- Styled by the site theme (hdlfactory.com.template, themes/hdlfactory);
+         this page is served from /bazel-registry/ on the same host. -->
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="icon" href="/hdlfactory.png" type="image/png">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BKGTF9GD1K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BKGTF9GD1K');
+    </script>
+    <script>
+      // Same three-state theme resolution as the site theme, sharing the
+      // "theme" localStorage key, so the choice follows the reader across
+      // the whole site. Runs before first paint.
+      (function () {
+        function resolve(mode) {
+          if (mode === "light" || mode === "dark") return mode;
+          return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark" : "light";
         }
-        return 'system';
+        var mode = localStorage.getItem("theme") || "system";
+        document.documentElement.setAttribute("data-theme", resolve(mode));
+      })();
+    </script>
+    <style>
+      /* Registry-page additions on top of the site theme's tokens. */
+      .registry-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
       }
-
-      function resolveTheme(theme) {
-        if (theme === 'system') {
-          const currentHour = new Date().getHours();
-          return (currentHour >= 19 || currentHour < 7) ? 'dark' : 'light';
-        }
-        return theme;
+      .module-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+        gap: 1rem;
+        margin: 1.25rem 0 2rem;
       }
-
-      function updateThemeIcon(theme) {
-        const toggleBtn = document.getElementById('themeToggle');
-        if (toggleBtn) {
-          if (theme === 'light') {
-            toggleBtn.innerHTML = '<i class="bi bi-sun"></i>';
-          } else if (theme === 'dark') {
-            toggleBtn.innerHTML = '<i class="bi bi-moon-stars"></i>';
-          } else {
-            toggleBtn.innerHTML = '<i class="bi bi-circle-half"></i>';
-          }
-        }
+      .module-card {
+        background: var(--bg-raised);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.9rem 1.1rem;
       }
-
-      function setTheme(theme) {
-        document.documentElement.setAttribute('data-bs-theme', resolveTheme(theme));
-        localStorage.setItem('theme', theme);
-        updateThemeIcon(theme);
+      .module-card h2 {
+        font-size: var(--step-1);
+        font-family: var(--mono);
+        margin: 0 0 0.5rem;
+        display: flex;
+        align-items: baseline;
+        gap: 0.4rem;
       }
-
-      setTheme(getPreferredTheme());
-
-      document.addEventListener('DOMContentLoaded', () => {
-        updateThemeIcon(getPreferredTheme());
-      });
-
-      function toggleTheme() {
-        const currentTheme = getPreferredTheme();
-        let newTheme;
-        if (currentTheme === 'system') {
-          newTheme = 'light';
-        } else if (currentTheme === 'light') {
-          newTheme = 'dark';
-        } else {
-          newTheme = 'system';
-        }
-        setTheme(newTheme);
+      .module-card details { margin-top: 0.4rem; }
+      .module-card summary {
+        cursor: pointer;
+        color: var(--fg-muted);
+        font-size: 0.9rem;
       }
-	</script>
-	<style>
-      [data-bs-theme="dark"] {
-        --bs-body-color: #e9ecef;
-        --bs-secondary-color: #adb5bd;
-        --bs-tertiary-color: #dee2e6;
-        --bs-link-color: #6ea8fe;
-        --bs-link-hover-color: #9ec5fe;
+      .module-card ul { list-style: none; margin: 0.4rem 0 0; padding: 0 0 0 0.6rem; }
+      .module-card li { overflow-wrap: anywhere; font-size: 0.92rem; }
+      .versions { font-size: 0.92rem; }
+      .versions a { font-family: var(--mono); }
+      .copy-btn {
+        border: 0;
+        background: none;
+        color: var(--accent);
+        cursor: pointer;
+        font-size: 0.9em;
+        padding: 0 0.15rem;
       }
-      [data-bs-theme="dark"] .card-title {
-        color: #6ea8fe;
-      }
-      [data-bs-theme="dark"] .text-secondary {
-        color: #ced4da !important;
-      }
-      [data-bs-theme="dark"] .text-muted {
-        color: #adb5bd !important;
-      }
-      [data-bs-theme="dark"] code:not(pre code) {
-        background-color: var(--bs-tertiary-bg);
-        color: #e6edf3;
-      }
-      [data-bs-theme="dark"] blockquote {
-        background-color: var(--bs-tertiary-bg);
-        border-left-color: var(--bs-border-color);
-        color: var(--bs-secondary-color);
-      }
-      /* Mermaid DAG styling */
-      .mermaid {
-        overflow-x: auto;
-        max-width: 100%;
-      }
-      .mermaid svg {
-        max-width: 100% !important;
-      }
-      .mermaid .inverted rect {
-        fill: #333 !important;
-        stroke: #000 !important;
-      }
-      .mermaid .inverted .label, .mermaid .inverted span {
-        color: #fff !important;
-      }
-
-      /* Leaf nodes styling */
-      .mermaid .leaf rect {
-        fill: #28a745 !important;
-        stroke: #1e7e34 !important;
-      }
-      .mermaid .leaf .label, .mermaid .leaf span {
-        color: #fff !important;
-      }
-
-      [data-bs-theme="dark"] .mermaid .inverted rect {
-        fill: #eee !important;
-        stroke: #fff !important;
-      }
-      [data-bs-theme="dark"] .mermaid .inverted .label, [data-bs-theme="dark"] .mermaid .inverted span {
-        color: #111 !important;
-      }
-	      /* Zoom widget styling */
-      #mermaid-container {
-        border: 1px solid var(--bs-border-color);
+      .copy-btn:hover { filter: brightness(0.8); }
+      .badge-dev {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        color: var(--fg-muted);
+        border: 1px solid var(--border);
         border-radius: 4px;
-        background-color: var(--bs-body-bg);
+        padding: 0 0.3rem;
+      }
+      del { color: var(--fg-muted); }
+
+      /* Mermaid DAG panel */
+      #mermaid-container {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg);
         position: relative;
-        height: 85vh; /* Increased slightly */
+        height: 85vh;
         min-height: 600px;
         width: 100%;
         overflow: hidden;
+        margin-bottom: 2rem;
       }
-      #dag-mermaid {
-        width: 100%;
-        height: 100%;
-      }
-      #dag-mermaid {
-        width: 100%;
-        height: 100%;
-      }
+      #dag-mermaid { width: 100%; height: 100%; }
       #mermaid-zoom-controls {
         position: absolute;
         top: 10px;
@@ -554,126 +502,190 @@ const htmlTemplate = `
         flex-direction: column;
         gap: 5px;
       }
-	</style>
+      #mermaid-zoom-controls button {
+        border: 1px solid var(--border);
+        background: var(--bg-raised);
+        color: var(--fg);
+        border-radius: 6px;
+        width: 2rem;
+        height: 2rem;
+        cursor: pointer;
+        font-size: 1rem;
+        line-height: 1;
+      }
+      #mermaid-zoom-controls button:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .mermaid { overflow-x: auto; max-width: 100%; }
+      .mermaid svg { max-width: 100% !important; }
+      .mermaid .inverted rect { fill: #333 !important; stroke: #000 !important; }
+      .mermaid .inverted .label, .mermaid .inverted span { color: #fff !important; }
+      .mermaid .leaf rect { fill: #28a745 !important; stroke: #1e7e34 !important; }
+      .mermaid .leaf .label, .mermaid .leaf span { color: #fff !important; }
+      [data-theme="dark"] .mermaid .inverted rect { fill: #eee !important; stroke: #fff !important; }
+      [data-theme="dark"] .mermaid .inverted .label,
+      [data-theme="dark"] .mermaid .inverted span { color: #111 !important; }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
 </head>
 <body>
-    <div class="container">
-		<div class="d-flex justify-content-between align-items-center mt-5">
-			<h1 class="mb-0"><a href="https://www.hdlfactory.com">My</a> <a
-			href="https://bazel.build">Bazel</a> Registry</h1>
-			<button class="btn btn-outline-secondary" onclick="toggleTheme()" id="themeToggle" title="Toggle theme">
-				<i class="bi bi-circle-half"></i>
-			</button>
-		</div>
+    <header class="site-header">
+      <nav class="container nav-row" aria-label="Site">
+        <a class="brand" href="https://www.hdlfactory.com/">
+          <img src="/hdlfactory.png" alt="" width="28" height="28">
+          <span>HDL Factory Home</span>
+        </a>
+        <ul class="menu">
+          <li><a href="https://www.hdlfactory.com/">Home</a></li>
+          <li><a href="https://www.hdlfactory.com/tags/">Tags</a></li>
+          <li><a href="https://www.hdlfactory.com/index.xml">RSS</a></li>
+          <li><a href="/bazel-registry/" aria-current="page">Bazel Registry</a></li>
+          <li>
+            <button id="theme-toggle" type="button" aria-label="Toggle color theme">
+              <span id="theme-icon" aria-hidden="true"></span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <script>
+      (function () {
+        var ICONS = { system: "◐", light: "☀", dark: "☾" };
+        var btn = document.getElementById("theme-toggle");
+        var icon = document.getElementById("theme-icon");
+        function resolve(mode) {
+          if (mode === "light" || mode === "dark") return mode;
+          return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark" : "light";
+        }
+        function apply(mode) {
+          document.documentElement.setAttribute("data-theme", resolve(mode));
+          localStorage.setItem("theme", mode);
+          icon.textContent = ICONS[mode];
+          btn.title = "Theme: " + mode + " (click to change)";
+        }
+        btn.addEventListener("click", function () {
+          var order = ["system", "light", "dark"];
+          var cur = localStorage.getItem("theme") || "system";
+          apply(order[(order.indexOf(cur) + 1) % order.length]);
+        });
+        apply(localStorage.getItem("theme") || "system");
+      })();
+    </script>
 
-		<p>These modules are published in <a
-		href="https://github.com/filmil/bazel-registry">my private bazel
-		registry</a> See the <a
-		href="https://github.com/filmil/bazel-registry#usage">usage details</a>
-		for how to configure bazel use this additional registry. </p>
+    <main class="container">
+      <div class="registry-head">
+        <h1 class="page-title"><a href="https://www.hdlfactory.com">My</a>
+          <a href="https://bazel.build">Bazel</a> Registry</h1>
+      </div>
 
-		<p> The bazel central registry is still available at <a
-		href="https://bcr.bazel.build"> https://bcr.bazel.build</a>. </p>
+      <div class="prose lead">
+        <p>These modules are published in <a
+        href="https://github.com/filmil/bazel-registry">my private bazel
+        registry</a>. See the <a
+        href="https://github.com/filmil/bazel-registry#usage">usage
+        details</a> for how to configure bazel to use this additional
+        registry.</p>
 
-        <input class="form-control mb-4" id="searchInput" type="text" placeholder="Search for modules...">
-        <div class="row" id="module-cards">
-            {{range $module := .Modules}}
-            <div class="col-md-4 mb-4 module-card" id="card-{{sanitizeID $module.Name}}">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-							{{$module.Name}}
-							<a href="{{$module.Metadata.Homepage}}"><i class="bi bi-link-45deg"></i></a>
-						</h5>
-                        <div class="card-text mb-2">
-                            <strong>Versions:</strong>
-                            {{if gt (len $module.Versions) 0}}
-                                {{$latest := index $module.Versions 0}}
-                                {{if isYanked $latest.Name $module.Metadata}}
-                                    <span class="me-2"><del>{{$latest.Name}}</del></span>
-                                {{else}}
-                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ bazelDep $module.Name $latest.Name }}">
-                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$latest.Name}}">{{$latest.Name}}</a>
-                                        <a href="#" onclick="copyToClipboard('{{ bazelDep $module.Name $latest.Name }}'); return false;">
-                                            <i class="bi bi-clipboard"></i>
-                                        </a>
-                                    </span>
-                                {{end}}
+        <p>The bazel central registry is still available at <a
+        href="https://bcr.bazel.build">https://bcr.bazel.build</a>.</p>
+      </div>
 
-                                {{if gt (len $module.Versions) 1}}
-                                    <details>
-                                        <summary class="text-muted" style="cursor: pointer; font-size: 0.9em;">Older versions</summary>
-                                        <div class="mt-2">
-                                        {{range $i, $v := $module.Versions}}
-                                            {{if gt $i 0}}
-                                                {{if isYanked $v.Name $module.Metadata}}
-                                                    <span class="me-2"><del>{{$v.Name}}</del></span>
-                                                {{else}}
-                                                    <span class="me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ bazelDep $module.Name $v.Name }}">
-                                                        <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$v.Name}}">{{$v.Name}}</a>
-                                                        <a href="#" onclick="copyToClipboard('{{ bazelDep $module.Name $v.Name }}'); return false;">
-                                                            <i class="bi bi-clipboard"></i>
-                                                        </a>
-                                                    </span>
-                                                {{end}}
-                                            {{end}}
-                                        {{end}}
-                                        </div>
-                                    </details>
-                                {{end}}
-                            {{end}}
-                        </div>
-                        {{if gt (len $module.Versions) 0}}
-                            {{$latest := index $module.Versions 0}}
-                            {{if gt (len $latest.Dependencies) 0}}
-                                <details>
-                                <summary class="card-text mb-1"><strong>Dependencies (Latest):</strong></summary>
-                                <ul class="list-unstyled mb-2 ms-2">
-                                {{range $dep := $latest.Dependencies}}
-                                    <li>
-                                        <code>{{$dep.Name}}</code> ({{$dep.Version}})
-                                        {{if $dep.DevDependency}}<span class="badge bg-secondary" style="font-size: 0.6em;">dev</span>{{end}}
-                                    </li>
-                                {{end}}
-                                </ul>
-                                </details>
-                            {{end}}
-                        {{end}}
-                        <details>
-                        <summary class="card-text mb-1"><strong>Links:</strong></summary>
-                        <ul class="list-unstyled mb-2 ms-2">
-                            <li><a href="{{$module.Metadata.Homepage}}">{{$module.Metadata.Homepage}}</a></li>
-                            <li>
-                                {{$repo := index $module.Metadata.Repo 0}}
-                                <a href="{{repoURL $repo}}">{{$repo}}</a>
-                            </li>
-                        </ul>
-                        </details>
-                    </div>
-                </div>
-            </div>
+      <div class="search">
+        <input id="searchInput" type="search" placeholder="Search for modules&hellip;"
+               aria-label="Search for modules">
+      </div>
+
+      <div class="module-grid" id="module-cards">
+        {{range $module := .Modules}}
+        <section class="module-card" id="card-{{sanitizeID $module.Name}}">
+          <h2 class="card-title">
+            {{$module.Name}}
+            <a href="{{$module.Metadata.Homepage}}" title="Homepage">&#8599;</a>
+          </h2>
+          <div class="versions">
+            <strong>Versions:</strong>
+            {{if gt (len $module.Versions) 0}}
+              {{$latest := index $module.Versions 0}}
+              {{if isYanked $latest.Name $module.Metadata}}
+                <span><del>{{$latest.Name}}</del></span>
+              {{else}}
+                <span title="{{ bazelDep $module.Name $latest.Name }}">
+                  <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$latest.Name}}">{{$latest.Name}}</a><button
+                    class="copy-btn" title="Copy bazel_dep()"
+                    onclick="copyToClipboard('{{ bazelDep $module.Name $latest.Name }}'); return false;"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5"/><path d="M10.5 3.5v-1a1.5 1.5 0 0 0-1.5-1.5h-6A1.5 1.5 0 0 0 1.5 2.5v6A1.5 1.5 0 0 0 3 10h1"/></svg></button>
+                </span>
+              {{end}}
+
+              {{if gt (len $module.Versions) 1}}
+                <details>
+                  <summary>Older versions</summary>
+                  <div>
+                  {{range $i, $v := $module.Versions}}
+                    {{if gt $i 0}}
+                      {{if isYanked $v.Name $module.Metadata}}
+                        <span><del>{{$v.Name}}</del></span>
+                      {{else}}
+                        <span title="{{ bazelDep $module.Name $v.Name }}">
+                          <a href="https://github.com/filmil/bazel-registry/tree/main/modules/{{$module.Name}}/{{$v.Name}}">{{$v.Name}}</a><button
+                            class="copy-btn" title="Copy bazel_dep()"
+                            onclick="copyToClipboard('{{ bazelDep $module.Name $v.Name }}'); return false;"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5"/><path d="M10.5 3.5v-1a1.5 1.5 0 0 0-1.5-1.5h-6A1.5 1.5 0 0 0 1.5 2.5v6A1.5 1.5 0 0 0 3 10h1"/></svg></button>
+                        </span>
+                      {{end}}
+                    {{end}}
+                  {{end}}
+                  </div>
+                </details>
+              {{end}}
             {{end}}
-        </div>
+          </div>
+          {{if gt (len $module.Versions) 0}}
+            {{$latest := index $module.Versions 0}}
+            {{if gt (len $latest.Dependencies) 0}}
+              <details>
+                <summary><strong>Dependencies (Latest)</strong></summary>
+                <ul>
+                {{range $dep := $latest.Dependencies}}
+                  <li>
+                    <code>{{$dep.Name}}</code> ({{$dep.Version}})
+                    {{if $dep.DevDependency}}<span class="badge-dev">dev</span>{{end}}
+                  </li>
+                {{end}}
+                </ul>
+              </details>
+            {{end}}
+          {{end}}
+          <details>
+            <summary><strong>Links</strong></summary>
+            <ul>
+              <li><a href="{{$module.Metadata.Homepage}}">{{$module.Metadata.Homepage}}</a></li>
+              <li>
+                {{$repo := index $module.Metadata.Repo 0}}
+                <a href="{{repoURL $repo}}">{{$repo}}</a>
+              </li>
+            </ul>
+          </details>
+        </section>
+        {{end}}
+      </div>
 
-		<div class="mt-5">
-			<h3>Module Dependency DAG (Latest Versions)</h3>
-			<div id="mermaid-container">
-				<div id="mermaid-zoom-controls">
-					<button class="btn btn-sm btn-secondary" onclick="panZoom.zoomIn()"><i class="bi bi-plus-lg"></i></button>
-					<button class="btn btn-sm btn-secondary" onclick="panZoom.zoomOut()"><i class="bi bi-dash-lg"></i></button>
-					<button class="btn btn-sm btn-secondary" onclick="panZoom.reset()"><i class="bi bi-arrows-fullscreen"></i></button>
-				</div>
-				<div class="mermaid" id="dag-mermaid">
-					{{.Mermaid}}
-				</div>
-			</div>
-		</div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-	<script type="module">
-		import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-		mermaid.initialize({
+      <h2>Module Dependency DAG (Latest Versions)</h2>
+      <div id="mermaid-container">
+        <div id="mermaid-zoom-controls">
+          <button type="button" title="Zoom in" onclick="panZoom.zoomIn()">+</button>
+          <button type="button" title="Zoom out" onclick="panZoom.zoomOut()">&minus;</button>
+          <button type="button" title="Reset" onclick="panZoom.reset()"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M14 10v4h-4M2 2l5 5M14 14l-5-5"/></svg></button>
+        </div>
+        <div class="mermaid" id="dag-mermaid">
+          {{.Mermaid}}
+        </div>
+      </div>
+    </main>
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
             startOnLoad: false,
             flowchart: { useMaxWidth: false }
         });
@@ -703,12 +715,10 @@ const htmlTemplate = `
                 refreshRate: 'auto',
             });
 
-            // Re-fit and center after rendering is complete
             window.panZoom.resize();
             window.panZoom.fit();
             window.panZoom.center();
 
-            // Also add a resize listener
             window.addEventListener('resize', () => {
                 window.panZoom.resize();
                 window.panZoom.fit();
@@ -719,38 +729,32 @@ const htmlTemplate = `
         document.addEventListener('DOMContentLoaded', () => {
             initMermaid();
         });
-	</script>
+    </script>
     <script>
         const searchInput = document.getElementById('searchInput');
         const moduleCards = document.querySelectorAll('.module-card');
 
-        searchInput.addEventListener('keyup', (event) => {
+        searchInput.addEventListener('input', (event) => {
             const filter = event.target.value.toLowerCase();
             moduleCards.forEach(card => {
                 const title = card.querySelector('.card-title').textContent.toLowerCase();
-                if (title.includes(filter)) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
+                card.style.display = title.includes(filter) ? '' : 'none';
             });
         });
-
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(function() {
                 /* clipboard successfully set */
             }, function() {
-                /* clipboard write failed */
                 alert('Failed to copy');
             });
         }
     </script>
-    <footer class="text-center mt-4 py-3">
+    <footer class="site-footer">
+      <div class="container">
         <p>&copy; 2025-present Filip Filmar. All rights reserved.</p>
-        <p><small>This page was generated by an automated coding assistant.</small></p>
+        <p class="fineprint">This page was generated by an automated coding assistant.</p>
+      </div>
     </footer>
 </body>
 </html>
