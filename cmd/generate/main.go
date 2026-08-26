@@ -156,12 +156,32 @@ config:
 
 	externalNodeID := "ExternalModules"
 	if len(externalNames) > 0 {
-		labelLabels := []string{}
+		// One entry per line made this node far taller than the rest of the
+		// graph. List the entries inline instead, and only wrap when a line
+		// reaches the width budget, so the node comes out about as wide as
+		// the graph and only a few lines tall.
+		const lineWidthBudget = 570 // characters per label line; sized so the node spans roughly the graph width
+		var lines []string
+		var line string
 		for _, name := range externalNames {
-			labelLabels = append(labelLabels, fmt.Sprintf("%s (%s)", name, externalModulesSet[name]))
+			entry := fmt.Sprintf("%s (%s)", name, externalModulesSet[name])
+			if line == "" {
+				line = entry
+			} else if len(line)+len(" · ")+len(entry) <= lineWidthBudget {
+				line += " · " + entry
+			} else {
+				lines = append(lines, line)
+				line = entry
+			}
 		}
-		label := strings.Join(labelLabels, "\n")
-		sb.WriteString(fmt.Sprintf("    %s[\"%s\"]\n", externalNodeID, escape(label)))
+		if line != "" {
+			lines = append(lines, line)
+		}
+		label := strings.Join(lines, "\n")
+		// A markdown-string label (backticks): unlike classic labels, its
+		// wrapping is governed by markdownAutoWrap, which the page disables,
+		// so the generator's own line breaks are the only ones.
+		sb.WriteString(fmt.Sprintf("    %s[\"`%s`\"]\n", externalNodeID, escape(label)))
 		sb.WriteString(fmt.Sprintf("    class %s inverted\n", externalNodeID))
 		allNodes[externalNodeID] = true
 	}
@@ -693,12 +713,21 @@ const htmlTemplate = `
         mermaid.registerLayoutLoaders(elkLayouts);
         mermaid.initialize({
             startOnLoad: false,
+            // Without this, mermaid re-wraps long label lines at its own
+            // width cap, folding the pre-wrapped external-modules bar.
+            markdownAutoWrap: false,
             layout: 'elk',
             elk: {
                 mergeEdges: true,
                 nodePlacementStrategy: 'LINEAR_SEGMENTS'
             },
-            flowchart: { useMaxWidth: false }
+            flowchart: {
+                useMaxWidth: false,
+                // mermaid wraps html labels at ~200px by default, which
+                // would fold the pre-wrapped external-modules bar back into
+                // a tower; the generator controls wrapping itself.
+                wrappingWidth: 2400
+            }
         });
 
         // Use a global variable to store the panZoom instance
