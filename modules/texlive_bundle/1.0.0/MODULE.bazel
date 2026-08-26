@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+module(
+    name = "texlive_bundle",
+    version = "1.0.0",
+    compatibility_level = 1,
+)
+
+# For //latex:toolchain.bzl (the `latex_toolchain` rule) and the toolchain
+# type the bound toolchain implements.
+bazel_dep(name = "rules_latex_host", version = "0.1.0")
+
+# For the exec constraints on the toolchain (@platforms//os:linux, ...).
+bazel_dep(name = "platforms", version = "0.0.11")
