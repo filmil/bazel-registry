@@ -3,6 +3,8 @@ on:
   push:
     branches: [ main ]
     tags: [ "*" ]
+  # Manual re-runs, e.g. to redeploy after a bad publish.
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -24,11 +26,28 @@ jobs:
         run: "bazel build //..."
       - name: "Build module index"
         run: "bazel build //modules:index"
+      # Stage the artifact into a plain directory and REFUSE to deploy an
+      # empty or missing index. On 2026-08-26 a deploy published an empty
+      # publish_dir and deleted the live page (the site template then
+      # propagated the deletion to hdlfactory.com/bazel-registry). Copying
+      # out of bazel-bin also avoids handing the deploy action a path
+      # behind Bazel's convenience symlink.
+      - name: "Stage the index for deploy"
+        run: |
+          set -o errexit -o nounset -o pipefail
+          mkdir -p deploy-staging
+          cp -L bazel-bin/modules/index.html deploy-staging/index.html
+          chmod 644 deploy-staging/index.html
+          test -s deploy-staging/index.html
+          grep -q "module-card" deploy-staging/index.html || {
+            echo "::error::generated index.html has no module cards; refusing to deploy" >&2
+            exit 1
+          }
       - name: "Deploy everything"
         uses: peaceiris/actions-gh-pages@v4
         with:
           external_repository: filmil/hdlfactory.com.template
-          publish_dir: ./bazel-bin/modules
+          publish_dir: ./deploy-staging
           destination_dir: static/bazel-registry
           publish_branch: main
           deploy_key: "${{ secrets.DEPLOY_KEY }}"
