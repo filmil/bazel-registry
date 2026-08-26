@@ -43,13 +43,33 @@ jobs:
             echo "::error::generated index.html has no module cards; refusing to deploy" >&2
             exit 1
           }
+      # Plain git instead of peaceiris/actions-gh-pages: on 2026-08-26 the
+      # action's copy step started silently transferring zero files from the
+      # publish dir (coinciding with the runners forcing its Node 20 runtime
+      # to Node 24), which deployed deletions of the live page. git and cp
+      # have no such failure mode, and the step refuses to push a deletion.
       - name: "Deploy everything"
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          external_repository: filmil/hdlfactory.com.template
-          publish_dir: ./deploy-staging
-          destination_dir: static/bazel-registry
-          publish_branch: main
-          deploy_key: "${{ secrets.DEPLOY_KEY }}"
-      - name: "Kill ssh-agent, see: https://github.com/peaceiris/actions-gh-pages/issues/909"
-        run: "killall ssh-agent"
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          set -o errexit -o nounset -o pipefail
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$DEPLOY_KEY" > "$HOME/.ssh/registry_deploy"
+          chmod 600 "$HOME/.ssh/registry_deploy"
+          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/registry_deploy -o StrictHostKeyChecking=accept-new"
+
+          git clone --depth=1 --single-branch --branch main \
+            git@github.com:filmil/hdlfactory.com.template.git site-template
+          mkdir -p site-template/static/bazel-registry
+          cp deploy-staging/index.html site-template/static/bazel-registry/index.html
+
+          cd site-template
+          test -s static/bazel-registry/index.html
+          git add static/bazel-registry/index.html
+          if git diff --cached --quiet; then
+            echo "index.html unchanged; nothing to deploy."
+            exit 0
+          fi
+          git -c user.name=filmil -c user.email=filmil@users.noreply.github.com \
+            commit -m "deploy: filmil/bazel-registry@${GITHUB_SHA}"
+          git push origin main
