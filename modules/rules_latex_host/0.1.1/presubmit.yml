@@ -1,0 +1,15 @@
+# The `system` toolchain is non-hermetic (it shells out to host TeX tools), so
+# the presubmit only builds the module's own targets (toolchain + wrappers +
+# helper) which do NOT require TeX to be installed. Actually compiling a
+# document is exercised by the integration module in the source repo's CI,
+# where the host tools are installed first.
+matrix:
+  platform: [ubuntu2204]
+  bazel: [8.x, 7.x]
+tasks:
+  verify_targets:
+    name: Verify build targets
+    platform: ${{ platform }}
+    bazel: ${{ bazel }}
+    build_targets:
+    - '@rules_latex_host//latex/...'
