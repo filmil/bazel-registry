@@ -684,9 +684,20 @@ const htmlTemplate = `
     </main>
 
     <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        import elkLayouts from 'https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0/dist/mermaid-layout-elk.esm.min.mjs';
+        // The DAG source carries frontmatter asking for the ELK layout with
+        // merged, orthogonally routed edges; that only takes effect on
+        // mermaid v11 with the ELK layout engine registered (v10 silently
+        // ignored it and fell back to per-edge dagre curves).
+        mermaid.registerLayoutLoaders(elkLayouts);
         mermaid.initialize({
             startOnLoad: false,
+            layout: 'elk',
+            elk: {
+                mergeEdges: true,
+                nodePlacementStrategy: 'LINEAR_SEGMENTS'
+            },
             flowchart: { useMaxWidth: false }
         });
 
@@ -695,7 +706,10 @@ const htmlTemplate = `
 
         async function initMermaid() {
             const container = document.getElementById('dag-mermaid');
-            const { svg } = await mermaid.render('dag-svg', container.textContent);
+            // trim(): the div's HTML indentation prefixes the source with
+            // whitespace, and mermaid v11 only recognizes the YAML config
+            // frontmatter when '---' starts at the first character.
+            const { svg } = await mermaid.render('dag-svg', container.textContent.trim());
             container.innerHTML = svg;
 
             const svgElement = container.querySelector('svg');
