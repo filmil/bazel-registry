@@ -1,0 +1,13 @@
+{
+    "url": "https://github.com/stackb/rules_hugo/archive/294a8ec626a394011d35397108c930be631ab9fa.tar.gz",
+    "integrity": "sha256-z50qDF5BjyrXTvTf80uvqULmJfX2xgikHZVVwGbIrdk=",
+    "strip_prefix": "rules_hugo-294a8ec626a394011d35397108c930be631ab9fa",
+    "overlay": {
+        "MODULE.bazel": "sha256-1IwlAQs2PaJUKmyQkZ2mZm3If13o3/ml5wiwUDBqcmk=",
+        "hugo/extensions.bzl": "sha256-5C0Tebl3A7cNGgQLV90o50K4HWViScoYCQ0uj4nTb1k="
+    },
+    "patches": {
+        "bazel9_bzlmod.patch": "sha256-5TDRKwx6CQY6msbSF8F3fcK2iufXxAGMTMH5A+WaTmU="
+    },
+    "patch_strip": 1
+}

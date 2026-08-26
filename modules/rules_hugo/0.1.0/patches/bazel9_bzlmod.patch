@@ -1,0 +1,138 @@
+diff --git a/hugo/internal/hugo_site.bzl b/hugo/internal/hugo_site.bzl
+index 05d537e..b066a31 100644
+--- a/hugo/internal/hugo_site.bzl
++++ b/hugo/internal/hugo_site.bzl
+@@ -1,3 +1,5 @@
++load("//hugo:internal/hugo_theme.bzl", "HugoThemeInfo")
++
+ def relative_path(src, dirname):
+     """Given a src File and a directory it's under, return the relative path.
+ 
+@@ -27,11 +29,11 @@ def copy_to_dir(ctx, srcs, dirname):
+     for i in srcs:
+         if i.is_source:
+             o = ctx.actions.declare_file(relative_path(i, dirname))
+-            ctx.actions.run(
++            ctx.actions.run_shell(
+                 inputs = [i],
+-                executable = "cp",
+-                arguments = ["-r", "-L", i.path, o.path],
+                 outputs = [o],
++                command = 'cp -r -L "$1" "$2"',
++                arguments = [i.path, o.path],
+             )
+             outs.append(o)
+         else:
+@@ -90,9 +92,23 @@ def _hugo_site_impl(ctx):
+     }.items():
+         hugo_inputs += copy_to_dir(ctx, srcs, name)
+ 
++    # Copy whole source directories into static/. Directory inputs sidestep
++    # per-file labels, which cannot be formed for files whose names contain
++    # a colon (Bazel's label separator) -- such files do occur in generated
++    # site content (e.g. chunked HTML book exports).
++    for d in ctx.files.static_dirs:
++        o = ctx.actions.declare_directory("static/" + d.basename)
++        ctx.actions.run_shell(
++            inputs = [d],
++            outputs = [o],
++            command = 'cp -r -L "$1/." "$2"',
++            arguments = [d.path, o.path],
++        )
++        hugo_inputs.append(o)
++
+     # Copy the theme
+     if ctx.attr.theme:
+-        theme = ctx.attr.theme.hugo_theme
++        theme = ctx.attr.theme[HugoThemeInfo]
+         hugo_args += ["--theme", theme.name]
+         for i in theme.files.to_list():
+             path_list = i.short_path.split("/")
+@@ -176,6 +192,12 @@ hugo_site = rule(
+         "static": attr.label_list(
+             allow_files = True,
+         ),
++        # Source DIRECTORIES copied wholesale under static/, keeping their
++        # basename. Use for trees holding files whose names cannot appear in
++        # a label (e.g. containing ':').
++        "static_dirs": attr.label_list(
++            allow_files = True,
++        ),
+         # Files to be included in the images/ subdir
+         "images": attr.label_list(
+             allow_files = True,
+@@ -201,12 +223,12 @@ hugo_site = rule(
+             default = "@hugo//:hugo",
+             allow_files = True,
+             executable = True,
+-            cfg = "host",
++            cfg = "exec",
+         ),
+         # Optionally set the base_url as a hugo argument
+         "base_url": attr.string(),
+         "theme": attr.label(
+-            providers = ["hugo_theme"],
++            providers = [HugoThemeInfo],
+         ),
+         # Emit quietly
+         "quiet": attr.bool(
+@@ -285,7 +307,7 @@ hugo_serve = rule(
+             default = "@hugo//:hugo",
+             allow_files = True,
+             executable = True,
+-            cfg = "host",
++            cfg = "exec",
+         ),
+         "dep": attr.label_list(
+             mandatory=True,
+diff --git a/hugo/internal/hugo_theme.bzl b/hugo/internal/hugo_theme.bzl
+index 600ba16..75c14e3 100644
+--- a/hugo/internal/hugo_theme.bzl
++++ b/hugo/internal/hugo_theme.bzl
+@@ -1,11 +1,20 @@
++"""Hugo theme rule."""
++
++HugoThemeInfo = provider(
++    doc = "A Hugo theme: its name, package path, and files.",
++    fields = {
++        "name": "string: the theme name (the directory name under themes/).",
++        "path": "string: the package the theme files live under.",
++        "files": "depset[File]: every file of the theme.",
++    },
++)
++
+ def _hugo_theme_impl(ctx):
+-    return struct(
+-        hugo_theme = struct(
+-            name = ctx.attr.theme_name or ctx.label.name,
+-            path = ctx.label.package,
+-            files = depset(ctx.files.srcs),
+-        ),
+-    )
++    return [HugoThemeInfo(
++        name = ctx.attr.theme_name or ctx.label.name,
++        path = ctx.label.package,
++        files = depset(ctx.files.srcs),
++    )]
+ 
+ hugo_theme = rule(
+     attrs = {
+diff --git a/hugo/rules.bzl b/hugo/rules.bzl
+index aae2caa..feabe54 100644
+--- a/hugo/rules.bzl
++++ b/hugo/rules.bzl
+@@ -1,6 +1,6 @@
+ load("//hugo:internal/hugo_repository.bzl", _hugo_repository = "hugo_repository")
+ load("//hugo:internal/hugo_site.bzl", _hugo_site = "hugo_site", _hugo_serve = "hugo_serve")
+-load("//hugo:internal/hugo_theme.bzl", _hugo_theme = "hugo_theme")
++load("//hugo:internal/hugo_theme.bzl", _hugo_theme = "hugo_theme", _HugoThemeInfo = "HugoThemeInfo")
+ load("//hugo:internal/github_hugo_theme.bzl", _github_hugo_theme = "github_hugo_theme")
+ 
+ hugo_repository = _hugo_repository
+@@ -11,4 +11,6 @@ hugo_site = _hugo_site
+ 
+ hugo_theme = _hugo_theme
+ 
++HugoThemeInfo = _HugoThemeInfo
++
+ github_hugo_theme = _github_hugo_theme
