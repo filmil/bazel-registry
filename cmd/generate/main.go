@@ -608,6 +608,11 @@ const htmlTemplate = `
         details</a> for how to configure bazel to use this additional
         registry.</p>
 
+        <p>If you are wondering why all of this is built on bazel in the
+        first place, I wrote up my reasons in <a
+        href="https://hdlfactory.com/post/2024/04/27/why-do-i-bother-with-bazel/">Why
+        do I bother with bazel?</a></p>
+
         <p>The bazel central registry is still available at <a
         href="https://bcr.bazel.build">https://bcr.bazel.build</a>.</p>
       </div>
