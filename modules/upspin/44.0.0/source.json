@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-c03MdXLtMYmnurfyrJy2jKTbMdPPsLquMHO1gmrzHWI=",
+    "strip_prefix": "upspin-44.0.0",
+    "url": "https://github.com/filmil/upspin/releases/download/v44.0.0/v44.0.0.tar.gz",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-tGEmKAyXjMxb+o9t0aq0w55KCKrtaHi06pMs/fDqIfI="
+    },
+    "patch_strip": 1
+}
