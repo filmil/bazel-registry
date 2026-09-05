@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-jnWzrQ1mJSqSZWj82iVlvT7wUVY2ltSqlb0Ifsv9OSs=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_dtc/releases/download/v0.0.4/bazel_rules_dtc-v0.0.4.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-YrFHM6Q+rlZmB9qKig47u5UiNPkmV7DcHDJrFeerjkY="
+    },
+    "patch_strip": 1
+}
