@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-7eLZmMKrUEswNRSHWaCFRGukbdoHMrD81gCu5Gx0rak=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_opensbi/releases/download/v0.1.4/bazel_rules_opensbi-v0.1.4.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-0vCjGZDk2L5XEP0a5/oNdRoZJ/Hi3OI5CiQltGZGSxA="
+    },
+    "patch_strip": 1
+}
