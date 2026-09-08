@@ -500,10 +500,39 @@ const htmlTemplate = `
       }
       del { color: var(--fg-muted); }
 
+      /* The dependency graph spans the whole window. The site theme caps
+         .container at 90ch, which is a good reading width for text and far
+         too narrow for a DAG: at a 1600px window the graph had 827px to draw
+         in, about half the screen.
+
+         This is done by taking the graph out of the capped column rather
+         than with the usual 100vw full-bleed trick. 100vw counts the vertical
+         scrollbar, so on a system with classic rather than overlay
+         scrollbars it overflows by the scrollbar width and adds a horizontal
+         one. A plain width:100% inside a full width parent has no such
+         problem. */
+      #page-main {
+        /* The theme's own main.container padding, which no longer applies
+           now that <main> does not carry that class. */
+        padding-top: 1.75rem;
+        padding-bottom: 3rem;
+      }
+      #dag-section { width: 100%; }
+      /* The heading stays aligned with the text column above it. */
+      #dag-section h2 {
+        max-width: var(--measure-wide);
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 1rem;
+      }
+
       /* Mermaid DAG panel */
       #mermaid-container {
         border: 1px solid var(--border);
-        border-radius: 8px;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+        max-width: none;
         background: var(--bg);
         position: relative;
         height: 85vh;
@@ -594,7 +623,11 @@ const htmlTemplate = `
       })();
     </script>
 
-    <main class="container">
+    <!-- The width cap lives on the inner div rather than on <main>, so that
+         the DAG section below can span the window while the text column
+         keeps the theme's reading width. -->
+    <main id="page-main">
+      <div class="container">
       <div class="registry-head">
         <h1 class="page-title"><a href="https://www.hdlfactory.com">My</a>
           <a href="https://bazel.build">Bazel</a> Registry</h1>
@@ -695,6 +728,9 @@ const htmlTemplate = `
         {{end}}
       </div>
 
+      </div>
+
+      <section id="dag-section">
       <h2>Module Dependency DAG (Latest Versions)</h2>
       <div id="mermaid-container">
         <div id="mermaid-zoom-controls">
@@ -706,6 +742,7 @@ const htmlTemplate = `
           {{.Mermaid}}
         </div>
       </div>
+      </section>
     </main>
 
     <script type="module">
