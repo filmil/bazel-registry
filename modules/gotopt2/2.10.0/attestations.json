@@ -1,0 +1,17 @@
+{
+    "mediaType": "application/vnd.build.bazel.registry.attestation+json;version=1.0.0",
+    "attestations": {
+        "source.json": {
+            "url": "https://github.com/filmil/gotopt2/releases/download/v2.10.0/source.json.intoto.jsonl",
+            "integrity": "sha256-Wh8wfXKr2FSrPVbTPK8PhPCYqEKAisJqfVsAjgY+ym0="
+        },
+        "MODULE.bazel": {
+            "url": "https://github.com/filmil/gotopt2/releases/download/v2.10.0/MODULE.bazel.intoto.jsonl",
+            "integrity": "sha256-hycbbXz5OQLfJ6eLKp1jjdPAIfk3bgFXCi5NfAaJE5I="
+        },
+        "gotopt2-v2.10.0.zip": {
+            "url": "https://github.com/filmil/gotopt2/releases/download/v2.10.0/gotopt2-v2.10.0.zip.intoto.jsonl",
+            "integrity": "sha256-QtII1jTWht3rw38oCqOk7+Vw/e3y4SgJxGcEZLrZKNA="
+        }
+    }
+}
