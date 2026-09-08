@@ -1,0 +1,17 @@
+{
+    "mediaType": "application/vnd.build.bazel.registry.attestation+json;version=1.0.0",
+    "attestations": {
+        "source.json": {
+            "url": "https://github.com/filmil/fshlib/releases/download/v0.4.0/source.json.intoto.jsonl",
+            "integrity": "sha256-jcmLkBAEqZBt6m+L4FjSHMMy1ARvju1Gr6JiH4cEor0="
+        },
+        "MODULE.bazel": {
+            "url": "https://github.com/filmil/fshlib/releases/download/v0.4.0/MODULE.bazel.intoto.jsonl",
+            "integrity": "sha256-u1iQsAw/obxf38ZZe7WHJY3Jpy9HjooOR+AWx48yYdg="
+        },
+        "fshlib-v0.4.0.zip": {
+            "url": "https://github.com/filmil/fshlib/releases/download/v0.4.0/fshlib-v0.4.0.zip.intoto.jsonl",
+            "integrity": "sha256-cNAnb1sf7h26lki1q78+2WILudply6zp/gVA2ZU9St0="
+        }
+    }
+}
