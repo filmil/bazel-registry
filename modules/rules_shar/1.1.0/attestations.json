@@ -1,0 +1,17 @@
+{
+    "mediaType": "application/vnd.build.bazel.registry.attestation+json;version=1.0.0",
+    "attestations": {
+        "source.json": {
+            "url": "https://github.com/filmil/rules_shar/releases/download/v1.1.0/source.json.intoto.jsonl",
+            "integrity": "sha256-Ch9dCHVqdwyWZ+xk3oUMORsc35rWdENx//Db+7lQFmc="
+        },
+        "MODULE.bazel": {
+            "url": "https://github.com/filmil/rules_shar/releases/download/v1.1.0/MODULE.bazel.intoto.jsonl",
+            "integrity": "sha256-qC+hhER1xVBlCAVHWYNasYAXnsaQgYoM23dkNZEjXhk="
+        },
+        "rules_shar-v1.1.0.zip": {
+            "url": "https://github.com/filmil/rules_shar/releases/download/v1.1.0/rules_shar-v1.1.0.zip.intoto.jsonl",
+            "integrity": "sha256-6lRgKVyYBNUcgs6FXNLUJPskVNYj1cd18DuZp4q2GxQ="
+        }
+    }
+}
