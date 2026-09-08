@@ -1,0 +1,17 @@
+{
+    "mediaType": "application/vnd.build.bazel.registry.attestation+json;version=1.0.0",
+    "attestations": {
+        "source.json": {
+            "url": "https://github.com/filmil/lit2md/releases/download/v1.3.0/source.json.intoto.jsonl",
+            "integrity": "sha256-LwuIMND1wc/WVe4OoHgYioe8GlAJP0grxoqXFKik6eY="
+        },
+        "MODULE.bazel": {
+            "url": "https://github.com/filmil/lit2md/releases/download/v1.3.0/MODULE.bazel.intoto.jsonl",
+            "integrity": "sha256-shyRzm/Wy08xZa9UtB9Ewc/KhqJTkqm5zfrhKVzZOBM="
+        },
+        "lit2md-v1.3.0.zip": {
+            "url": "https://github.com/filmil/lit2md/releases/download/v1.3.0/lit2md-v1.3.0.zip.intoto.jsonl",
+            "integrity": "sha256-uwhPTmO24JCOxm/bzHZkpuPJhtRLoyxO14/AxrzoYIo="
+        }
+    }
+}
