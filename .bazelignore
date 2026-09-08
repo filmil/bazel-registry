@@ -1,5 +1,9 @@
+# The overlay directory of every overlay entry, one per line. An overlay
+# carries BUILD files, which this module would otherwise load as its own
+# packages and fail on repositories it does not have. Bazel expands no
+# patterns in this file, so a `modules/*` line ignores nothing.
 modules/nvc/1.22.0.bcr.0/overlay
 modules/nvc/1.22.0.bcr.1/overlay
 modules/nvc/1.22.0.bcr.2/overlay
 modules/opensbi/1.6/overlay
-modules/*
+modules/graphviz/14.0.0.bcr.1/overlay
