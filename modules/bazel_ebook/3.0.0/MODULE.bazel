@@ -1,0 +1,143 @@
+module(
+    name = "bazel_ebook",
+    version = "3.0.0",
+    bazel_compatibility = [">=8.0.0"],
+)
+
+bazel_dep(
+    name = "gazelle",
+    version = "0.51.3",
+    repo_name = "bazel_gazelle",
+)
+bazel_dep(name = "buildifier_prebuilt", version = "8.5.1.2")
+bazel_dep(name = "bazel_bats", version = "0.38.23")
+bazel_dep(name = "rules_pkg", version = "1.2.0")
+
+# graphviz supplies dot and the other layout engines. It is built from source,
+# which makes this the first C++ in the repository, so a toolchain has to exist
+# for it. hermetic_cc_toolchain provides one, so the compiler is the same here
+# as on any other machine rather than whatever the host happens to have.
+bazel_dep(name = "graphviz", version = "0.1.0")
+
+# drawtiming has no upstream binary release, so it comes from a Debian package
+# instead. bazel_rootfs turns an apt package list into a rootfs and wraps
+# binaries out of it; the rootfs here holds only what this repository needs, so
+# no other consumer pays for it.
+bazel_dep(name = "bazel_rootfs", version = "1.1.1")
+
+# Temporarily taken from git rather than the registry. rootfs_binary needed
+# several fixes to run the tools here at all: a rootfs built from a short
+# package list is usr-merged with no /lib64, gladtex is a "#!/usr/bin/python3"
+# script rather than an ELF binary, and the PATH the runner built was relative,
+# so TeX lost it the moment it changed directory (bazel_rootfs#30). None of
+# them are in 1.1.1. Drop this override once a release carries them; tracked
+# in #82.
+git_override(
+    module_name = "bazel_rootfs",
+    commit = "9300a6882ea721e3319177f2dbdccab4a1ae2df7",
+    remote = "https://github.com/filmil/bazel_rootfs",
+)
+
+bazel_dep(name = "rules_distroless", version = "0.8.0")
+bazel_dep(name = "rules_oci", version = "2.3.0")
+bazel_dep(name = "rules_zstd", version = "1.0.0")
+
+apt = use_extension("@rules_distroless//apt:extensions.bzl", "apt")
+apt.install(
+    name = "ebook_apt",
+    lock = "//image:packages.lock.json",
+    manifest = "//image:packages.yaml",
+)
+use_repo(apt, "ebook_apt")
+
+bazel_dep(name = "hermetic_cc_toolchain", version = "4.1.0", dev_dependency = True)
+
+zig = use_extension(
+    "@hermetic_cc_toolchain//toolchain:ext.bzl",
+    "toolchains",
+    dev_dependency = True,
+)
+use_repo(zig, "zig_sdk")
+
+register_toolchains(
+    "@zig_sdk//toolchain/...",
+    "@zig_sdk//libc_aware/toolchain/...",
+    dev_dependency = True,
+)
+
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
+bazel_dep(name = "bazel_lib", version = "3.3.1")
+bazel_dep(name = "rules_go", version = "0.61.1")
+
+bazel_dep(name = "stardoc", version = "0.8.1", dev_dependency = True)
+
+bazel_dep(name = "protobuf", version = "35.1")
+bazel_dep(name = "rules_android", version = "0.7.3")
+
+#bazel_dep(name = "platforms", version = "1.1.0")
+#bazel_dep(name = "rules_cc", version = "0.2.20")
+bazel_dep(name = "rules_shell", version = "0.8.0")
+bazel_dep(name = "rules_python_gazelle_plugin", version = "2.3.3")
+
+# The container-based tool toolchain. A hermetic implementation can be
+# registered ahead of this one to take precedence.
+register_toolchains("//build/toolchains:docker_toolchain")
+
+bazel_ebook_extension = use_extension(
+    "//:extensions.bzl",
+    "bazel_ebook_extension",
+)
+use_repo(
+    bazel_ebook_extension,
+    "pandoc_crossref",
+    # TODO: This should be removed.
+    "pandoc_ext_include_files",
+    "pandoc_include",
+)
+
+bazel_dep(name = "rules_python", version = "2.3.3")
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    python_version = "3.13",
+)
+
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "pypi",
+    python_version = "3.13",
+    requirements_lock = "//:requirements_lock.txt",
+)
+use_repo(pip, "pypi")
+
+# Fonts for SVG rasterisation.
+#
+# resvg silently drops text when it cannot find a font: rendering the same
+# graphviz SVG produces 6436 bytes with a font present and 5986 without, with
+# only a warning. A hermetic build therefore has to ship its own fonts rather
+# than hope the host has some. graphviz emits `Times,serif`, which is mapped
+# onto DejaVu Serif via resvg's --serif-family.
+http_archive = use_repo_rule(
+    "@bazel_tools//tools/build_defs/repo:http.bzl",
+    "http_archive",
+)
+
+http_archive(
+    name = "dejavu_fonts",
+    build_file_content = """
+filegroup(
+    name = "ttf",
+    srcs = glob(["ttf/*.ttf"]),
+    visibility = ["//visibility:public"],
+)
+""",
+    sha256 = "7576310b219e04159d35ff61dd4a4ec4cdba4f35c00e002a136f00e96a908b0a",
+    strip_prefix = "dejavu-fonts-ttf-2.37",
+    urls = ["https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.zip"],
+)
+
+bazel_dep(name = "rules_multitool", version = "1.11.1")
+
+multitool = use_extension("@rules_multitool//multitool:extension.bzl", "multitool")
+multitool.hub(lockfile = "//:multitool.lock.json")
+use_repo(multitool, "multitool")
