@@ -1,0 +1,17 @@
+{
+    "mediaType": "application/vnd.build.bazel.registry.attestation+json;version=1.0.0",
+    "attestations": {
+        "source.json": {
+            "url": "https://github.com/filmil/bazel_vhdl_ls_gen/releases/download/v0.4.0/source.json.intoto.jsonl",
+            "integrity": "sha256-ym318f0jgcYZKpHMB+9Jpg8aNLKMwb3HbLB6h82OomQ="
+        },
+        "MODULE.bazel": {
+            "url": "https://github.com/filmil/bazel_vhdl_ls_gen/releases/download/v0.4.0/MODULE.bazel.intoto.jsonl",
+            "integrity": "sha256-OPOEq4jWOqVk4WMaR78Wgfw1uPDpv2Kr0OsE05mXCzw="
+        },
+        "bazel_vhdl_ls_gen-v0.4.0.zip": {
+            "url": "https://github.com/filmil/bazel_vhdl_ls_gen/releases/download/v0.4.0/bazel_vhdl_ls_gen-v0.4.0.zip.intoto.jsonl",
+            "integrity": "sha256-ReVWt2U1gVn3oIAQ1lEdqsMo3SQYQTSLjfTLVrmGqEs="
+        }
+    }
+}
