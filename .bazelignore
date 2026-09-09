@@ -7,3 +7,4 @@ modules/nvc/1.22.0.bcr.1/overlay
 modules/nvc/1.22.0.bcr.2/overlay
 modules/opensbi/1.6/overlay
 modules/graphviz/14.0.0.bcr.1/overlay
+modules/graphviz/14.0.0.bcr.2/overlay
