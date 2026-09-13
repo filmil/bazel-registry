@@ -1,0 +1,9 @@
+matrix:
+  platform:
+    - ubuntu2204
+tasks:
+  verify_targets:
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
