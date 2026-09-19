@@ -1,0 +1,41 @@
+"""A Verilator toolchain from a prebuilt binary.
+
+Building Verilator from source takes minutes on every machine that has
+not built it before, and this project's builds do that often. The
+binary is the same everywhere, so it is built once, in CI, from the
+Verilator module in the Bazel Central Registry, and published as a
+release. This module hands that binary to `rules_verilator`'s toolchain
+type, so a consumer registers a toolchain instead of compiling a
+compiler.
+
+The Verilator module is a development dependency, so it is fetched when
+this repository builds its own release and never by anybody depending
+on this one. That is the whole point: a consumer of this module must
+not end up with Verilator's source.
+"""
+
+module(
+    name = "bazel_toolchains_verilator",
+    version = "0.1.0",
+    compatibility_level = 1,
+)
+
+bazel_dep(name = "rules_verilator", version = "1.1.2")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
+bazel_dep(name = "platforms", version = "1.0.0")
+
+# The release build only. `dev_dependency` keeps Verilator's source out
+# of every consumer's dependency graph.
+bazel_dep(name = "verilator", version = "5.046.bcr.3", dev_dependency = True)
+bazel_dep(name = "rules_pkg", version = "1.0.1", dev_dependency = True)
+bazel_dep(name = "rules_shell", version = "0.6.1", dev_dependency = True)
+
+verilator_binary = use_extension("//verilator:extension.bzl", "verilator_binary")
+use_repo(verilator_binary, "verilator_prebuilt")
+
+# The toolchain is registered by whoever uses it, not here. Registering
+# it in this module would make every build fetch the binary during
+# toolchain resolution, including this repository's own release build,
+# which cannot fetch a binary it has not made yet. A consumer writes:
+#
+#     register_toolchains("@verilator_prebuilt//:toolchain")
