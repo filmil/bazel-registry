@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -155,5 +156,90 @@ func TestBuildMermaid_NewlineRendering(t *testing.T) {
 	expected := "my_module[\"my_module\n1.2.3\"]"
 	if !strings.Contains(mermaid, expected) {
 		t.Errorf("Expected mermaid to contain label with literal newline %q, but it was not found. Full mermaid:\n%s", expected, mermaid)
+	}
+}
+
+// The bug this file did not catch: the index sorted versions as text,
+// so a module whose latest was 3.10.6 showed 3.9.3 as its newest, and
+// the list looked ordered the whole time it was wrong.
+func TestCompareVersionsOrdersNumerically(t *testing.T) {
+	for _, c := range []struct {
+		a, b string
+		want int
+	}{
+		// The bug itself. Lexically "3.9.3" is above "3.10.6".
+		{"3.10.6", "3.9.3", 1},
+		{"3.9.3", "3.10.6", -1},
+		{"3.10.6", "3.2.0", 1},
+		{"3.2.0", "3.10.0", -1},
+
+		// Every component, not only the minor one.
+		{"10.0.0", "9.0.0", 1},
+		{"1.0.10", "1.0.9", 1},
+		{"1.0.0", "1.0.0", 0},
+
+		// Shapes this registry actually carries. A parse of three
+		// integers fails on both of these.
+		{"1.22.0.bcr.1", "1.22.0", 1},
+		{"1.22.0.bcr.2", "1.22.0.bcr.1", 1},
+		{"1.6", "1.6.0", -1},
+		{"1.7", "1.6.9", 1},
+
+		// A pre-release comes before the release it precedes.
+		{"2.1.0", "2.1.0-rc0", 1},
+		{"2.1.0-rc0", "2.1.0-rc1", -1},
+
+		// Nothing unparseable may panic, and the answer has to be
+		// consistent read in either direction.
+		{"nonsense", "1.0.0", 1},
+		{"1.0.0", "nonsense", -1},
+		{"", "", 0},
+	} {
+		if got := compareVersions(c.a, c.b); got != c.want {
+			t.Errorf("compareVersions(%q, %q) = %d, want %d",
+				c.a, c.b, got, c.want)
+		}
+	}
+}
+
+// The reported defect at the level the page shows it: the newest
+// version comes first.
+func TestVersionsSortNewestFirst(t *testing.T) {
+	versions := []Version{
+		{Name: "3.2.0"},
+		{Name: "3.9.3"},
+		{Name: "3.10.6"},
+		{Name: "3.1.0"},
+	}
+	sort.Slice(versions, func(i, j int) bool {
+		return compareVersions(versions[i].Name, versions[j].Name) > 0
+	})
+
+	want := []string{"3.10.6", "3.9.3", "3.2.0", "3.1.0"}
+	for i, w := range want {
+		if versions[i].Name != w {
+			t.Fatalf("position %d is %q, want %q; whole order %v",
+				i, versions[i].Name, w, versions)
+		}
+	}
+}
+
+// A module kept for consumers pinned to it has to keep appearing. A
+// sort that dropped what it could not parse would take it off the
+// page, and nobody working in this repository would notice.
+func TestSortKeepsEveryVersion(t *testing.T) {
+	versions := []Version{
+		{Name: "3.0.0"},
+		{Name: "1.0.1"},
+		{Name: "2.0.0"},
+		{Name: "not-a-version"},
+	}
+	before := len(versions)
+	sort.Slice(versions, func(i, j int) bool {
+		return compareVersions(versions[i].Name, versions[j].Name) > 0
+	})
+	if len(versions) != before {
+		t.Fatalf("sorting lost versions: %d became %d",
+			before, len(versions))
 	}
 }
