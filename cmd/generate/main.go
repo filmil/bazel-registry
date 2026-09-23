@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -294,6 +295,97 @@ func findModules(dir string) ([]Module, error) {
 	return modules, nil
 }
 
+// compareVersions orders two version strings the way a reader does
+// rather than the way bytes do, returning -1, 0 or 1.
+//
+// Byte order is wrong here, and wrong in the way that is hardest to
+// notice: the result still looks like a sorted list. Lexically
+// "3.9.3" is above "3.10.6", so the index presented a version from
+// weeks earlier as the newest one, and the list read as ordered the
+// whole time it was wrong.
+//
+// The registry's versions are not all three integers, so this parses
+// what it can and degrades rather than failing:
+//
+//	3.10.6        the ordinary shape
+//	1.6           fewer parts, so the missing ones compare as absent
+//	1.22.0.bcr.1  a Bazel Central Registry repackaging, which comes
+//	              after the 1.22.0 it repackages
+//	2.1.0-rc0     a pre-release, which comes before 2.1.0
+//
+// A segment that is not a number compares as text against another
+// that is not, and a number sorts before text at the same position,
+// so an unexpected shape lands somewhere sensible instead of
+// panicking or being dropped. Being dropped is the part that matters:
+// `bazel_rules_vivado` stops at 3.0.0 and is kept deliberately for
+// consumers pinned to it, and a sort that discarded what it could not
+// parse would take somebody else's module off the page.
+func compareVersions(a, b string) int {
+	aCore, aPre := splitPrerelease(a)
+	bCore, bPre := splitPrerelease(b)
+
+	aParts := strings.Split(aCore, ".")
+	bParts := strings.Split(bCore, ".")
+
+	for i := 0; i < len(aParts) || i < len(bParts); i++ {
+		// Whichever has run out of parts is the earlier one, so
+		// 1.22.0 comes before 1.22.0.bcr.1.
+		if i >= len(aParts) {
+			return -1
+		}
+		if i >= len(bParts) {
+			return 1
+		}
+		if c := comparePart(aParts[i], bParts[i]); c != 0 {
+			return c
+		}
+	}
+
+	// The same version, and a pre-release of it comes first.
+	switch {
+	case aPre == "" && bPre != "":
+		return 1
+	case aPre != "" && bPre == "":
+		return -1
+	case aPre != bPre:
+		return strings.Compare(aPre, bPre)
+	}
+	return 0
+}
+
+// splitPrerelease divides "2.1.0-rc0" into "2.1.0" and "rc0".
+func splitPrerelease(v string) (string, string) {
+	if i := strings.IndexByte(v, '-'); i >= 0 {
+		return v[:i], v[i+1:]
+	}
+	return v, ""
+}
+
+// comparePart compares one dot-separated segment. Two numbers compare
+// as numbers, which is the whole point of the exercise; anything else
+// compares as text, and a number comes before text so that `bcr`
+// sorts after the digits it follows.
+func comparePart(a, b string) int {
+	an, aErr := strconv.Atoi(a)
+	bn, bErr := strconv.Atoi(b)
+
+	switch {
+	case aErr == nil && bErr == nil:
+		switch {
+		case an < bn:
+			return -1
+		case an > bn:
+			return 1
+		}
+		return 0
+	case aErr == nil:
+		return -1
+	case bErr == nil:
+		return 1
+	}
+	return strings.Compare(a, b)
+}
+
 func findVersions(modulePath string) ([]Version, error) {
 	var versions []Version
 
@@ -356,8 +448,9 @@ func findVersions(modulePath string) ([]Version, error) {
 		})
 	}
 
+	// Newest first, by version rather than by byte.
 	sort.Slice(versions, func(i, j int) bool {
-		return versions[i].Name > versions[j].Name
+		return compareVersions(versions[i].Name, versions[j].Name) > 0
 	})
 
 	return versions, nil
