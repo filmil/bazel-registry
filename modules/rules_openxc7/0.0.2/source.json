@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-N5rkkF3b1bcUVLcEx17JU3CN9PvPrRi1IheVxtCx8x8=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rules_openxc7/releases/download/v0.0.2/bazel_rules_openxc7-v0.0.2.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-juEBIZSiAeQ824ONUkQUrCYuj0+gdkbwh/Ygct2Qy5A="
+    },
+    "patch_strip": 1
+}
