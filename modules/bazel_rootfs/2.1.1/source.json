@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-bcc98yi3IUydA1tO5R0smlG6F3XKJoLzAP5L+MFRWv8=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_rootfs/releases/download/v2.1.1/bazel_rootfs-v2.1.1.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-GtmeHS0iY8G+l6gC4ZDMCq50yKw4BHz29Rbenx3ssTY="
+    },
+    "patch_strip": 1
+}
