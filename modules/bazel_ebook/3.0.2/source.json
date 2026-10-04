@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-dU3nVrQVK1LcrsOJYjKZ5q/QFt2ttYlAR7aYaTkg+BA=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel-ebook/releases/download/v3.0.2/bazel-ebook-v3.0.2.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-A9xFKhkDpSnPN78+4EbQMj0FlNULAVkQu7cDqpbyU2Y="
+    },
+    "patch_strip": 1
+}
