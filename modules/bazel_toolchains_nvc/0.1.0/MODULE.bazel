@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: Apache-2.0
+"""An NVC toolchain from a prebuilt binary, built with LLVM.
+
+The `nvc` module builds NVC without its LLVM code generator, so NVC
+interprets every design it simulates. NVC built with LLVM compiles the
+design to machine code instead, and runs large designs ten or more
+times faster. LLVM does not build in a few minutes, so NVC is built
+once, in CI, with LLVM linked in, and published as a release. This
+module hands that binary to rules_nvc's toolchain type, so a consumer
+registers a toolchain instead of compiling a compiler.
+"""
+
+module(
+    name = "bazel_toolchains_nvc",
+    version = "0.1.0",
+    compatibility_level = 1,
+)
+
+# 4.7.0 is the first rules_nvc whose toolchain type other modules may
+# use, and whose tests carry the toolchain's binary.
+bazel_dep(name = "rules_nvc", version = "4.7.0")
+bazel_dep(name = "bazel_skylib", version = "1.9.2")
+bazel_dep(name = "platforms", version = "1.1.0")
+
+nvc_binary = use_extension("//nvc:extension.bzl", "nvc_binary")
+use_repo(nvc_binary, "nvc_prebuilt")
+
+# The toolchain is registered by whoever uses it, not here, as
+# bazel_toolchains_verilator does: registering it here would make every
+# build that depends on this module fetch the binary during toolchain
+# resolution. A consumer writes:
+#
+#     register_toolchains("@nvc_prebuilt//:toolchain")
