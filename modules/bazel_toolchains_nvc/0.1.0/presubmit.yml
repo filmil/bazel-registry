@@ -1,0 +1,17 @@
+# The registry's own check: a module that claims to give you NVC with
+# LLVM is worth nothing if the toolchain does not resolve, so the test
+# module runs a design through it.
+bcr_test_module:
+  module_path: "integration"
+  matrix:
+    platform: ["ubuntu2204"]
+    bazel: [9.x]
+  tasks:
+    verify_targets:
+      name: "The toolchain resolves, and NVC with LLVM runs a design"
+      platform: ${{ platform }}
+      bazel: ${{ bazel }}
+      build_targets:
+        - "@nvc_prebuilt//:nvc"
+      test_targets:
+        - "//..."
