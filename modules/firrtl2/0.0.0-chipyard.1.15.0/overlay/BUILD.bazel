@@ -29,7 +29,7 @@ package firrtl2
 
 case object BuildInfo {
   val buildInfoPackage: String = "firrtl2"
-  val version: String = "1.15.0-bazel"
+  val version: String = "6.0-SNAPSHOT"
   val scalaVersion: String = "2.13.16"
   val sbtVersion: String = "none"
   override val toString: String = s"buildInfoPackage: $$buildInfoPackage, version: $$version, scalaVersion: $$scalaVersion"
