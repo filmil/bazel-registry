@@ -1,0 +1,16 @@
+module(
+    name = "rules_firesim",
+    version = "0.1.0",
+    compatibility_level = 0,
+)
+
+bazel_dep(name = "rules_cc", version = "0.2.27")
+bazel_dep(name = "dtc", version = "1.7.2.bcr.2")
+bazel_dep(name = "rules_vivado", version = "4.1.1")
+
+# Golden Gate, as a prebuilt tool, and FireSim's driver sources.
+bazel_dep(name = "firesim_goldengate", version = "1.22.0")
+bazel_dep(name = "firesim_target", version = "1.22.0")
+
+# The bitstream rule's default board project.
+bazel_dep(name = "firesim_platform_nitefury", version = "1.22.0")

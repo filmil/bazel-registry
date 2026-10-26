@@ -1,0 +1,41 @@
+module(
+    name = "chipyard_scala",
+    version = "0.1.0",
+    compatibility_level = 0,
+)
+
+bazel_dep(name = "rules_scala", version = "7.4.0")
+bazel_dep(name = "rules_jvm_external", version = "6.7")
+
+# Every Maven library that Chipyard 1.15.0's build.sbt names for the
+# projects the FireSim modules compile, as one set: Chisel 6.7.0 on
+# Scala 2.13.16, Chipyard's default. The overlay modules take their
+# libraries from here by `use_repo(maven, "chipyard_maven")`.
+#
+# The chisel-plugin artifact is built for one Scala version exactly, so the
+# root module must compile with Scala 2.13.16; see README.md.
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "chipyard_maven",
+    artifacts = [
+        "org.chipsalliance:chisel_2.13:6.7.0",
+        "org.chipsalliance:chisel-plugin_2.13.16:6.7.0",
+        "org.apache.commons:commons-lang3:3.12.0",
+        "org.apache.commons:commons-text:1.10.0",
+        "com.lihaoyi:sourcecode_2.13:0.3.1",
+        "org.scala-lang:scala-reflect:2.13.16",
+        "com.lihaoyi:mainargs_2.13:0.5.0",
+        "org.json4s:json4s-jackson_2.13:4.0.5",
+        "org.scala-graph:graph-core_2.13:1.13.5",
+        "org.reflections:reflections:0.10.2",
+        "com.lihaoyi:ujson_2.13:3.1.0",
+        "com.github.scopt:scopt_2.13:4.1.0",
+        "org.json4s:json4s-native_2.13:4.1.0-M4",
+        "com.lihaoyi:os-lib_2.13:0.8.1",
+        "org.scala-lang.modules:scala-parallel-collections_2.13:1.0.4",
+        "org.antlr:antlr4-runtime:4.9.3",
+        "org.antlr:antlr4:4.9.3",
+    ],
+    repositories = ["https://repo1.maven.org/maven2"],
+)
+use_repo(maven, "chipyard_maven")
