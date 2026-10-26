@@ -1,0 +1,14 @@
+Arithmetic on a void* is a GCC extension; Clang rejects it in C++.
+Cast to char* first, which means the same and compiles under both.
+
+--- a/src/main/resources/testchipip/csrc/cospike_impl.cc
++++ b/src/main/resources/testchipip/csrc/cospike_impl.cc
+@@ -601,7 +601,7 @@
+       RESTORE(CSR_VCSR     , vcsr);
+       RESTORE(CSR_VTYPE    , vtype);
+       for (size_t i = 0; i < 32; i++) {
+-        memcpy(p->VU.reg_file + i * ls.VLEN / 8, ls.VPR[i], ls.VLEN / 8);
++        memcpy(static_cast<char*>(p->VU.reg_file) + i * ls.VLEN / 8, ls.VPR[i], ls.VLEN / 8);
+       }
+     }
+ 

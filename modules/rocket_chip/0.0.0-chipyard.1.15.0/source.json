@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/chipsalliance/rocket-chip/archive/ece7b9ad544b07df39cd13b6fd7236562a26355d.tar.gz",
+    "integrity": "sha256-qgorzL4li0JsS+U3GNYF5gnCJnNIw8Zq0Kr8t3jaWNs=",
+    "strip_prefix": "rocket-chip-ece7b9ad544b07df39cd13b6fd7236562a26355d",
+    "overlay": {
+        "MODULE.bazel": "sha256-ipaFRCQGtKJVfdkeF8e7R/UIT23lME7EpAKGHyBypzo=",
+        "BUILD.bazel": "sha256-luJ11jB++pbH/XgQqfn604HfYfVRjpzkkpvTotDjxLo="
+    }
+}

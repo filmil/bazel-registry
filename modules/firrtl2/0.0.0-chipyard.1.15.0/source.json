@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/ucb-bar/firrtl2/archive/09156cae09cb37c530322c6005649d2380c3eb0e.tar.gz",
+    "integrity": "sha256-X719hhRv6p7vFXwT7V4uGXtJCqu7LUTPMJUSCOi1ysw=",
+    "strip_prefix": "firrtl2-09156cae09cb37c530322c6005649d2380c3eb0e",
+    "overlay": {
+        "MODULE.bazel": "sha256-4jrtTt/pm+pcjuZFlCQx9gWRw750gq/WHLByanoohJI=",
+        "BUILD.bazel": "sha256-YQKKAqGOPBdoKSu1QNZAciUR4F04TuQ8tWHPFfCUU8M="
+    }
+}

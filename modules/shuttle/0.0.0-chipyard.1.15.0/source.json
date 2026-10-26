@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/ucb-bar/shuttle/archive/622f08b9fd3697e3fd75e7799885ecdf9e2f13f2.tar.gz",
+    "integrity": "sha256-rxlvzYVw8KlwTXCXmXdxwFhz1crJhpYAxOz2jymj4uM=",
+    "strip_prefix": "shuttle-622f08b9fd3697e3fd75e7799885ecdf9e2f13f2",
+    "overlay": {
+        "MODULE.bazel": "sha256-ruoCQPYDX+LekVYM1T/JBR5p0nHxyvepGV/CN3/FZuA=",
+        "BUILD.bazel": "sha256-7REGMxuvF15EBJ6hfAy21jRUueYW4WY8OYiQ/QHM+tg="
+    }
+}

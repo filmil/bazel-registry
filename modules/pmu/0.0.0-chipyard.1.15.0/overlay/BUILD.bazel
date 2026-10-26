@@ -1,0 +1,7 @@
+load("@chipyard_scala//:defs.bzl", "chisel6_library")
+
+chisel6_library(name = "pmu_schema", srcs = glob(["schema/src/main/scala/**/*.scala"]), deps = ["@chipyard_maven//:com_lihaoyi_ujson_2_13"])
+
+chisel6_library(name = "pmu", srcs = glob(["src/main/scala/**/*.scala"]), deps = [":pmu_schema", "@cde"])
+
+chisel6_library(name = "pmu_tilelink", srcs = glob(["tilelink/src/main/scala/**/*.scala"]), deps = [":pmu", "@rocket_chip"])

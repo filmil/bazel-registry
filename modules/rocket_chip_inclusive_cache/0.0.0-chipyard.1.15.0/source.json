@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/chipsalliance/rocket-chip-inclusive-cache/archive/27df9284e60136a6f7f1b19224dfbe99d112ea77.tar.gz",
+    "integrity": "sha256-1lv3geeTM04PVWDzRaw4vr7WNw82JGJaH9YILikO+mw=",
+    "strip_prefix": "rocket-chip-inclusive-cache-27df9284e60136a6f7f1b19224dfbe99d112ea77",
+    "overlay": {
+        "MODULE.bazel": "sha256-RMmf5vAC3CKI8CSjPKVJ7Y03G4o4V52FVYsGuOerfoQ=",
+        "BUILD.bazel": "sha256-cyfLCC+APqrV8rElljZBrVwgTDhDSw6/bgHytRIy4Ow="
+    }
+}

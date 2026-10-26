@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/firesim/icenet/archive/61d2925b9d57df189ab8d801eb81185040251249.tar.gz",
+    "integrity": "sha256-OSPt+NVKlhuzXT8ClycQxi7y/WS7UpiCfzk27pM5Cfs=",
+    "strip_prefix": "icenet-61d2925b9d57df189ab8d801eb81185040251249",
+    "overlay": {
+        "MODULE.bazel": "sha256-J9B91tYqkvYXA/TjHjRb/8FHrnrJyjeoUkz6IXtLpHE=",
+        "BUILD.bazel": "sha256-C9zCHb+OLvNW6nS48hgBwjKAPRyecat24ui5AHryGXg="
+    }
+}

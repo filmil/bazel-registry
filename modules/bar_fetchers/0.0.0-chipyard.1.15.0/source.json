@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/ucb-bar/bar-fetchers/archive/bd02692fe6cb5197df90dc39051d31369ef61fcd.tar.gz",
+    "integrity": "sha256-ctUi4sEwlgmnXbWW7YXZ/1UfxrDu32c0xLeUuVAg0v8=",
+    "strip_prefix": "bar-fetchers-bd02692fe6cb5197df90dc39051d31369ef61fcd",
+    "overlay": {
+        "MODULE.bazel": "sha256-cLnLzwd+0ahwZ3GFfd/4eU0FvqObfOXwNC1AqMLZzzo=",
+        "BUILD.bazel": "sha256-f9kS6WiSYcoMSDZGJjCfdnihO55ZiWkJk/haBvmHj7k="
+    }
+}

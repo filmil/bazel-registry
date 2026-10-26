@@ -1,0 +1,26 @@
+load("@chipyard_scala//:defs.bzl", "chisel6_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+chisel6_library(
+    name = "testchipip",
+    srcs = glob(["src/main/scala/**/*.scala"]),
+    resource_dir = "src/main/resources",
+    deps = ["@rocket_chip", "@rocket_chip_blocks"],
+)
+
+
+# The helpers FireChip's driver.mk compiles in.
+cc_library(
+    name = "csrc",
+    srcs = [
+        "src/main/resources/testchipip/csrc/cospike_impl.cc",
+        "src/main/resources/testchipip/csrc/testchip_tsi.cc",
+        "src/main/resources/testchipip/csrc/testchip_dtm.cc",
+        "src/main/resources/testchipip/csrc/testchip_htif.cc",
+    ],
+    hdrs = glob(["src/main/resources/testchipip/csrc/*.h"]),
+    copts = ["-std=c++20", "-Wno-inconsistent-missing-override"],
+    includes = ["src/main/resources/testchipip/csrc"],
+    deps = ["@riscv_isa_sim//:riscv_isa_sim"],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,78 @@
+--- a/generators/firechip/chip/src/main/scala/TargetConfigs.scala	2026-10-26 00:40:08.144214144 +0100
++++ b/generators/firechip/chip/src/main/scala/TargetConfigs.scala	2026-10-26 00:40:08.162214136 +0100
+@@ -51,8 +51,6 @@
+ class WithNIC extends icenet.WithIceNIC(inBufFlits = 8192, ctrlQueueDepth = 64)
+ 
+ // Adds a small/large NVDLA to the system
+-class WithNVDLALarge extends nvidia.blocks.dla.WithNVDLA("large")
+-class WithNVDLASmall extends nvidia.blocks.dla.WithNVDLA("small")
+ 
+ // Minimal set of FireSim-related design tweaks - notably discludes FASED, TraceIO, and the BlockDevice
+ class WithMinimalFireSimDesignTweaks extends Config(
+@@ -270,15 +268,7 @@
+ //*****************************************************************
+ // Saturn configs, base off chipyard's SaturnConfigs
+ //*****************************************************************
+-class FireSimREFV256D128RocketConfig extends Config(
+-  new WithDefaultFireSimBridges ++
+-  new WithFireSimConfigTweaks ++
+-  new chipyard.REFV256D128RocketConfig)
+ 
+-class FireSimGENV256D128ShuttleConfig extends Config(
+-  new WithDefaultFireSimBridges ++
+-  new WithFireSimConfigTweaks ++
+-  new chipyard.GENV256D128ShuttleConfig)
+ 
+ //********************************************************************
+ // Heterogeneous config, base off chipyard's LargeBoomAndRocketConfig
+@@ -291,20 +281,8 @@
+ //******************************************************************
+ // Gemmini NN accel config, base off chipyard's GemminiRocketConfig
+ //******************************************************************
+-class FireSimGemminiRocketConfig extends Config(
+-  new WithDefaultFireSimBridges ++
+-  new WithFireSimConfigTweaks ++
+-  new chipyard.GemminiRocketConfig)
+ 
+-class FireSimLeanGemminiRocketConfig extends Config(
+-  new WithDefaultFireSimBridges ++
+-  new WithFireSimConfigTweaks ++
+-  new chipyard.LeanGemminiRocketConfig)
+ 
+-class FireSimLeanGemminiPrintfRocketConfig extends Config(
+-  new WithDefaultFireSimBridges ++
+-  new WithFireSimConfigTweaks ++
+-  new chipyard.LeanGemminiPrintfRocketConfig)
+ 
+ //**********************************************************************************
+ // Supernode Configurations, base off chipyard's RocketConfig
+@@ -318,10 +296,6 @@
+ //**********************************************************************************
+ //* CVA6 Configurations
+ //*********************************************************************************/
+-class FireSimCVA6Config extends Config(
+-  new WithDefaultFireSimBridges ++
+-  new WithFireSimConfigTweaks ++
+-  new chipyard.CVA6Config)
+ 
+ //**********************************************************************************
+ // System with 16 LargeBOOMs that can be simulated with Golden Gate optimizations
+@@ -346,18 +320,7 @@
+   new WithFireSimConfigTweaks ++
+   new chipyard.RocketConfig)
+ 
+-class FireSimLeanGemminiRocketMMIOOnlyConfig extends Config(
+-  new WithDefaultMMIOOnlyFireSimBridges ++
+-  new WithFireSimConfigTweaks ++
+-  new chipyard.LeanGemminiRocketConfig)
+ 
+-class FireSimRadianceClusterSynConfig extends Config(
+-  new chipyard.harness.WithHarnessBinderClockFreqMHz(500.0) ++
+-  new chipyard.config.WithNoTraceIO ++
+-  new WithDefaultFireSimBridges ++
+-  new chipyard.config.WithRadBootROM ++
+-  new WithFireSimConfigTweaks ++
+-  new chipyard.RadianceClusterSynConfig)
+ 
+ class FireSimLargeBoomCospikeConfig extends Config(
+   new WithCospikeBridge ++

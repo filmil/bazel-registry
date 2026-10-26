@@ -1,0 +1,13 @@
+{
+    "url": "https://github.com/ucb-bar/chipyard/archive/157dd69e49b9866be2bf8db390ee78bc38cd4438.tar.gz",
+    "integrity": "sha256-7Um712U8MiCAGPbkJWqAIVNk29cCK+govygOcbBEtaI=",
+    "strip_prefix": "chipyard-157dd69e49b9866be2bf8db390ee78bc38cd4438",
+    "overlay": {
+        "MODULE.bazel": "sha256-7A6Jian/ZefqnlC4K5aLztjPVAXx1/K90NEfQ1rOqcE=",
+        "BUILD.bazel": "sha256-r/svQQGtifZtPY00vbjEiZNQriTrVUT9Mx/4C6gNQrs="
+    },
+    "patches": {
+        "chipyard-firechip-optional-generators.patch": "sha256-3q5NuRxBUdu9xj4mxcjd6ief9PXMgLUqPxszMiiIGwQ="
+    },
+    "patch_strip": 1
+}

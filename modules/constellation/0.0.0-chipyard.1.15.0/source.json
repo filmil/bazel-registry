@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/ucb-bar/constellation/archive/c1b42cd0c7c7d6e4fc1ed9bf1f86fbd3b31ac510.tar.gz",
+    "integrity": "sha256-Q77/Knj+Pj2GVIIDEAz8Vk04ugfKbL26po4TdwnHUz8=",
+    "strip_prefix": "constellation-c1b42cd0c7c7d6e4fc1ed9bf1f86fbd3b31ac510",
+    "overlay": {
+        "MODULE.bazel": "sha256-wFtImKEn76o94/Yycj6cIDam7vtK9PdtFWeCjRxI4NI=",
+        "BUILD.bazel": "sha256-agPyc/AOZ5ZQS7y87DITZqxtJA9yeKLfWVcRe4S36tw="
+    }
+}

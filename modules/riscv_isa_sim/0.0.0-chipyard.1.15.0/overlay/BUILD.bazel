@@ -1,0 +1,22 @@
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "configure_make")
+
+filegroup(
+    name = "all",
+    srcs = glob(["**"], exclude = ["BUILD.bazel", "MODULE.bazel"]),
+)
+
+# Spike, from its own autoconf, without Boost (its optional debugger and
+# remote bitbang interface). libfesvr carries the TSI and DTM front-ends
+# FireSim's bridges use; libriscv carries cospike's ISA model.
+configure_make(
+    name = "riscv_isa_sim",
+    configure_options = ["--without-boost", "--without-boost-asio", "--without-boost-regex"],
+    lib_source = ":all",
+    build_data = ["@dtc//:dtc"],
+    env = {"DTC": "$$EXT_BUILD_ROOT$$/$(execpath @dtc//:dtc)"},
+    out_include_dir = "include",
+    out_shared_libs = ["libriscv.so", "libsoftfloat.so", "libcustomext.so"],
+    out_static_libs = ["libfesvr.a", "libdisasm.a"],
+    args = ["-j8"],
+    visibility = ["//visibility:public"],
+)

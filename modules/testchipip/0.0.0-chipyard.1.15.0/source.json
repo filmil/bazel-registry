@@ -1,0 +1,13 @@
+{
+    "url": "https://github.com/ucb-bar/testchipip/archive/555ff3fbc12f81a8feff7a4801930fb384ddd2ae.tar.gz",
+    "integrity": "sha256-bsxUk9qqabHcW7tDayyfZr9O0QBW6uPc6OnMkynY0x0=",
+    "strip_prefix": "testchipip-555ff3fbc12f81a8feff7a4801930fb384ddd2ae",
+    "overlay": {
+        "MODULE.bazel": "sha256-FZsL2CMcr2EN3SNeFuBlNs+x2TiwDkeg2p8ge8gxWj0=",
+        "BUILD.bazel": "sha256-sY1x+v3rmwteefg4TCxaw5EarlVbSW8/Ws8iM6vhZ/4="
+    },
+    "patches": {
+        "testchipip-void-pointer-arith.patch": "sha256-zLuycTWORMb+jqCikDHNCWnQTe6sPmmNXn9tAVRPOOc="
+    },
+    "patch_strip": 1
+}

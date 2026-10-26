@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/chipsalliance/cde/archive/2bcaeae2b9914bd25497ce3c6fa62dc5ca80e09f.tar.gz",
+    "integrity": "sha256-COjo7gGuHRHHl8GKntxnpIcCt/iIuV6kCZaqiVRDVOM=",
+    "strip_prefix": "cde-2bcaeae2b9914bd25497ce3c6fa62dc5ca80e09f",
+    "overlay": {
+        "MODULE.bazel": "sha256-cSteeVy3nqU+RWybevVwVD+I16MFS6LfAR5uEeNyY20=",
+        "BUILD.bazel": "sha256-ZgVGTLGODY4lgh9gOJcQMcwHv0pjOGtC2Wps0hw2Z9s="
+    }
+}

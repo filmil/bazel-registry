@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/riscv-software-src/riscv-isa-sim/archive/9c190a07c6838f6392bafa4ad83acea462c7f759.tar.gz",
+    "integrity": "sha256-WG2S9Mw6Ki3q07bBAnR4nSYYtGhzXsKWquqCLtyADjs=",
+    "strip_prefix": "riscv-isa-sim-9c190a07c6838f6392bafa4ad83acea462c7f759",
+    "overlay": {
+        "MODULE.bazel": "sha256-jhOrOnu/VoevpyFxnhcZ16B5+fyEMfJ+ZQs6Tn+pIP8=",
+        "BUILD.bazel": "sha256-zZRXAUWZRX4vFG+zzlCWTJxZCJfUBARRcRWZF1mc2JU="
+    }
+}
