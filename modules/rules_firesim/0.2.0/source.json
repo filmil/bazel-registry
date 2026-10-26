@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/filmil/bazel_rules_firesim/releases/download/v0.2.0/bazel_rules_firesim-v0.2.0.zip",
+    "integrity": "sha256-KVye+1DnIM0nvINMySn3RIa0eMrtHRzokzqzrJJU3Sk=",
+    "strip_prefix": "",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-TuV/XzmlYh4dhYVVhIVU1uAhSvQOekpeVV8nHO/UYXU="
+    },
+    "patch_strip": 1
+}
