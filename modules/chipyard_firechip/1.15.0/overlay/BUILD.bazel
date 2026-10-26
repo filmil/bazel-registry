@@ -82,7 +82,7 @@ cc_library(
     ],
     hdrs = glob([B + "/**/*.h"]),
     copts = ["-std=c++20", "-DFIRESIM", "-Wno-inconsistent-missing-override", "-Wno-unused-variable"],
-    includes = [B, B + "/bridges", B + "/bridges/tracerv", B + "/bridge/test"],
+    includes = [B, B + "/bridges", B + "/bridges/tracerv"],
     deps = ["@firesim_target//:midas_bridges", "@testchipip//:csrc", "@riscv_isa_sim//:riscv_isa_sim", "@zlib", "@libdwarf//:libdwarf", "@elfutils//:libelf"],
     visibility = ["//visibility:public"],
 )

@@ -4,7 +4,7 @@
     "strip_prefix": "chipyard-157dd69e49b9866be2bf8db390ee78bc38cd4438",
     "overlay": {
         "MODULE.bazel": "sha256-7A6Jian/ZefqnlC4K5aLztjPVAXx1/K90NEfQ1rOqcE=",
-        "BUILD.bazel": "sha256-r/svQQGtifZtPY00vbjEiZNQriTrVUT9Mx/4C6gNQrs="
+        "BUILD.bazel": "sha256-hffaCuTvZztr0NqUNtM6iA9Tfceunp7IVb5xAX6AOho="
     },
     "patches": {
         "chipyard-firechip-optional-generators.patch": "sha256-3q5NuRxBUdu9xj4mxcjd6ief9PXMgLUqPxszMiiIGwQ="
