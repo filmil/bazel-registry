@@ -4,7 +4,7 @@
     "strip_prefix": "NiteFury-and-LiteFury-firesim-dfed09d33196ba4c96bca0ca2b078ce1bdb16c8c",
     "overlay": {
         "MODULE.bazel": "sha256-okKAsNHUESuB3Wyq2FTw0opcbnyBMmZGCwWJ/4uEanU=",
-        "BUILD.bazel": "sha256-m3G0gSpOB/BGRk6GZMjO1tz93G3OnudgStu9Oh6sjUc="
+        "BUILD.bazel": "sha256-ccKeqyqQS+XfmdQhpqTlFQG1m/Se2t9mLd+3hoNhfG4="
     },
     "patches": {
         "nitefury-vivado-2025.2.patch": "sha256-dPAsnQAq6nyp3KhCY5541N8TOqgntWCKDy7SA3hrzsc="
