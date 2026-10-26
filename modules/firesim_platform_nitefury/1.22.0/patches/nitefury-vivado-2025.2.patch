@@ -1,0 +1,20 @@
+--- a/Sample-Projects/Project-0/cl_firesim/Nitefury-II/project/project.tcl	2026-10-26 01:44:47.498537289 +0100
++++ b/Sample-Projects/Project-0/cl_firesim/Nitefury-II/project/project.tcl	2026-10-26 01:44:47.500537288 +0100
+@@ -333,7 +333,7 @@
+   xilinx.com:ip:util_ds_buf:2.2\
+   xilinx.com:ip:util_vector_logic:2.0\
+   xilinx.com:ip:xadc_wiz:3.3\
+-  xilinx.com:ip:xdma:4.1\
++  xilinx.com:ip:xdma:4.2\
+   xilinx.com:ip:xlslice:1.0\
+   xilinx.com:ip:axi_clock_converter:2.1\
+   "
+@@ -694,7 +694,7 @@
+  ] $xadc_wiz_0
+ 
+   # Create instance: xdma_0, and set properties
+-  set xdma_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xdma:4.1 xdma_0 ]
++  set xdma_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xdma:4.2 xdma_0 ]
+   set_property -dict [ list \
+    CONFIG.PF0_DEVICE_ID_mqdma {9024} \
+    CONFIG.PF0_SRIOV_VF_DEVICE_ID {0000} \

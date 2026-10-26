@@ -1,0 +1,88 @@
+load("@rules_scala//scala:scala.bzl", "scala_binary")
+load("@chipyard_scala//:defs.bzl", "chisel6_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+chisel6_library(
+    name = "tracegen",
+    srcs = glob(["generators/tracegen/src/main/scala/**/*.scala"]),
+    deps = ["@testchipip", "@rocket_chip", "@rocket_chip_inclusive_cache//:inclusive_cache", "@riscv_boom//:boom"],
+)
+
+# Chipyard's DSP examples need dsptools; the Rocket FireSim configs don't.
+# These are the sources Chipyard itself leaves out under Chisel 7.
+DSP = [
+    "generators/chipyard/src/main/scala/example/dsptools/**",
+    "generators/chipyard/src/main/scala/config/MMIOAcceleratorConfigs.scala",
+    "generators/chipyard/src/main/scala/config/TutorialConfigs.scala",
+]
+
+chisel6_library(
+    name = "chipyard",
+    srcs = glob(
+        ["generators/chipyard/src/main/scala/**/*.scala"],
+        exclude = DSP,
+    ) + glob(["tools/stage/src/main/scala/**/*.scala"]),
+    resource_dir = "generators/chipyard/src/main/resources",
+    deps = [
+        "@testchipip",
+        "@rocket_chip",
+        "@riscv_boom//:boom",
+        "@rocket_chip_blocks",
+        "@rocket_chip_inclusive_cache//:inclusive_cache",
+        "@icenet",
+        ":tracegen",
+        "@constellation",
+        "@bar_fetchers",
+        "@shuttle",
+        "@rerocc",
+        "@firrtl2//:firrtl2_bridge",
+        "@chipyard_maven//:org_reflections_reflections",
+    ],
+)
+
+chisel6_library(
+    name = "firechip_bridgeinterfaces",
+    srcs = glob(["generators/firechip/bridgeinterfaces/src/main/scala/**/*.scala"]),
+)
+
+chisel6_library(
+    name = "firechip_bridgestubs",
+    srcs = glob(["generators/firechip/bridgestubs/src/main/scala/**/*.scala"]),
+    deps = [":chipyard", "@firesim_target//:firesim_lib", ":firechip_bridgeinterfaces"],
+)
+
+chisel6_library(
+    name = "firechip",
+    srcs = glob(["generators/firechip/chip/src/main/scala/**/*.scala"]),
+    deps = [":chipyard", "@firesim_target//:firesim_lib", ":firechip_bridgestubs", ":firechip_bridgeinterfaces"],
+)
+
+# chipyard.Generator, as common.mk runs it for FireSim targets.
+scala_binary(
+    name = "generator",
+    main_class = "chipyard.Generator",
+    deps = [":firechip"],
+    visibility = ["//visibility:public"],
+)
+
+# FireChip's half of the host driver, as its driver.mk lists it. None of it
+# includes the design's generated header, so it is built once.
+B = "generators/firechip/bridgestubs/src/main/cc"
+
+cc_library(
+    name = "firechip_driver_lib",
+    srcs = glob([
+        B + "/bridges/*.cc",
+        B + "/bridges/tracerv/*.cc",
+        B + "/bridges/cospike/*.cc",
+    ]) + [
+        B + "/fesvr/firesim_tsi.cc",
+        B + "/fesvr/firesim_dtm.cc",
+        "generators/firechip/chip/src/main/cc/firesim/firesim_top.cc",
+    ],
+    hdrs = glob([B + "/**/*.h"]),
+    copts = ["-std=c++20", "-DFIRESIM", "-Wno-inconsistent-missing-override", "-Wno-unused-variable"],
+    includes = [B, B + "/bridges", B + "/bridges/tracerv", B + "/bridge/test"],
+    deps = ["@firesim_target//:midas_bridges", "@testchipip//:csrc", "@riscv_isa_sim//:riscv_isa_sim", "@zlib", "@libdwarf//:libdwarf", "@elfutils//:libelf"],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/chipsalliance/diplomacy/archive/fe5e131d4fc8adec14a3ce4a4935bb5c0a269871.tar.gz",
+    "integrity": "sha256-4J7XTEXR3IV89o/qoLhsYU/kkMBnB/PwW/U/PTmgENU=",
+    "strip_prefix": "diplomacy-fe5e131d4fc8adec14a3ce4a4935bb5c0a269871",
+    "overlay": {
+        "MODULE.bazel": "sha256-gC30/+hEklU8Un+8VjsYqgTc9miDKa590KKPjKzAQMo=",
+        "BUILD.bazel": "sha256-u1zSs7SLh/mUvwqzHgewvwtXVF0SwvFCCu1plRN4wxk="
+    }
+}

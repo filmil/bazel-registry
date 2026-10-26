@@ -1,0 +1,57 @@
+load("@rules_java//java:defs.bzl", "java_binary")
+load("@rules_scala//scala:scala.bzl", "scala_library")
+load("@chipyard_scala//:defs.bzl", "CHIPYARD_SCALACOPTS", "chisel6_library")
+
+java_binary(
+    name = "antlr4",
+    main_class = "org.antlr.v4.Tool",
+    runtime_deps = ["@chipyard_maven//:org_antlr_antlr4"],
+)
+
+# sbt-antlr4 with antlr4GenVisitor/antlr4GenListener and package firrtl2.antlr.
+ANTLR_OUT = ["FIRRTL%s.java" % s for s in ["Lexer", "Parser", "Listener", "BaseListener", "Visitor", "BaseVisitor"]]
+
+genrule(
+    name = "firrtl_antlr",
+    srcs = ["src/main/antlr4/FIRRTL.g4"],
+    outs = ["antlr/" + f for f in ANTLR_OUT],
+    cmd = "$(location :antlr4) -visitor -listener -package firrtl2.antlr " +
+          "-Xexact-output-dir -o $(RULEDIR)/antlr $<",
+    tools = [":antlr4"],
+)
+
+# sbt-buildinfo, with the keys build.sbt names.
+genrule(
+    name = "buildinfo",
+    outs = ["BuildInfo.scala"],
+    cmd = """cat > $@ <<'X'
+package firrtl2
+
+case object BuildInfo {
+  val buildInfoPackage: String = "firrtl2"
+  val version: String = "1.15.0-bazel"
+  val scalaVersion: String = "2.13.16"
+  val sbtVersion: String = "none"
+  override val toString: String = s"buildInfoPackage: $$buildInfoPackage, version: $$version, scalaVersion: $$scalaVersion"
+}
+X""",
+)
+
+scala_library(
+    name = "firrtl2",
+    srcs = glob(["src/main/scala/**/*.scala"]) + [":firrtl_antlr", ":buildinfo"],
+    resources = glob(["src/main/resources/**"]),
+    resource_strip_prefix = "src/main/resources",
+    scalacopts = CHIPYARD_SCALACOPTS,
+    deps = [
+        "@chipyard_maven//:com_github_scopt_scopt_2_13",
+        "@chipyard_maven//:org_json4s_json4s_native_2_13",
+        "@chipyard_maven//:org_apache_commons_commons_text",
+        "@chipyard_maven//:com_lihaoyi_os_lib_2_13",
+        "@chipyard_maven//:org_scala_lang_modules_scala_parallel_collections_2_13",
+        "@chipyard_maven//:org_antlr_antlr4_runtime",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+chisel6_library(name = "firrtl2_bridge", srcs = glob(["bridge/src/main/scala/**/*.scala"]), deps = [":firrtl2"])

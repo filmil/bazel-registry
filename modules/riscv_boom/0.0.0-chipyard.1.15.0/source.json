@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/riscv-boom/riscv-boom/archive/ba03175e0a3cf5c0d5a7f14d385ac1c8998c4428.tar.gz",
+    "integrity": "sha256-dHZF/e3dBjUt1gUnRa2qsu2JVI3Qf9O9/WyihmI14YQ=",
+    "strip_prefix": "riscv-boom-ba03175e0a3cf5c0d5a7f14d385ac1c8998c4428",
+    "overlay": {
+        "MODULE.bazel": "sha256-xDjyztjHtAHo6X0GVmGIGo8qbKHr3QN7W0SGIpItnzw=",
+        "BUILD.bazel": "sha256-uWvvvK2Ua3OXG46MY1HM162H/YlmoSY93OR2esxryDg="
+    }
+}

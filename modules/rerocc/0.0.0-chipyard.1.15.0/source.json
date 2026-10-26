@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/ucb-bar/rerocc/archive/8b672f4e836c111d09e135e8981b611d120692de.tar.gz",
+    "integrity": "sha256-XLNNZGwLDzxjiXzljRAP9V8eTeJNOZD2laib8lZLtYI=",
+    "strip_prefix": "rerocc-8b672f4e836c111d09e135e8981b611d120692de",
+    "overlay": {
+        "MODULE.bazel": "sha256-XrYDvZ9mkd13S0Hbx/lYINpJqx7f7LqAj5xjul+hBpU=",
+        "BUILD.bazel": "sha256-AGnTIfWC73Xwr8bw4Jp/h3nqKC7B7NuyxQXsGrkuXZc="
+    }
+}

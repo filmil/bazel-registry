@@ -1,0 +1,8 @@
+# FireSim's Nitefury II board project (the NiteFury-and-LiteFury-firesim
+# submodule of FireSim 1.22.0), patched for Vivado 2025.2. The data that
+# @rules_firesim's firesim_bitstream builds from.
+filegroup(
+    name = "all",
+    srcs = glob(["**"], exclude = ["BUILD.bazel", "MODULE.bazel"]),
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,15 @@
+module(
+    name = "testchipip",
+    version = "0.0.0-chipyard.1.15.0",
+    compatibility_level = 0,
+)
+
+bazel_dep(name = "rules_jvm_external", version = "6.7")
+bazel_dep(name = "chipyard_scala", version = "0.1.0")
+bazel_dep(name = "rocket_chip", version = "0.0.0-chipyard.1.15.0")
+bazel_dep(name = "rocket_chip_blocks", version = "0.0.0-chipyard.1.15.0")
+bazel_dep(name = "riscv_isa_sim", version = "0.0.0-chipyard.1.15.0")
+bazel_dep(name = "rules_cc", version = "0.2.27")
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+use_repo(maven, "chipyard_maven")

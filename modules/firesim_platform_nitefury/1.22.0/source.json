@@ -1,0 +1,13 @@
+{
+    "url": "https://github.com/firesim/NiteFury-and-LiteFury-firesim/archive/dfed09d33196ba4c96bca0ca2b078ce1bdb16c8c.tar.gz",
+    "integrity": "sha256-Q0HiRKr6a2m+DKu7FQJ1U9cgT/MePdskBl7h6JZ6WCg=",
+    "strip_prefix": "NiteFury-and-LiteFury-firesim-dfed09d33196ba4c96bca0ca2b078ce1bdb16c8c",
+    "overlay": {
+        "MODULE.bazel": "sha256-okKAsNHUESuB3Wyq2FTw0opcbnyBMmZGCwWJ/4uEanU=",
+        "BUILD.bazel": "sha256-m3G0gSpOB/BGRk6GZMjO1tz93G3OnudgStu9Oh6sjUc="
+    },
+    "patches": {
+        "nitefury-vivado-2025.2.patch": "sha256-dPAsnQAq6nyp3KhCY5541N8TOqgntWCKDy7SA3hrzsc="
+    },
+    "patch_strip": 1
+}

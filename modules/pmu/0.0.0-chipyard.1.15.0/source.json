@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/ucb-bar/pmu/archive/079b96f7b9a0cc5fe405f9bd713741bd64430fdc.tar.gz",
+    "integrity": "sha256-LiNwVMwrY6JeEmEBN+f0hhVUcqshKtAt82aaT2XDzGM=",
+    "strip_prefix": "pmu-079b96f7b9a0cc5fe405f9bd713741bd64430fdc",
+    "overlay": {
+        "MODULE.bazel": "sha256-FUOPvP1uc6Z+++0KZBiX7OLdPtSRPiglr7Inaxxsd9I=",
+        "BUILD.bazel": "sha256-6bCIwUmA4+Ax39BSkWcsLOoAcArVkDZcdUK4Ahmj5eU="
+    }
+}

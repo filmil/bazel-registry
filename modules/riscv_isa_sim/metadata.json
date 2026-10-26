@@ -1,0 +1,18 @@
+{
+    "homepage": "https://github.com/riscv-software-src/riscv-isa-sim",
+    "maintainers": [
+        {
+            "name": "Filip Filmar",
+            "email": "246576+filmil@users.noreply.github.com",
+            "github": "filmil",
+            "github_user_id": 246576
+        }
+    ],
+    "repository": [
+        "github:riscv-software-src/riscv-isa-sim"
+    ],
+    "versions": [
+        "0.0.0-chipyard.1.15.0"
+    ],
+    "yanked_versions": {}
+}

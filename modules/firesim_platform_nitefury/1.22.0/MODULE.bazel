@@ -1,0 +1,6 @@
+module(
+    name = "firesim_platform_nitefury",
+    version = "1.22.0",
+    compatibility_level = 0,
+)
+

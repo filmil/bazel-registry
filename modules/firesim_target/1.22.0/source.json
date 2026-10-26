@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/firesim/firesim/archive/e1bdea8bb042b900995436ecc3d7c44100eb9da0.tar.gz",
+    "integrity": "sha256-dZRCDzG+b8Oscfbfl5I9+DKmRJWUyC89FT0+sLC+QSA=",
+    "strip_prefix": "firesim-e1bdea8bb042b900995436ecc3d7c44100eb9da0",
+    "overlay": {
+        "MODULE.bazel": "sha256-Fy/2/ZlzmUtdBTJTZovm7zTGZ49u5irybnBR7LnwQ2k=",
+        "BUILD.bazel": "sha256-E+Hj9FHmU3BvVZbVpw+JVNYRqNv6gitwKY3vMQ79Zcs="
+    }
+}

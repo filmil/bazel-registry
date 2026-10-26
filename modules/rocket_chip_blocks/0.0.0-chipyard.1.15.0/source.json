@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/chipsalliance/rocket-chip-blocks/archive/f8c7fddbd7639b15fefc968af59fcc4a8f7df73b.tar.gz",
+    "integrity": "sha256-BTIDu5vMz8gcBRGfJCsSg97SBpotNxku9TGgfKD3TPE=",
+    "strip_prefix": "rocket-chip-blocks-f8c7fddbd7639b15fefc968af59fcc4a8f7df73b",
+    "overlay": {
+        "MODULE.bazel": "sha256-Rbg7EykA+CHI3b154y7CXs8p5tnviq0j7gi+38vP1ng=",
+        "BUILD.bazel": "sha256-19Iw7K843jGz2EArF8QeNizYS5LNWxzxvAgwBe/GkWQ="
+    }
+}

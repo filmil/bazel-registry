@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/ucb-bar/berkeley-hardfloat/archive/0ecaef097ce2accbd16a61613699450ed5533f29.tar.gz",
+    "integrity": "sha256-4muqOsGMg/VtrIPf8T94hzg8e27N8y6kBNK5RDH4ZHg=",
+    "strip_prefix": "berkeley-hardfloat-0ecaef097ce2accbd16a61613699450ed5533f29",
+    "overlay": {
+        "MODULE.bazel": "sha256-cAEFm3sp1ao12z8LsFloFYyq1DJt85tAcpmMbB36DFw=",
+        "BUILD.bazel": "sha256-2SO2ifv7BYxKq/aqhQTkYKA6Psgcy6Fr/UFCrXSypAM="
+    }
+}
