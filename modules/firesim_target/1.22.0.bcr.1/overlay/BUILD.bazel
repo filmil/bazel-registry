@@ -1,0 +1,41 @@
+load("@chipyard_scala//:defs.bzl", "chisel6_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+# Compiled here in the target's world (Chisel 6), as Chipyard's build.sbt does.
+chisel6_library(name = "targetutils", srcs = glob(["sim/midas/targetutils/src/main/scala/**/*.scala"]), resource_dir = "sim/midas/targetutils/src/main/resources")
+
+chisel6_library(name = "firesim_lib", srcs = glob(["sim/firesim-lib/src/main/scala/**/*.scala"]), resource_dir = "sim/firesim-lib/src/main/resources", deps = [":targetutils"])
+
+cc_library(
+    name = "midas_bridges",
+    srcs = glob([
+        "sim/midas/src/main/cc/bridges/*.cc",
+        "sim/midas/src/main/cc/core/*.cc",
+    ]),
+    hdrs = glob([
+        "sim/midas/src/main/cc/bridges/*.h",
+        "sim/midas/src/main/cc/core/*.h",
+        "sim/midas/src/main/cc/*.h",
+    ]),
+    copts = ["-std=c++20", "-Wall", "-Wno-unused-variable", "-DFIRESIM"],
+    includes = ["sim/midas/src/main/cc"],
+    linkopts = ["-lpthread", "-lrt"],
+    deps = ["@gmp"],
+    visibility = ["//visibility:public"],
+)
+
+# The per-design driver sources, compiled by the consumer with the design's
+# generated header.
+exports_files(glob(["sim/midas/src/main/cc/*.cc"]))
+
+# FireSim's example targets' drivers (GCD's TestGCD.cc and the rest), for a
+# platform's own build of an example, as FireSim's midasexamples
+# driver.mk compiles them.
+exports_files(glob(["sim/src/main/cc/midasexamples/*.cc"]))
+
+cc_library(
+    name = "examples_driver_hdrs",
+    hdrs = glob(["sim/src/main/cc/**/*.h"]),
+    includes = ["sim/src/main/cc", "sim/src/main/cc/midasexamples"],
+    visibility = ["//visibility:public"],
+)
