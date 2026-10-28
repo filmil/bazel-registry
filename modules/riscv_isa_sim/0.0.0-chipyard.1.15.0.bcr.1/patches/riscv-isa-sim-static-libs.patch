@@ -1,0 +1,33 @@
+diff -ru a/fdt/fdt.mk.in b/fdt/fdt.mk.in
+--- a/fdt/fdt.mk.in
++++ b/fdt/fdt.mk.in
+@@ -17,3 +17,5 @@
+ 	fdt_overlay.c \
+ 
+ fdt_CFLAGS = -I$(src_dir)/fdt -Wno-sign-compare
++
++fdt_install_lib = yes
+diff -ru a/riscv/riscv.mk.in b/riscv/riscv.mk.in
+--- a/riscv/riscv.mk.in
++++ b/riscv/riscv.mk.in
+@@ -9,7 +9,7 @@
+ 
+ riscv_CFLAGS = -fPIC -I$(src_dir)/fdt
+ 
+-riscv_install_shared_lib = yes
++riscv_install_lib = yes
+ 
+ riscv_install_pcs = yes
+ 
+diff -ru a/softfloat/softfloat.mk.in b/softfloat/softfloat.mk.in
+--- a/softfloat/softfloat.mk.in
++++ b/softfloat/softfloat.mk.in
+@@ -245,7 +245,7 @@
+ 	ui64_to_f32.c \
+ 	ui64_to_f64.c \
+ 
+-softfloat_install_shared_lib = yes
++softfloat_install_lib = yes
+ 
+ softfloat_test_srcs =
+ 

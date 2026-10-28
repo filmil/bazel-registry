@@ -28,3 +28,4 @@ modules/rocket_chip_inclusive_cache/0.0.0-chipyard.1.15.0/overlay
 modules/shuttle/0.0.0-chipyard.1.15.0/overlay
 modules/testchipip/0.0.0-chipyard.1.15.0/overlay
 modules/firesim_target/1.22.0.bcr.1/overlay
+modules/riscv_isa_sim/0.0.0-chipyard.1.15.0.bcr.1/overlay

@@ -1,0 +1,8 @@
+module(
+    name = "riscv_isa_sim",
+    version = "0.0.0-chipyard.1.15.0.bcr.1",
+    compatibility_level = 0,
+)
+
+bazel_dep(name = "rules_foreign_cc", version = "0.15.1")
+bazel_dep(name = "dtc", version = "1.7.2.bcr.2")

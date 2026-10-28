@@ -1,0 +1,28 @@
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "configure_make")
+
+filegroup(
+    name = "all",
+    srcs = glob(["**"], exclude = ["BUILD.bazel", "MODULE.bazel"]),
+)
+
+# Spike, from its own autoconf, without Boost (its optional debugger and
+# remote bitbang interface). libfesvr carries the TSI and DTM front-ends
+# FireSim's bridges use; libriscv carries cospike's ISA model.
+#
+# Every library is static (riscv-isa-sim-static-libs.patch): Spike's
+# Makefile builds each one's .a and installed libriscv and libsoftfloat as
+# .so only, so a driver needed them beside it at run time, and a driver
+# given cap_net_raw can't find them there (bazel_rules_firesim#10). The
+# order is the link order: each library before the ones it uses.
+# libcustomext, a plugin loaded by path, is not exported.
+configure_make(
+    name = "riscv_isa_sim",
+    configure_options = ["--without-boost", "--without-boost-asio", "--without-boost-regex"],
+    lib_source = ":all",
+    build_data = ["@dtc//:dtc"],
+    env = {"DTC": "$$EXT_BUILD_ROOT$$/$(execpath @dtc//:dtc)"},
+    out_include_dir = "include",
+    out_static_libs = ["libriscv.a", "libdisasm.a", "libfesvr.a", "libsoftfloat.a", "libfdt.a"],
+    args = ["-j8"],
+    visibility = ["//visibility:public"],
+)
