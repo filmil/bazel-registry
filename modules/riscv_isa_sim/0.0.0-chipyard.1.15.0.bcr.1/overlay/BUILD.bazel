@@ -23,6 +23,9 @@ configure_make(
     env = {"DTC": "$$EXT_BUILD_ROOT$$/$(execpath @dtc//:dtc)"},
     out_include_dir = "include",
     out_static_libs = ["libriscv.a", "libdisasm.a", "libfesvr.a", "libsoftfloat.a", "libfdt.a"],
+    # What libriscv.so's own links brought before; part of libc since
+    # glibc 2.34, named for older ones.
+    linkopts = ["-ldl", "-lpthread"],
     args = ["-j8"],
     visibility = ["//visibility:public"],
 )
