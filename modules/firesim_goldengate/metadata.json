@@ -12,7 +12,8 @@
         "github:filmil/bazel_firesim_goldengate"
     ],
     "versions": [
-        "1.22.0"
+        "1.22.0",
+        "1.22.0.1"
     ],
     "yanked_versions": {}
 }
