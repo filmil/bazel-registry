@@ -1,0 +1,14 @@
+===================================================================
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -3,9 +3,9 @@
+ # hdlf_tools: development tools shared by the hdlf_rules modules. A module
+ # takes it as a dev dependency only, so its users never see it.
+ module(
+     name = "hdlf_tools",
+-    version = "0.0.0",
++    version = "0.0.1",
+     bazel_compatibility = [">=8.0.0"],
+ )
+ 
+ # The tools are pure Go, built from source; rules_go brings its own Go SDK,

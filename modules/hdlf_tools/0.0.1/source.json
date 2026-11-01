@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-FxUlXL+enn1fxTsNFlcgw2Um01v37nZvFx+E1lWeS3s=",
+    "strip_prefix": "",
+    "url": "https://github.com/filmil/bazel_hdlf_tools/releases/download/v0.0.1/bazel_hdlf_tools-v0.0.1.zip",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-OXrcQR7u98P07xfFb1f6Fph6EFADxpche//cDcDEFIQ="
+    },
+    "patch_strip": 1
+}
