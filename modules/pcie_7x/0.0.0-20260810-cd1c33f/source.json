@@ -3,9 +3,9 @@
     "integrity": "sha256-6L80SAZtGXI+HZonvrqLZNeNnRSI91afN8UIYb8p2To=",
     "strip_prefix": "pcie_7x-cd1c33f53401d6ce1b6ec35da17884455477c2e9",
     "overlay": {
-        "BUILD.bazel": "sha256-Zn5A9vD4zkSfF+fuPripwD/Ri8ez9wf/hqXiOZ0Fb6E=",
+        "BUILD.bazel": "sha256-ytzwucm+skcpVhjP87pbv0rI5c/4H/S8B76KCC4gFLA=",
         "MODULE.bazel": "sha256-5z9F1XJFpYA6T/Jb7+a+1zQKl+nlKY9KlIu0/fpMzdQ=",
-        "test_module/BUILD.bazel": "sha256-pGpl2W3Lq1c5U7kaIODKG6+gBvYPxDzfN4BVZrNV+zQ=",
+        "test_module/BUILD.bazel": "sha256-LSPaniR7dH0HL9G20OgUkaQtjHc/eZp5ySMpdkAYbCU=",
         "test_module/MODULE.bazel": "sha256-8mdGT971thdEjin9pLnO9uk3slH9g5JdJx2N+kFR7Og="
     }
 }

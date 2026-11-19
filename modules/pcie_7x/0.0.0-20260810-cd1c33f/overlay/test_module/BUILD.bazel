@@ -1,5 +1,6 @@
-# Depends on each public target of @pcie_7x, so a build checks that the
-# targets exist, are visible, and match at least one file.
+# Depends on each public target of @pcie_7x and on some exported files.
+# The build fails if a target is missing, is not visible, or lists a file
+# that the archive does not have.
 
 filegroup(
     name = "all_public",
@@ -7,7 +8,11 @@ filegroup(
         "@pcie_7x//:LICENSE",
         "@pcie_7x//:aximm_minimal",
         "@pcie_7x//:msi_driver",
+        "@pcie_7x//:pcie_7x_ypcb_k480t.xdc",
+        "@pcie_7x//:pcie_block",
         "@pcie_7x//:src",
+        "@pcie_7x//:src/aximm-minimal/pcie_7x_top_aximm.v",
+        "@pcie_7x//:src_except_pcie_block",
         "@pcie_7x//:xdc",
     ],
 )

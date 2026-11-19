@@ -1,16 +1,25 @@
-# Depends on each public target of @pci_eerie, so a build checks that the
-# targets exist, are visible, and match at least one file.
+# Depends on each public target of @pci_eerie and on some exported files.
+# The build fails if a target is missing, is not visible, or lists a file
+# that the archive does not have. :pcie_7x_eerie also pulls in @pcie_7x.
 
 filegroup(
     name = "all_public",
     srcs = [
         "@pci_eerie//:LICENSE",
         "@pci_eerie//:integration",
+        "@pci_eerie//:pcie_7x_eerie",
         "@pci_eerie//:rtl",
         "@pci_eerie//:rtl_hdrs",
         "@pci_eerie//:rtl_srcs",
-        "@pci_eerie//:sim",
-        "@pci_eerie//:syn",
+        "@pci_eerie//:sim_filelists",
+        "@pci_eerie//:sim_refs",
+        "@pci_eerie//:syn/top_ypcb_k480t.v",
+        "@pci_eerie//:syn/ypcb_k480t_pins.xdc",
+        "@pci_eerie//:syn_srcs",
+        "@pci_eerie//:syn_tcl",
+        "@pci_eerie//:syn_xdc",
         "@pci_eerie//:tb",
+        "@pci_eerie//:tb_hdrs",
+        "@pci_eerie//:tb_srcs",
     ],
 )
