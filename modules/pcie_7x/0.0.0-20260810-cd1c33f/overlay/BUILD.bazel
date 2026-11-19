@@ -11,27 +11,61 @@ exports_files(
 # The core Verilog sources under src/, top level only.
 filegroup(
     name = "src",
-    srcs = glob(["src/*.v"]),
+    srcs = [
+        "src/axil_to_al.v",
+        "src/axis_pcie_to_al_us.v",
+        "src/litepcie_pcie_s7.v",
+        "src/pcie_7x.v",
+        "src/pcie_7x_aximm_msi_bd.v",
+        "src/pcie_axi_rx.v",
+        "src/pcie_axi_tx.v",
+        "src/pcie_block.v",
+        "src/pcie_brams.v",
+        "src/pcie_tx_thrtl_ctl.v",
+        "src/pipe_clock.v",
+        "src/pipe_wrapper.v",
+        "src/pipe_wrapper_gtx.v",
+        "src/xilinx_pcie_mmcm.v",
+    ],
     visibility = ["//visibility:public"],
 )
 
 # The minimal AXI-MM example tops and their AXI-Lite slaves.
 filegroup(
     name = "aximm_minimal",
-    srcs = glob(["src/aximm-minimal/*.v"]),
+    srcs = [
+        "src/aximm-minimal/axil_minimum.v",
+        "src/aximm-minimal/axil_minimum_msi.v",
+        "src/aximm-minimal/pcie_7x_top_aximm.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_hvs_70t.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_litepcie.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_msi.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_usdr.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_ypcb_480t.v",
+    ],
     visibility = ["//visibility:public"],
 )
 
 # Board constraint files.
 filegroup(
     name = "xdc",
-    srcs = glob(["*.xdc"]),
+    srcs = [
+        "pcie_7x_ac7100b.xdc",
+        "pcie_7x_ac7100b_uart.xdc",
+        "pcie_7x_hvs_k70t.xdc",
+        "pcie_7x_usdr.xdc",
+        "pcie_7x_ypcb_k480t.xdc",
+    ],
     visibility = ["//visibility:public"],
 )
 
 # The Linux MSI test driver sources.
 filegroup(
     name = "msi_driver",
-    srcs = glob(["pcie_7x_msi/**"]),
+    srcs = [
+        "pcie_7x_msi/Makefile",
+        "pcie_7x_msi/pcie_7x_msi.c",
+        "pcie_7x_msi/pcie_7x_msi_multi.c",
+    ],
     visibility = ["//visibility:public"],
 )

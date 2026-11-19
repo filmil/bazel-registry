@@ -32,7 +32,11 @@ filegroup(
 # The files that rtl/ sources include. Put rtl/ on the include path.
 filegroup(
     name = "rtl_hdrs",
-    srcs = glob(["rtl/*.vh"]),
+    srcs = [
+        "rtl/eerie_funcs.vh",
+        "rtl/pci_eerie_params.vh",
+        "rtl/pci_eerie_ports.vh",
+    ],
     visibility = ["//visibility:public"],
 )
 
@@ -56,30 +60,56 @@ filegroup(
 # Testbenches, the multi-lane PHY unit test among them.
 filegroup(
     name = "tb",
-    srcs = glob([
-        "tb/**/*.v",
-        "tb/**/*.vh",
-    ]),
+    srcs = [
+        "tb/board.v",
+        "tb/eerie_paths.vh",
+        "tb/eerie_tb_app.v",
+        "tb/eerie_tb_ep.v",
+        "tb/eerie_tb_ep_ml.v",
+        "tb/eerie_tests.vh",
+        "tb/host_tb.v",
+        "tb/pci_exp_usrapp_tx.v",
+        "tb/pipe_mon.v",
+        "tb/rp_mon.v",
+        "tb/unit/ml_phy_tb.v",
+    ],
     visibility = ["//visibility:public"],
 )
 
 # The xsim regression: file lists and reference decodes.
 filegroup(
     name = "sim",
-    srcs = glob([
-        "sim/*.f",
-        "sim/ref/*.txt",
-    ]),
+    srcs = [
+        "sim/files_common.f",
+        "sim/ref/baseline_cfg_dump.txt",
+        "sim/ref/baseline_gen1_decode.txt",
+        "sim/ref/baseline_gen2_decode.txt",
+        "sim/ref/eerie_gen1_decode.txt",
+        "sim/ref/eerie_gen2_decode.txt",
+        "sim/ref/rp_cfg_dump_hard.txt",
+    ],
     visibility = ["//visibility:public"],
 )
 
 # Synthesis tops, constraints and Vivado scripts.
 filegroup(
     name = "syn",
-    srcs = glob([
-        "syn/*.v",
-        "syn/*.xdc",
-        "syn/*.tcl",
-    ]),
+    srcs = [
+        "syn/ac7100b_pins.xdc",
+        "syn/ac7100b_x4_pins.xdc",
+        "syn/ac7100b_x4_timing.xdc",
+        "syn/eerie_host_app.v",
+        "syn/eerie_host_rp.v",
+        "syn/hvs_k70t_pins.xdc",
+        "syn/oxc_pcie_bram_7x.v",
+        "syn/pci_eerie_timing.xdc",
+        "syn/top_ac7100b_x4.v",
+        "syn/top_ypcb_k480t.v",
+        "syn/top_ypcb_k480t_rp.v",
+        "syn/vivado_impl.tcl",
+        "syn/ypcb_k480t_pins.xdc",
+        "syn/ypcb_k480t_rp.xdc",
+        "syn/ypcb_k480t_rp_pzssd.xdc",
+    ],
     visibility = ["//visibility:public"],
 )

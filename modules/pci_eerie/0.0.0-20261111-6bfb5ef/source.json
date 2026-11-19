@@ -3,9 +3,9 @@
     "integrity": "sha256-ulaP1o9WeztY1U2s/xtLkpmSjKMprTpwIS4kuovaqmE=",
     "strip_prefix": "pci_eerie-6bfb5ef7b1cc840a302440619b3acd93443967b8",
     "overlay": {
-        "BUILD.bazel": "sha256-ZfC1CLg3ALPdJgZ7C2WWAZeMt/6x07OUnkWAu+Ll9RI=",
+        "BUILD.bazel": "sha256-hnsyEdhZY0BrDDClWX8UDYx8MJ04RCWWzO5NO7ksX7U=",
         "MODULE.bazel": "sha256-I5zZgjsFtLV87+T4ZZKNOpkyad87mEUttk3cP/UG8Ik=",
         "test_module/BUILD.bazel": "sha256-ZCCIx5k9wquH88QN4Q/usGwT0MEcfNRMrWnmu2E1pJg=",
-        "test_module/MODULE.bazel": "sha256-LqyI9XveNj232imVo1c9Ll/YuJBKLTRfeP49q1wpmHs="
+        "test_module/MODULE.bazel": "sha256-dQucMmrc8b6DIDcZlgmv1RsgGCRLaQ8UOwJx1c7OIGU="
     }
 }
