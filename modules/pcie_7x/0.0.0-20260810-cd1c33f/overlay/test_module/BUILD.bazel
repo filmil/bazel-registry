@@ -1,0 +1,13 @@
+# Depends on each public target of @pcie_7x, so a build checks that the
+# targets exist, are visible, and match at least one file.
+
+filegroup(
+    name = "all_public",
+    srcs = [
+        "@pcie_7x//:LICENSE",
+        "@pcie_7x//:aximm_minimal",
+        "@pcie_7x//:msi_driver",
+        "@pcie_7x//:src",
+        "@pcie_7x//:xdc",
+    ],
+)

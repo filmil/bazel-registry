@@ -1,0 +1,16 @@
+# Depends on each public target of @pci_eerie, so a build checks that the
+# targets exist, are visible, and match at least one file.
+
+filegroup(
+    name = "all_public",
+    srcs = [
+        "@pci_eerie//:LICENSE",
+        "@pci_eerie//:integration",
+        "@pci_eerie//:rtl",
+        "@pci_eerie//:rtl_hdrs",
+        "@pci_eerie//:rtl_srcs",
+        "@pci_eerie//:sim",
+        "@pci_eerie//:syn",
+        "@pci_eerie//:tb",
+    ],
+)

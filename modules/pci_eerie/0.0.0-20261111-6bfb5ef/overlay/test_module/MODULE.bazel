@@ -1,0 +1,10 @@
+module(
+    name = "pci_eerie_test_module",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "pci_eerie", version = "0.0.0-20261111-6bfb5ef")
+local_path_override(
+    module_name = "pci_eerie",
+    path = "..",
+)

@@ -1,0 +1,85 @@
+# Bazel overlay for https://github.com/regymm/pci_eerie.
+# The upstream sources are unchanged. These targets name them for Bazel users.
+
+package(default_visibility = ["//visibility:private"])
+
+exports_files(
+    ["LICENSE"],
+    visibility = ["//visibility:public"],
+)
+
+# The soft core sources, in the compile order of rtl/files.f.
+filegroup(
+    name = "rtl_srcs",
+    srcs = [
+        "rtl/eerie_async_fifo.v",
+        "rtl/eerie_cfg.v",
+        "rtl/eerie_dll.v",
+        "rtl/eerie_ltssm.v",
+        "rtl/eerie_pl_deskew.v",
+        "rtl/eerie_pl_rx.v",
+        "rtl/eerie_pl_rx_ml.v",
+        "rtl/eerie_pl_tx.v",
+        "rtl/eerie_pl_tx_ml.v",
+        "rtl/eerie_sync.v",
+        "rtl/eerie_tl_rx.v",
+        "rtl/eerie_tl_tx.v",
+        "rtl/pci_eerie.v",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# The files that rtl/ sources include. Put rtl/ on the include path.
+filegroup(
+    name = "rtl_hdrs",
+    srcs = glob(["rtl/*.vh"]),
+    visibility = ["//visibility:public"],
+)
+
+# The sources and the headers together.
+filegroup(
+    name = "rtl",
+    srcs = [
+        ":rtl_hdrs",
+        ":rtl_srcs",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# The drop-in replacement for pcie_7x's pcie_block.v.
+filegroup(
+    name = "integration",
+    srcs = ["integration/pcie_block.v"],
+    visibility = ["//visibility:public"],
+)
+
+# Testbenches, the multi-lane PHY unit test among them.
+filegroup(
+    name = "tb",
+    srcs = glob([
+        "tb/**/*.v",
+        "tb/**/*.vh",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+# The xsim regression: file lists and reference decodes.
+filegroup(
+    name = "sim",
+    srcs = glob([
+        "sim/*.f",
+        "sim/ref/*.txt",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+# Synthesis tops, constraints and Vivado scripts.
+filegroup(
+    name = "syn",
+    srcs = glob([
+        "syn/*.v",
+        "syn/*.xdc",
+        "syn/*.tcl",
+    ]),
+    visibility = ["//visibility:public"],
+)

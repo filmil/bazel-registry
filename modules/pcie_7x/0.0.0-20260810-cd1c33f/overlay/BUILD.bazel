@@ -1,0 +1,37 @@
+# Bazel overlay for https://github.com/regymm/pcie_7x.
+# The upstream sources are unchanged. These targets name them for Bazel users.
+
+package(default_visibility = ["//visibility:private"])
+
+exports_files(
+    ["LICENSE"],
+    visibility = ["//visibility:public"],
+)
+
+# The core Verilog sources under src/, top level only.
+filegroup(
+    name = "src",
+    srcs = glob(["src/*.v"]),
+    visibility = ["//visibility:public"],
+)
+
+# The minimal AXI-MM example tops and their AXI-Lite slaves.
+filegroup(
+    name = "aximm_minimal",
+    srcs = glob(["src/aximm-minimal/*.v"]),
+    visibility = ["//visibility:public"],
+)
+
+# Board constraint files.
+filegroup(
+    name = "xdc",
+    srcs = glob(["*.xdc"]),
+    visibility = ["//visibility:public"],
+)
+
+# The Linux MSI test driver sources.
+filegroup(
+    name = "msi_driver",
+    srcs = glob(["pcie_7x_msi/**"]),
+    visibility = ["//visibility:public"],
+)

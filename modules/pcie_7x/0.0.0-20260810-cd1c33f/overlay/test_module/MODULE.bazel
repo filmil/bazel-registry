@@ -1,0 +1,10 @@
+module(
+    name = "pcie_7x_test_module",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "pcie_7x", version = "0.0.0-20260810-cd1c33f")
+local_path_override(
+    module_name = "pcie_7x",
+    path = "..",
+)
