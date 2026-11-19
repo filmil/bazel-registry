@@ -12,7 +12,8 @@
         "github:regymm/pci_eerie"
     ],
     "versions": [
-        "0.0.0-20261111-6bfb5ef"
+        "0.0.0-20261111-6bfb5ef",
+        "0.0.0-20261111-6bfb5ef.bcr.1"
     ],
     "yanked_versions": {}
 }

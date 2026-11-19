@@ -1,0 +1,16 @@
+module(
+    name = "pci_eerie_test_module",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "pci_eerie", version = "0.0.0-20261111-6bfb5ef.bcr.1")
+bazel_dep(name = "rules_cc", version = "0.2.22")
+bazel_dep(name = "rules_shell", version = "0.8.0")
+bazel_dep(name = "rules_verilator", version = "1.1.2")
+bazel_dep(name = "rules_verilog", version = "1.4.2")
+bazel_dep(name = "verilator", version = "5.046.bcr.6")
+
+local_path_override(
+    module_name = "pci_eerie",
+    path = "..",
+)
