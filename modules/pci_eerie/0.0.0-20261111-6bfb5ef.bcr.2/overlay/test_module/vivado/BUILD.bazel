@@ -149,6 +149,8 @@ STOCK_LINES = [
 
 # The 9 runs of sim/regress.sh: name, testbench variant, test, simulated
 # time, extra plusargs, and the lines that look like failures but are not.
+# The stress cases also print one line per bit error that their plusargs
+# ask rp_mon to inject; a missing injection fails the case too.
 CASES = [
     ("pio_writeReadBack_gen1", "gen1", "pio_writeReadBack_test0", "2000000ns", [], STOCK_LINES),
     ("pio_writeReadBack_gen2", "gen2", "pio_writeReadBack_test0", "2000000ns", [], STOCK_LINES),
@@ -166,7 +168,10 @@ CASES = [
             "inject_rx_tlp=12",
             "inject_tx_tlp=9",
         ],
-        STOCK_LINES,
+        STOCK_LINES + [
+            "rp_mon: injecting bit error into EP TX TLP #9",
+            "rp_mon: injecting bit error into EP RX TLP #12",
+        ],
     ),
     (
         "stress_gen2",
@@ -177,7 +182,10 @@ CASES = [
             "inject_rx_tlp=20",
             "inject_tx_tlp=15",
         ],
-        STOCK_LINES,
+        STOCK_LINES + [
+            "rp_mon: injecting bit error into EP TX TLP #15",
+            "rp_mon: injecting bit error into EP RX TLP #20",
+        ],
     ),
 ]
 
