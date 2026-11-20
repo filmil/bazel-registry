@@ -12,7 +12,7 @@
         "test_module/ml_phy_main.cc": "sha256-Pi2W2RcWv9DFLDWjTHZ+m/dcgq6HqcpsySxiYjSglZ0=",
         "test_module/ml_phy_test.sh.in": "sha256-fYm6KyphjacUdoyw89Bhm2FlD4XO7IPs/iTc96FTrTw=",
         "test_module/pci_eerie_smoke.cc": "sha256-w3p5PQljvIJKGlsXcw6gYV9eU22PHw/cHuY1Wvk7ANw=",
-        "test_module/vivado/BUILD.bazel": "sha256-sPoR8Lnl3HF+q40y7Cx5SiSvnuZnBhtR+ExolVZI0Kk=",
+        "test_module/vivado/BUILD.bazel": "sha256-+V5oQLC9VYsBrAEbZB6BO3XQAnu+LTG/VLbquD8G+Ak=",
         "test_module/vivado/xsim_case_test.sh.in": "sha256-1JFWwrQrRPF/x6AShxa+oEM/LOHJdQiz/E5kBPoZXxE=",
         "test_module/waivers.vlt.v": "sha256-xZ6lj/6u0jRHxuhtpxpksFZqFuQqJ9gYsKs1gikQH+8="
     }

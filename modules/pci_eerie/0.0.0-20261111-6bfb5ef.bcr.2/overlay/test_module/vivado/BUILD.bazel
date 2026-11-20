@@ -137,13 +137,14 @@ TB_DEFINES = {
 
 # The lines every passing run prints that look like failures. The root
 # port model checks the endpoint against the example IP's device ID and
-# max payload; pci_eerie has its own. A case fails on any other line that
-# matches FAILED, ERROR or TIMEOUT.
+# max payload; pci_eerie has its own, so its "system check" fails. A case
+# fails on any other line that matches FAILED, ERROR or TIMEOUT.
 STOCK_LINES = [
     "Check Device/Vendor ID - FAILED",
     "Data Error Mismatch, Parameter Data 7011 != Read Data 999910ee",
     "Check CMPS ID - FAILED",
     "Data Error Mismatch, Parameter Data 2 != Read data 00008e01",
+    "SYSTEM CHECK FAILED",
 ]
 
 # The 9 runs of sim/regress.sh: name, testbench variant, test, simulated
@@ -233,7 +234,8 @@ genrule(
         name = name + "_test",
         size = "enormous",
         srcs = [":xsim_case_test_sh"],
-        args = ["$(rootpath :%s_xsim)" % name] + stock,
+        # Bazel splits each args entry like a shell: quote the lines.
+        args = ["$(rootpath :%s_xsim)" % name] + ["'%s'" % line for line in stock],
         data = [":" + name + "_xsim"],
         tags = [
             "exclusive",
