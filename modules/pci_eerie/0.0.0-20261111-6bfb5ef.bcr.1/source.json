@@ -3,13 +3,14 @@
     "integrity": "sha256-ulaP1o9WeztY1U2s/xtLkpmSjKMprTpwIS4kuovaqmE=",
     "strip_prefix": "pci_eerie-6bfb5ef7b1cc840a302440619b3acd93443967b8",
     "overlay": {
-        "BUILD.bazel": "sha256-Kf4fL3viWjZyt1bJWcUgvXGptsM1OZx/fCr4e0lPROE=",
+        ".bazelignore": "sha256-tqmIyjy2h0kXazydPXeAK07a/vp8NLabWHBWDDNHTi4=",
+        "BUILD.bazel": "sha256-3f/gauGvmGKqFs2FpDTD89z+IbOqGVe/yIIuRWwrznY=",
         "MODULE.bazel": "sha256-vn8tpuy5P6J+ImpmS0/4RJKcMWRHAm5moU9L90r/0MM=",
-        "test_module/BUILD.bazel": "sha256-rhP+Ld3dAQgY/aqGGD4mehwyh0pj7RFbRzThh8EL+7c=",
+        "test_module/BUILD.bazel": "sha256-u0WbCokuq5ZbVirNvMPqWER+ZkV5juhvjcgGKcmyBzU=",
         "test_module/MODULE.bazel": "sha256-0ABMHMmiEkNv9LehNJ1UPqvgFDoWZufpx8qHiBLUQJs=",
         "test_module/ml_phy_main.cc": "sha256-Pi2W2RcWv9DFLDWjTHZ+m/dcgq6HqcpsySxiYjSglZ0=",
-        "test_module/ml_phy_test.sh": "sha256-eKAuxu4krcb4SlayQjALdesRrVzFUXguBAgS1iBtH1I=",
-        "test_module/pci_eerie_smoke.cc": "sha256-Id92/4zzarzBzoeI84Xh6AMBWWtWEDx5RTr/t8N47p8=",
-        "test_module/waivers.vlt.v": "sha256-FWAIeIdRAsVDLeKznKfSeMqJsMIlWeQEdoGS5Pn1hRE="
+        "test_module/ml_phy_test.sh.in": "sha256-fYm6KyphjacUdoyw89Bhm2FlD4XO7IPs/iTc96FTrTw=",
+        "test_module/pci_eerie_smoke.cc": "sha256-w3p5PQljvIJKGlsXcw6gYV9eU22PHw/cHuY1Wvk7ANw=",
+        "test_module/waivers.vlt.v": "sha256-xZ6lj/6u0jRHxuhtpxpksFZqFuQqJ9gYsKs1gikQH+8="
     }
 }

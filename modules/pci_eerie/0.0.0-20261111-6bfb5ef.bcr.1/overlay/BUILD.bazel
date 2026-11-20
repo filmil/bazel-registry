@@ -120,13 +120,23 @@ filegroup(
 )
 
 # pcie_7x with the soft core in place of the hard block: the sources the
-# upstream "eerie" simulation and synthesis configurations compile.
-# Put rtl/ on the include path.
+# upstream "eerie" simulation and synthesis configurations compile, and
+# the rtl/ headers they include. Put rtl/ on the include path.
 filegroup(
     name = "pcie_7x_eerie",
     srcs = [
+        ":pcie_7x_eerie_srcs",
+        ":rtl_hdrs",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# The same sources without the headers, for rules that take headers apart.
+filegroup(
+    name = "pcie_7x_eerie_srcs",
+    srcs = [
         ":integration",
-        ":rtl",
+        ":rtl_srcs",
         "@pcie_7x//:src_except_pcie_block",
     ],
     visibility = ["//visibility:public"],

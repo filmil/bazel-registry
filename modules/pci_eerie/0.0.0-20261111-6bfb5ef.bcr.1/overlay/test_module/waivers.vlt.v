@@ -1,6 +1,8 @@
 // Lint waivers for pci_eerie 6bfb5ef, at the default warning level.
 // Each warning was read against its source line, and none is an
-// upstream bug. Upstream targets Vivado and xsim, which follow the
+// upstream bug. The width waivers cover whole files: this edition pins
+// one upstream commit, and a new commit gets a new edition and a new
+// review of its warnings. Upstream targets Vivado and xsim, which follow the
 // Verilog-2005 sizing rules without these warnings.
 //
 // This is a .v file because rules_verilator passes only .v and .sv
@@ -37,8 +39,10 @@ lint_off -rule WIDTHTRUNC -file "*/rtl/pci_eerie.v"
 // u_v, u_d, u_k and u_e at eerie_pl_rx_ml.v:46 are scratch variables. They
 // are written and then read only in the x2 branch of the same always
 // block, so they hold no state from one evaluation to the next.
-// They are the only latch warnings in that file.
-lint_off -rule LATCH -file "*/rtl/eerie_pl_rx_ml.v"
+lint_off -rule LATCH -file "*/rtl/eerie_pl_rx_ml.v" -match "*.u_v'*"
+lint_off -rule LATCH -file "*/rtl/eerie_pl_rx_ml.v" -match "*.u_d'*"
+lint_off -rule LATCH -file "*/rtl/eerie_pl_rx_ml.v" -match "*.u_k'*"
+lint_off -rule LATCH -file "*/rtl/eerie_pl_rx_ml.v" -match "*.u_e'*"
 
 // The testbench copies each lane's 8-bit skew from SKEW into an integer.
 lint_off -rule WIDTHEXPAND -file "*/tb/unit/ml_phy_tb.v"

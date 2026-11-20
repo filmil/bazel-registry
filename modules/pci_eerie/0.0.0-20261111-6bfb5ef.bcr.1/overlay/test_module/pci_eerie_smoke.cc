@@ -12,5 +12,5 @@ int main(int argc, char** argv) {
   auto top = std::make_unique<Vpci_eerie>(context.get());
   top->eval();
   top->final();
-  return 0;
+  return context->gotError() ? 1 : 0;
 }

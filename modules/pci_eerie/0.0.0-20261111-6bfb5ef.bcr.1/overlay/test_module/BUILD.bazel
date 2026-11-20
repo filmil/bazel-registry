@@ -18,6 +18,7 @@ filegroup(
         "@pci_eerie//:LICENSE",
         "@pci_eerie//:integration",
         "@pci_eerie//:pcie_7x_eerie",
+        "@pci_eerie//:pcie_7x_eerie_srcs",
         "@pci_eerie//:rtl",
         "@pci_eerie//:rtl_hdrs",
         "@pci_eerie//:rtl_srcs",
@@ -70,8 +71,9 @@ cc_test(
 )
 
 # The multi-lane PHY loopback unit test, as upstream tb/unit/run_ml_phy.sh
-# builds it: the PHY files and the testbench, with the default W=4 and
-# skew 00010302.
+# builds it: the PHY files and the testbench, with the default skew
+# 00010302. It runs at link width 4 and at width 2, which takes the x2
+# branch of eerie_pl_rx_ml.v.
 verilog_library(
     name = "ml_phy_tb_sv",
     srcs = [
@@ -87,23 +89,60 @@ verilog_library(
     deps = [":waivers"],
 )
 
+# The overlay may arrive without the executable bit, so the test script is
+# generated with it.
+genrule(
+    name = "ml_phy_test_sh",
+    srcs = ["ml_phy_test.sh.in"],
+    outs = ["ml_phy_test.sh"],
+    cmd = "cp $< $@",
+    executable = True,
+)
+
 verilator_cc_library(
-    name = "ml_phy_tb_verilated",
+    name = "ml_phy_tb_w2_verilated",
     module = ":ml_phy_tb_sv",
     timing = True,
-    vopts = ["--main"],
+    vopts = [
+        "--main",
+        "-GW=2",
+    ],
 )
 
 cc_binary(
-    name = "ml_phy_tb",
+    name = "ml_phy_tb_w2",
     srcs = ["ml_phy_main.cc"],
-    deps = [":ml_phy_tb_verilated"],
+    deps = [":ml_phy_tb_w2_verilated"],
 )
 
-# Runs the testbench. It passes only when the summary line says PASS.
+# Passes only when the last line is the summary, with 0 errors.
 sh_test(
-    name = "ml_phy_test",
-    srcs = ["ml_phy_test.sh"],
-    args = ["$(rootpath :ml_phy_tb)"],
-    data = [":ml_phy_tb"],
+    name = "ml_phy_w2_test",
+    srcs = [":ml_phy_test_sh"],
+    args = ["$(rootpath :ml_phy_tb_w2)"],
+    data = [":ml_phy_tb_w2"],
+)
+
+verilator_cc_library(
+    name = "ml_phy_tb_w4_verilated",
+    module = ":ml_phy_tb_sv",
+    timing = True,
+    vopts = [
+        "--main",
+        "-GW=4",
+    ],
+)
+
+cc_binary(
+    name = "ml_phy_tb_w4",
+    srcs = ["ml_phy_main.cc"],
+    deps = [":ml_phy_tb_w4_verilated"],
+)
+
+# Passes only when the last line is the summary, with 0 errors.
+sh_test(
+    name = "ml_phy_w4_test",
+    srcs = [":ml_phy_test_sh"],
+    args = ["$(rootpath :ml_phy_tb_w4)"],
+    data = [":ml_phy_tb_w4"],
 )
