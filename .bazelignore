@@ -29,3 +29,6 @@ modules/shuttle/0.0.0-chipyard.1.15.0/overlay
 modules/testchipip/0.0.0-chipyard.1.15.0/overlay
 modules/firesim_target/1.22.0.bcr.1/overlay
 modules/riscv_isa_sim/0.0.0-chipyard.1.15.0.bcr.1/overlay
+modules/pcie_7x/0.0.0-20260810-cd1c33f/overlay
+modules/pci_eerie/0.0.0-20261111-6bfb5ef/overlay
+modules/pci_eerie/0.0.0-20261111-6bfb5ef.bcr.1/overlay
