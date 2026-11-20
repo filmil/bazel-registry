@@ -119,7 +119,10 @@ cc_binary(
 sh_test(
     name = "ml_phy_w2_test",
     srcs = [":ml_phy_test_sh"],
-    args = ["$(rootpath :ml_phy_tb_w2)"],
+    args = [
+        "$(rootpath :ml_phy_tb_w2)",
+        "2",
+    ],
     data = [":ml_phy_tb_w2"],
 )
 
@@ -143,6 +146,9 @@ cc_binary(
 sh_test(
     name = "ml_phy_w4_test",
     srcs = [":ml_phy_test_sh"],
-    args = ["$(rootpath :ml_phy_tb_w4)"],
+    args = [
+        "$(rootpath :ml_phy_tb_w4)",
+        "4",
+    ],
     data = [":ml_phy_tb_w4"],
 )

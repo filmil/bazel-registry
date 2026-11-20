@@ -1,8 +1,8 @@
 # The upstream xsim regression (sim/regress.sh, 9 cases) as Bazel tests.
 #
-# Every target here runs Vivado, so every one is tagged manual: //... and
-# the registry CI skip them. Run them by name, one at a time, with a local
-# Vivado 2025.2 and --config=vivado_host (see ../.bazelrc):
+# Every target that runs Vivado is tagged manual: //... and the registry CI
+# skip them. Run them by name, one at a time, with a local Vivado 2025.2 and
+# --config=vivado_host (see ../.bazelrc):
 #
 #   bazel test --config=vivado_host //vivado:pio_writeReadBack_gen1_test
 #
@@ -67,8 +67,12 @@ genrule(
     cmd = """
         d=""
         for x in $(execpaths :pcie_ex_ip); do
-            case "$$x" in *.ip_gen) d="$$x/example/imports" ;; esac
+            case "$$x" in *.ip_gen)
+                [ -z "$$d" ] || { echo "more than one .ip_gen in :pcie_ex_ip" >&2; exit 1; }
+                d="$$x/example/imports" ;;
+            esac
         done
+        [ -n "$$d" ] && [ -d "$$d" ] || { echo "no example imports in :pcie_ex_ip" >&2; exit 1; }
         for o in $(OUTS); do cp "$$d/$$(basename "$$o")" "$$o"; done
     """,
     tags = ["manual"],
@@ -201,11 +205,24 @@ CASES = [
     for name, _, _, simtime, _, _ in CASES
 ]
 
-# xsim on its own: it exits 0 whether the test passed or not.
+# xsim on its own: it exits 0 whether the test passed or not, so these
+# report PASSED either way. Run the *_test targets below, which read the
+# output.
 [
     vivado_test(
         name = name + "_xsim",
-        args = ["-testplusarg TESTNAME=" + test] + ["-testplusarg " + p for p in plusargs],
+        size = "enormous",
+        args = [
+            "-testplusarg",
+            "TESTNAME=" + test,
+        ] + [
+            a
+            for p in plusargs
+            for a in [
+                "-testplusarg",
+                p,
+            ]
+        ],
         custom_tcl_script = ":" + name + "_tcl",
         extra_modules = [
             "xil_defaultlib.pipe_mon",
@@ -214,19 +231,44 @@ CASES = [
             "xil_defaultlib.glbl",
         ],
         library = ":tb_" + variant,
-        tags = ["manual"],
+        tags = [
+            "exclusive",
+            "manual",
+        ],
         top = "board",
         xelab_args = [
-            "--mt off",
-            "-L unisims_ver",
-            "-L unimacro_ver",
-            "-L secureip",
-            "-L xpm",
+            "--mt",
+            "off",
+            "-L",
+            "unisims_ver",
+            "-L",
+            "unimacro_ver",
+            "-L",
+            "secureip",
+            "-L",
+            "xpm",
         ],
         xelab_relaxed = True,
     )
     for name, variant, test, _, plusargs, _ in CASES
 ]
+
+# The check above, tested on canned logs without Vivado. Not manual: CI
+# runs it.
+genrule(
+    name = "xsim_case_check_test_sh",
+    srcs = ["xsim_case_check_test.sh.in"],
+    outs = ["xsim_case_check_test.sh"],
+    cmd = "cp $< $@",
+    executable = True,
+)
+
+sh_test(
+    name = "xsim_case_check_test",
+    srcs = [":xsim_case_check_test_sh"],
+    args = ["$(rootpath :xsim_case_test_sh)"],
+    data = [":xsim_case_test_sh"],
+)
 
 genrule(
     name = "xsim_case_test_sh",
@@ -242,8 +284,12 @@ genrule(
         name = name + "_test",
         size = "enormous",
         srcs = [":xsim_case_test_sh"],
-        # Bazel splits each args entry like a shell: quote the lines.
-        args = ["$(rootpath :%s_xsim)" % name] + ["'%s'" % line for line in stock],
+        # Bazel splits each args entry like a shell: quote the lines. They
+        # hold no "$", which Bazel would expand even inside quotes.
+        args = ["$(rootpath :%s_xsim)" % name] + [
+            "'%s'" % line.replace("'", "'\\''")
+            for line in stock
+        ],
         data = [":" + name + "_xsim"],
         tags = [
             "exclusive",

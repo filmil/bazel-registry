@@ -189,7 +189,9 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-# The reference decodes the xsim regression compares against.
+# Decoded traces and config dumps of the PCIE_2_1 reference runs. Upstream
+# compares some runs against them by hand (README, sim/ref/); the xsim
+# regression in the test module does not use them.
 filegroup(
     name = "sim_refs",
     srcs = [

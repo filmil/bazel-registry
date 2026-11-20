@@ -1,0 +1,69 @@
+#!/bin/bash
+# Tests xsim_case_test.sh without Vivado: each case feeds it a fake xsim
+# that prints a canned log, and checks that it passes or fails as it should.
+#   xsim_case_check_test.sh <xsim_case_test.sh>
+set -uo pipefail
+check="$1"
+[[ "$check" == /* ]] || check="$PWD/$check"
+root="${TEST_TMPDIR:?}"
+failures=0
+
+# A passing gen1 run, shortened: the stock lines, the result and $finish.
+good='[            76801318] :    Check Device/Vendor ID - FAILED
+[            76801318] : Data Error Mismatch, Parameter Data 7011 != Read Data 999910ee
+[            84849284] :    Check CMPS ID - FAILED
+[            84849284] : Data Error Mismatch, Parameter Data 2 != Read data 00008e01
+[            84849284] : SYSTEM CHECK FAILED
+[           107297322] rp_mon: injecting bit error into EP TX TLP #9
+[           190161380] : Test PASSED --- Write Data: 01020304 successfully received
+Test Completed Successfully
+$finish called at time : 190321289 ps'
+
+stock=(
+  "Check Device/Vendor ID - FAILED"
+  "Data Error Mismatch, Parameter Data 7011 != Read Data 999910ee"
+  "Check CMPS ID - FAILED"
+  "Data Error Mismatch, Parameter Data 2 != Read data 00008e01"
+  "SYSTEM CHECK FAILED"
+  "rp_mon: injecting bit error into EP TX TLP #9"
+)
+
+# expect <name> <pass|fail> <log> [exit code of the fake xsim]
+expect() {
+  local name=$1 want=$2 log=$3 code=${4:-0} dir="$root/$1"
+  mkdir -p "$dir/tmp"
+  printf '%s\n' "$log" >"$dir/log.txt"
+  printf '#!/bin/bash\ncat "%s"\nexit %s\n' "$dir/log.txt" "$code" >"$dir/xsim"
+  chmod +x "$dir/xsim"
+  if (cd "$dir" && TEST_TMPDIR="$dir/tmp" TEST_UNDECLARED_OUTPUTS_DIR="$dir/tmp" \
+    "$check" "$dir/xsim" "${stock[@]}" >"$dir/out.txt" 2>&1); then
+    got=pass
+  else
+    got=fail
+  fi
+  if [[ $got == "$want" ]]; then
+    echo "ok: $name ($got)"
+  else
+    echo "NOT OK: $name: wanted $want, got $got"
+    cat "$dir/out.txt"
+    failures=$((failures + 1))
+  fi
+}
+
+expect good pass "$good"
+expect xsim_error fail "$good" 1
+expect no_completed fail "${good/Test Completed Successfully/}"
+expect twice_completed fail "$good
+Test Completed Successfully"
+expect no_finish fail "${good/\$finish called/stopped}"
+expect new_failed_line fail "$good
+[   1] :    Check Max Link Speed - FAILED"
+expect timeout_line fail "$good
+[   1] : TIMEOUT waiting for completion"
+expect missing_stock fail "${good/SYSTEM CHECK FAILED/SYSTEM CHECK PASSED}"
+expect stock_twice fail "$good
+[   2] : SYSTEM CHECK FAILED"
+expect other_tlp fail "${good/TLP #9/TLP #90}"
+expect no_injection fail "${good/rp_mon: injecting bit error into EP TX TLP #9/}"
+
+[[ $failures == 0 ]]
