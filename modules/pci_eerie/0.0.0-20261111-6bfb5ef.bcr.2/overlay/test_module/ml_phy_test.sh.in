@@ -1,0 +1,16 @@
+#!/bin/bash
+# Runs a verilated ml_phy_tb. The testbench always ends with $finish, so
+# its exit code does not tell pass from fail. Its last line does:
+#   ml_phy_tb W=4 skew=00010302: 300 packets checked of 300, 0 errors -> PASS
+set -euo pipefail
+bin="$1"
+# A target in the root package has a runfiles path without a slash, and
+# bash would look such a name up on PATH.
+[[ "$bin" == */* ]] || bin="./$bin"
+out="$("$bin" 2>&1)" || { printf '%s\n' "$out"; echo "ml_phy_tb exited with an error"; exit 1; }
+printf '%s\n' "$out"
+last="$(grep -v '^[[:space:]]*$' <<<"$out" | grep -v '^- ' | tail -n 1)"
+if [[ "$last" != ml_phy_tb\ W=* || "$last" != *", 0 errors -> PASS" ]]; then
+  echo "ml_phy_tb did not end with a passing summary line"
+  exit 1
+fi

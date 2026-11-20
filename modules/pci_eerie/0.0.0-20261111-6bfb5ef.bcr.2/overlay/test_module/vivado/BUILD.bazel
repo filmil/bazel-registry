@@ -1,0 +1,241 @@
+# The upstream xsim regression (sim/regress.sh, 9 cases) as Bazel tests.
+#
+# Every target here runs Vivado, so every one is tagged manual: //... and
+# the registry CI skip them. Run them by name, one at a time, with a local
+# Vivado 2025.2 and --config=vivado_host (see ../.bazelrc):
+#
+#   bazel test --config=vivado_host //vivado:pio_writeReadBack_gen1_test
+#
+# The root port model comes from the example design of the Vivado PCIe IP
+# (pcie_7x v3.3), which is not in the pci_eerie archive. It is generated for
+# an Artix-7 part (xc7a200tfbg676-2), so a Vivado install with Artix-7 device
+# support is enough. pci_eerie's own boards are Kintex-7, and the endpoint
+# side keeps pcie_7x's GTX pipe wrapper; the simulation runs in PIPE mode, so
+# the GT type of the example does not matter. Only the testbench files below
+# come from the example.
+
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load("@rules_vivado//build/vivado:rules.bzl", "vivado_ip", "vivado_library", "vivado_test")
+
+package(default_visibility = ["//visibility:private"])
+
+# The PCIe IP as upstream's example was generated: endpoint, x1, Gen2
+# capable, 64-bit user interface at 125 MHz, 100 MHz reference clock.
+vivado_ip(
+    name = "pcie_ex_ip",
+    config = {
+        "Device_Port_Type": "PCI_Express_Endpoint_device",
+        "Interface_Width": "64_bit",
+        "Link_Speed": "5.0_GT/s",
+        "Maximum_Link_Width": "X1",
+        "Ref_Clk_Freq": "100_MHz",
+        "User_Clk_Freq": "125",
+    },
+    example_design = True,
+    module_name = "pcie_7x_0",
+    part = "xc7a200tfbg676-2",
+    tags = ["manual"],
+    vlnv = "xilinx.com:ip:pcie_7x:3.3",
+)
+
+# The example files that sim/files_common.f names as $PCIE_EX, in its order.
+PCIE_EX_SRCS = [
+    "pci_exp_usrapp_cfg.v",
+    "pci_exp_usrapp_com.v",
+    "pci_exp_usrapp_pl.v",
+    "pci_exp_usrapp_rx.v",
+    "pcie_2_1_rport_7x.v",
+    "pcie_axi_trn_bridge.v",
+    "sys_clk_gen.v",
+    "sys_clk_gen_ds.v",
+    "xilinx_pcie_2_1_rport_7x.v",
+    "xil_sig2pipe.v",
+]
+
+# The example headers that those files and tb/ include.
+PCIE_EX_HDRS = [
+    "board_common.vh",
+    "pci_exp_expect_tasks.vh",
+    "sample_tests1.vh",
+    "tests.vh",
+]
+
+genrule(
+    name = "pcie_ex_files",
+    srcs = [":pcie_ex_ip"],
+    outs = ["pcie_ex/" + f for f in PCIE_EX_SRCS + PCIE_EX_HDRS],
+    cmd = """
+        d=""
+        for x in $(execpaths :pcie_ex_ip); do
+            case "$$x" in *.ip_gen) d="$$x/example/imports" ;; esac
+        done
+        for o in $(OUTS); do cp "$$d/$$(basename "$$o")" "$$o"; done
+    """,
+    tags = ["manual"],
+)
+
+# The testbench, compiled once per set of defines. The defines follow
+# sim/run.sh with CFG=eerie: EERIE_DLL_MON always, GEN2=1 adds EP_GEN2 and
+# RP_GEN2, APP=1 adds EERIE_APP. Sources follow the order of run.sh.
+TB_SRCS = [
+    # sim/files_common.f
+    "@pcie_7x//:src_except_pcie_block",
+    "@pcie_7x//:src/aximm-minimal/pcie_7x_top_aximm.v",
+    "@pcie_7x//:src/aximm-minimal/axil_minimum.v",
+] + [":pcie_ex/" + f for f in PCIE_EX_SRCS] + [
+    # CFG=eerie
+    "@pci_eerie//:integration",
+    "@pci_eerie//:rtl_srcs",
+    # the testbench
+    "@pci_eerie//:tb/pci_exp_usrapp_tx.v",
+    "@pci_eerie//:tb/eerie_tb_ep.v",
+    "@pci_eerie//:tb/eerie_tb_app.v",
+    "@pci_eerie//:tb/rp_mon.v",
+    "@pci_eerie//:tb/board.v",
+    "@pci_eerie//:tb/pipe_mon.v",
+]
+
+# Include path order of run.sh: tb/, the example, rtl/.
+TB_HDRS = ["@pci_eerie//:tb_hdrs"] + [":pcie_ex/" + f for f in PCIE_EX_HDRS] + ["@pci_eerie//:rtl_hdrs"]
+
+TB_DEFINES = {
+    "app": {
+        "EERIE_APP": "",
+        "EERIE_DLL_MON": "",
+    },
+    "app_gen2": {
+        "EERIE_APP": "",
+        "EERIE_DLL_MON": "",
+        "EP_GEN2": "1",
+        "RP_GEN2": "",
+    },
+    "gen1": {
+        "EERIE_DLL_MON": "",
+    },
+    "gen2": {
+        "EERIE_DLL_MON": "",
+        "EP_GEN2": "1",
+        "RP_GEN2": "",
+    },
+}
+
+[
+    vivado_library(
+        name = "tb_" + variant,
+        srcs = TB_SRCS,
+        hdrs = TB_HDRS,
+        defines = defines,
+        library_name = "xil_defaultlib",
+        tags = ["manual"],
+        use_glbl = True,
+    )
+    for variant, defines in TB_DEFINES.items()
+]
+
+# The lines every passing run prints that look like failures. The root
+# port model checks the endpoint against the example IP's device ID and
+# max payload; pci_eerie has its own. A case fails on any other line that
+# matches FAILED, ERROR or TIMEOUT.
+STOCK_LINES = [
+    "Check Device/Vendor ID - FAILED",
+    "Data Error Mismatch, Parameter Data 7011 != Read Data 999910ee",
+    "Check CMPS ID - FAILED",
+    "Data Error Mismatch, Parameter Data 2 != Read data 00008e01",
+]
+
+# The 9 runs of sim/regress.sh: name, testbench variant, test, simulated
+# time, extra plusargs, and the lines that look like failures but are not.
+CASES = [
+    ("pio_writeReadBack_gen1", "gen1", "pio_writeReadBack_test0", "2000000ns", [], STOCK_LINES),
+    ("pio_writeReadBack_gen2", "gen2", "pio_writeReadBack_test0", "2000000ns", [], STOCK_LINES),
+    ("mem_gen1", "app", "eerie_mem_test", "2000000ns", [], STOCK_LINES),
+    ("mem_gen2", "app_gen2", "eerie_mem_test", "2000000ns", [], STOCK_LINES),
+    ("int", "app", "eerie_int_test", "500000ns", [], STOCK_LINES),
+    ("ur", "app", "eerie_ur_test", "600000ns", [], STOCK_LINES),
+    ("cfg_dump", "gen1", "eerie_cfg_dump", "900000ns", [], STOCK_LINES),
+    (
+        "stress_gen1",
+        "gen1",
+        "eerie_stress_test",
+        "800000ns",
+        [
+            "inject_rx_tlp=12",
+            "inject_tx_tlp=9",
+        ],
+        STOCK_LINES,
+    ),
+    (
+        "stress_gen2",
+        "gen2",
+        "eerie_stress_test",
+        "800000ns",
+        [
+            "inject_rx_tlp=20",
+            "inject_tx_tlp=15",
+        ],
+        STOCK_LINES,
+    ),
+]
+
+# Runs for the simulated time of the case and quits, as run.sh does. The
+# default template of vivado_test would dump a VCD of the whole design.
+[
+    genrule(
+        name = name + "_tcl",
+        outs = [name + ".tcl"],
+        cmd = "printf 'run %s\\nquit\\n' > $@" % simtime,
+        tags = ["manual"],
+    )
+    for name, _, _, simtime, _, _ in CASES
+]
+
+# xsim on its own: it exits 0 whether the test passed or not.
+[
+    vivado_test(
+        name = name + "_xsim",
+        args = ["-testplusarg TESTNAME=" + test] + ["-testplusarg " + p for p in plusargs],
+        custom_tcl_script = ":" + name + "_tcl",
+        extra_modules = [
+            "xil_defaultlib.pipe_mon",
+            "xil_defaultlib.rp_mon",
+            "xil_defaultlib.dll_mon",
+            "xil_defaultlib.glbl",
+        ],
+        library = ":tb_" + variant,
+        tags = ["manual"],
+        top = "board",
+        xelab_args = [
+            "--mt off",
+            "-L unisims_ver",
+            "-L unimacro_ver",
+            "-L secureip",
+            "-L xpm",
+        ],
+        xelab_relaxed = True,
+    )
+    for name, variant, test, _, plusargs, _ in CASES
+]
+
+genrule(
+    name = "xsim_case_test_sh",
+    srcs = ["xsim_case_test.sh.in"],
+    outs = ["xsim_case_test.sh"],
+    cmd = "cp $< $@",
+    executable = True,
+)
+
+# The tests to run: each runs its xsim and reads the result.
+[
+    sh_test(
+        name = name + "_test",
+        size = "enormous",
+        srcs = [":xsim_case_test_sh"],
+        args = ["$(rootpath :%s_xsim)" % name] + stock,
+        data = [":" + name + "_xsim"],
+        tags = [
+            "exclusive",
+            "manual",
+        ],
+    )
+    for name, _, _, _, _, stock in CASES
+]
