@@ -1,0 +1,12 @@
+module(
+    name = "pci_eerie",
+    version = "0.0.0-20261111-6bfb5ef",
+    bazel_compatibility = [">=8.0.0"],
+    compatibility_level = 0,
+)
+
+# Upstream pins pcie_7x as the git submodule ext/pcie_7x at this commit.
+# GitHub archives leave submodules out, so ext/pcie_7x is empty here.
+# :pcie_7x_eerie takes the pcie_7x sources from this module instead.
+# To use other pcie_7x targets, add your own bazel_dep on pcie_7x.
+bazel_dep(name = "pcie_7x", version = "0.0.0-20260810-cd1c33f")

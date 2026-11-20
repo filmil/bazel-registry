@@ -1,0 +1,108 @@
+# Bazel overlay for https://github.com/regymm/pcie_7x.
+# The upstream sources are unchanged. These targets name them for Bazel users.
+# Every file is listed by name: the build fails if a listed file is missing.
+
+package(default_visibility = ["//visibility:private"])
+
+# The license, the board constraints and the example tops, one file at a time.
+# An FPGA build picks one board's .xdc file and one top.
+exports_files(
+    [
+        "LICENSE",
+        "pcie_7x_ac7100b.xdc",
+        "pcie_7x_ac7100b_uart.xdc",
+        "pcie_7x_hvs_k70t.xdc",
+        "pcie_7x_usdr.xdc",
+        "pcie_7x_ypcb_k480t.xdc",
+        "src/aximm-minimal/axil_minimum.v",
+        "src/aximm-minimal/axil_minimum_msi.v",
+        "src/aximm-minimal/pcie_7x_top_aximm.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_hvs_70t.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_litepcie.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_msi.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_usdr.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_ypcb_480t.v",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# The core Verilog sources under src/, top level only.
+filegroup(
+    name = "src",
+    srcs = [
+        ":pcie_block",
+        ":src_except_pcie_block",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# The wrapper around the PCIE_2_1 hard block.
+# pci_eerie's integration/pcie_block.v replaces it.
+filegroup(
+    name = "pcie_block",
+    srcs = [
+        "src/pcie_block.v",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# The core sources without pcie_block.v, to combine with a replacement.
+filegroup(
+    name = "src_except_pcie_block",
+    srcs = [
+        "src/axil_to_al.v",
+        "src/axis_pcie_to_al_us.v",
+        "src/litepcie_pcie_s7.v",
+        "src/pcie_7x.v",
+        "src/pcie_7x_aximm_msi_bd.v",
+        "src/pcie_axi_rx.v",
+        "src/pcie_axi_tx.v",
+        "src/pcie_brams.v",
+        "src/pcie_tx_thrtl_ctl.v",
+        "src/pipe_clock.v",
+        "src/pipe_wrapper.v",
+        "src/pipe_wrapper_gtx.v",
+        "src/xilinx_pcie_mmcm.v",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# The minimal AXI-MM example tops and their AXI-Lite slaves, all together.
+filegroup(
+    name = "aximm_minimal",
+    srcs = [
+        "src/aximm-minimal/axil_minimum.v",
+        "src/aximm-minimal/axil_minimum_msi.v",
+        "src/aximm-minimal/pcie_7x_top_aximm.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_hvs_70t.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_litepcie.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_msi.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_usdr.v",
+        "src/aximm-minimal/pcie_7x_top_aximm_ypcb_480t.v",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# All board constraint files, all together.
+filegroup(
+    name = "xdc",
+    srcs = [
+        "pcie_7x_ac7100b.xdc",
+        "pcie_7x_ac7100b_uart.xdc",
+        "pcie_7x_hvs_k70t.xdc",
+        "pcie_7x_usdr.xdc",
+        "pcie_7x_ypcb_k480t.xdc",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# The Linux MSI test driver sources.
+filegroup(
+    name = "msi_driver",
+    srcs = [
+        "pcie_7x_msi/Makefile",
+        "pcie_7x_msi/pcie_7x_msi.c",
+        "pcie_7x_msi/pcie_7x_msi_multi.c",
+    ],
+    visibility = ["//visibility:public"],
+)

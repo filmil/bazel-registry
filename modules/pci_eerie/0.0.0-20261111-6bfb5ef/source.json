@@ -1,0 +1,11 @@
+{
+    "url": "https://github.com/regymm/pci_eerie/archive/6bfb5ef7b1cc840a302440619b3acd93443967b8.tar.gz",
+    "integrity": "sha256-ulaP1o9WeztY1U2s/xtLkpmSjKMprTpwIS4kuovaqmE=",
+    "strip_prefix": "pci_eerie-6bfb5ef7b1cc840a302440619b3acd93443967b8",
+    "overlay": {
+        "BUILD.bazel": "sha256-4KBPofnww19M5+E64sCL5JoYVZFf/T7I0Z18wIZ+wxI=",
+        "MODULE.bazel": "sha256-GKOAUTT16WF5zNnNwumX0hL2FjX7+Or0DIx6hPcUmy4=",
+        "test_module/BUILD.bazel": "sha256-J6E4S4z/ZAR3UNrrHpVPY44S5RN5ddGo+b1jV+WaXgw=",
+        "test_module/MODULE.bazel": "sha256-dQucMmrc8b6DIDcZlgmv1RsgGCRLaQ8UOwJx1c7OIGU="
+    }
+}
