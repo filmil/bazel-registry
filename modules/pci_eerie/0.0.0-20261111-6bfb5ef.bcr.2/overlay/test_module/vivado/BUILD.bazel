@@ -128,6 +128,9 @@ TB_DEFINES = {
         library_name = "xil_defaultlib",
         tags = ["manual"],
         use_glbl = True,
+        # As run.sh: pcie_7x's src/pcie_7x.v uses clock_locked before its
+        # declaration, which xvlog rejects without --relax.
+        xvlog_args = ["--relax"],
     )
     for variant, defines in TB_DEFINES.items()
 ]
