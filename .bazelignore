@@ -32,3 +32,4 @@ modules/riscv_isa_sim/0.0.0-chipyard.1.15.0.bcr.1/overlay
 modules/pcie_7x/0.0.0-20260810-cd1c33f/overlay
 modules/pci_eerie/0.0.0-20261111-6bfb5ef/overlay
 modules/pci_eerie/0.0.0-20261111-6bfb5ef.bcr.1/overlay
+modules/pci_eerie/0.0.0-20261111-6bfb5ef.bcr.2/overlay

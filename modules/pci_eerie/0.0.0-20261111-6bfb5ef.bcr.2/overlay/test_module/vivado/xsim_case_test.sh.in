@@ -1,0 +1,73 @@
+#!/bin/bash
+# Runs one xsim case of the upstream regression and reads its result.
+#   xsim_case_test.sh <xsim test script> [stock line]...
+# xsim exits 0 whether the test passed or not, so the output decides, as in
+# sim/regress.sh: a passing run prints "Test Completed Successfully" once
+# and reaches $finish. Every line that matches FAILED, ERROR or TIMEOUT must
+# be one of the stock lines given, once its "[ time ] :" prefix is removed,
+# and each stock line must be exactly one such line.
+# The wall time and peak memory of the run go to the log and to summary.txt.
+set -uo pipefail
+xsim="$1"
+shift
+[[ "$xsim" == /* ]] || xsim="$PWD/$xsim"
+RUNFILES_DIR="${RUNFILES_DIR:-$PWD/..}"
+[[ "$RUNFILES_DIR" == /* ]] || RUNFILES_DIR="$PWD/$RUNFILES_DIR"
+export RUNFILES_DIR
+# xsim writes its snapshot copy, logs and journal into the current directory.
+cd "${TEST_TMPDIR:?}" || { echo "FAIL: cannot enter TEST_TMPDIR"; exit 1; }
+out="$TEST_TMPDIR/xsim_output.txt"
+start=$(date +%s)
+if [[ -x /usr/bin/time ]]; then
+  /usr/bin/time -v -o "$TEST_TMPDIR/time.txt" "$xsim" >"$out" 2>&1
+else
+  "$xsim" >"$out" 2>&1
+fi
+rc=$?
+end=$(date +%s)
+cat "$out"
+
+fails=0
+fail() {
+  echo "FAIL: $*"
+  fails=$((fails + 1))
+}
+[[ $rc == 0 ]] || fail "xsim exited with $rc"
+n=$(grep -c "Test Completed Successfully" "$out")
+[[ $n == 1 ]] || fail "\"Test Completed Successfully\" appears $n times, not once"
+grep -q '\$finish called' "$out" || fail "the simulation did not reach \$finish"
+# The lines that look like failures, without the "[ time ] :" prefix and
+# trailing blanks. Stock lines must equal them, so "TLP #9" is not "TLP #90".
+mapfile -t bad < <(grep -iE "FAILED|ERROR|TIMEOUT" "$out" |
+  sed -E 's/^\[[^]]*\][[:space:]]*(:[[:space:]]*)?//; s/[[:space:]]*$//')
+declare -a known=()
+for stock in "$@"; do
+  n=0
+  for i in "${!bad[@]}"; do
+    if [[ "${bad[$i]}" == "$stock" ]]; then
+      n=$((n + 1))
+      known[$i]=1
+    fi
+  done
+  [[ $n == 1 ]] || fail "stock line \"$stock\" appears $n times, not once"
+done
+unexpected=0
+for i in "${!bad[@]}"; do
+  if [[ -z "${known[$i]:-}" ]]; then
+    [[ $unexpected == 1 ]] || fail "unexpected lines:"
+    unexpected=1
+    printf '%s\n' "${bad[$i]}"
+  fi
+done
+
+summary="${TEST_UNDECLARED_OUTPUTS_DIR:-$TEST_TMPDIR}/summary.txt"
+{
+  echo "case: ${TEST_TARGET:-$xsim}"
+  echo "wall_seconds: $((end - start))"
+  if [[ -f "$TEST_TMPDIR/time.txt" ]]; then
+    grep -E "Elapsed|Maximum resident" "$TEST_TMPDIR/time.txt"
+  fi
+  echo "result: $([[ $fails == 0 ]] && echo PASS || echo FAIL)"
+} >"$summary" || fail "cannot write $summary"
+cat "$summary"
+[[ $fails == 0 ]]

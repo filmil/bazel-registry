@@ -1,0 +1,154 @@
+# Tests for @pci_eerie. They use rules_verilator, which registers its own
+# verilator toolchain in its MODULE.bazel. This module registers no
+# toolchain, and the C++ code builds with the platform's C++ toolchain.
+# So the build here sees the same compiler and linker as BCR presubmit.
+
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load("@rules_verilator//verilator:defs.bzl", "verilator_cc_library")
+load("@rules_verilog//verilog:defs.bzl", "verilog_library")
+
+# Depends on each public target of @pci_eerie and on some exported files.
+# The build fails if a target is missing, is not visible, or lists a file
+# that the archive does not have. :pcie_7x_eerie also pulls in @pcie_7x.
+filegroup(
+    name = "all_public",
+    srcs = [
+        "@pci_eerie//:LICENSE",
+        "@pci_eerie//:integration",
+        "@pci_eerie//:pcie_7x_eerie",
+        "@pci_eerie//:pcie_7x_eerie_srcs",
+        "@pci_eerie//:rtl",
+        "@pci_eerie//:rtl_hdrs",
+        "@pci_eerie//:rtl_srcs",
+        "@pci_eerie//:sim_filelists",
+        "@pci_eerie//:sim_refs",
+        "@pci_eerie//:syn/top_ypcb_k480t.v",
+        "@pci_eerie//:syn/ypcb_k480t_pins.xdc",
+        "@pci_eerie//:syn_srcs",
+        "@pci_eerie//:syn_tcl",
+        "@pci_eerie//:syn_xdc",
+        "@pci_eerie//:tb",
+        "@pci_eerie//:tb/unit/ml_phy_tb.v",
+        "@pci_eerie//:tb_hdrs",
+        "@pci_eerie//:tb_srcs",
+    ],
+)
+
+# Lint waivers, one reason each. A dependency, so verilator reads them
+# before the sources they apply to.
+verilog_library(
+    name = "waivers",
+    srcs = ["waivers.vlt.v"],
+)
+
+# The whole soft core, with pci_eerie as the top.
+verilog_library(
+    name = "pci_eerie_sv",
+    srcs = ["@pci_eerie//:rtl_srcs"],
+    hdrs = ["@pci_eerie//:rtl_hdrs"],
+    top_module = "pci_eerie",
+    deps = [":waivers"],
+)
+
+# The core, verilated at verilator's default warning level, which stops on
+# width, latch and other functional warnings. -Wall adds about 350 style
+# warnings, mostly unused ports and parameters that the core keeps to
+# match the PCIE_2_1 hard block, so it is off. verilator_cc_library has no
+# default output of its own, so :pci_eerie_smoke_test is what runs it.
+verilator_cc_library(
+    name = "pci_eerie_verilated",
+    module = ":pci_eerie_sv",
+    # Empty on purpose: the rule's default is ["-Wall"].
+    vopts = [],
+)
+
+cc_test(
+    name = "pci_eerie_smoke_test",
+    srcs = ["pci_eerie_smoke.cc"],
+    deps = [":pci_eerie_verilated"],
+)
+
+# The multi-lane PHY loopback unit test, as upstream tb/unit/run_ml_phy.sh
+# builds it: the PHY files and the testbench, with the default skew
+# 00010302. It runs at link width 4 and at width 2, which takes the x2
+# branch of eerie_pl_rx_ml.v.
+verilog_library(
+    name = "ml_phy_tb_sv",
+    srcs = [
+        "@pci_eerie//:rtl/eerie_pl_deskew.v",
+        "@pci_eerie//:rtl/eerie_pl_rx.v",
+        "@pci_eerie//:rtl/eerie_pl_rx_ml.v",
+        "@pci_eerie//:rtl/eerie_pl_tx.v",
+        "@pci_eerie//:rtl/eerie_pl_tx_ml.v",
+        "@pci_eerie//:tb/unit/ml_phy_tb.v",
+    ],
+    hdrs = ["@pci_eerie//:rtl/eerie_funcs.vh"],
+    top_module = "ml_phy_tb",
+    deps = [":waivers"],
+)
+
+# The overlay may arrive without the executable bit, so the test script is
+# generated with it.
+genrule(
+    name = "ml_phy_test_sh",
+    srcs = ["ml_phy_test.sh.in"],
+    outs = ["ml_phy_test.sh"],
+    cmd = "cp $< $@",
+    executable = True,
+)
+
+verilator_cc_library(
+    name = "ml_phy_tb_w2_verilated",
+    module = ":ml_phy_tb_sv",
+    timing = True,
+    vopts = [
+        "--main",
+        "-GW=2",
+    ],
+)
+
+cc_binary(
+    name = "ml_phy_tb_w2",
+    srcs = ["ml_phy_main.cc"],
+    deps = [":ml_phy_tb_w2_verilated"],
+)
+
+# Passes only when the last line is the summary, with 0 errors.
+sh_test(
+    name = "ml_phy_w2_test",
+    srcs = [":ml_phy_test_sh"],
+    args = [
+        "$(rootpath :ml_phy_tb_w2)",
+        "2",
+    ],
+    data = [":ml_phy_tb_w2"],
+)
+
+verilator_cc_library(
+    name = "ml_phy_tb_w4_verilated",
+    module = ":ml_phy_tb_sv",
+    timing = True,
+    vopts = [
+        "--main",
+        "-GW=4",
+    ],
+)
+
+cc_binary(
+    name = "ml_phy_tb_w4",
+    srcs = ["ml_phy_main.cc"],
+    deps = [":ml_phy_tb_w4_verilated"],
+)
+
+# Passes only when the last line is the summary, with 0 errors.
+sh_test(
+    name = "ml_phy_w4_test",
+    srcs = [":ml_phy_test_sh"],
+    args = [
+        "$(rootpath :ml_phy_tb_w4)",
+        "4",
+    ],
+    data = [":ml_phy_tb_w4"],
+)

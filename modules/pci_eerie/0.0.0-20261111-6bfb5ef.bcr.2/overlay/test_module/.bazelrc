@@ -1,0 +1,5 @@
+# The xsim cases in //vivado run Vivado 2025.2 on this machine:
+#   bazel test --config=vivado_host //vivado:pio_writeReadBack_gen1_test
+# Vivado is looked for in /opt/Xilinx/2025.2/Vivado. For another place, add
+#   --@rules_vivado//internal:vivado_path=<install>/2025.2/Vivado
+common:vivado_host --@rules_vivado//:vivado_mode=host
