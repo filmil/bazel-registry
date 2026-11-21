@@ -1,6 +1,6 @@
 {
     "homepage": "https://github.com/parallaxsw/OpenSTA",
-    "license": "GPL-3.0",
+    "license": "GPL-3.0-or-later",
     "maintainers": [
         {
             "name": "Filip Filmar",

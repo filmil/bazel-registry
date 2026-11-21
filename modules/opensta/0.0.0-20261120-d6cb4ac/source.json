@@ -8,9 +8,9 @@
     },
     "patch_strip": 1,
     "overlay": {
-        "test_module/BUILD.bazel": "sha256-4+GBLOiM38arJAiuFldPqhzdFBF1ORV4w9bNMtB5ccU=",
+        "test_module/BUILD.bazel": "sha256-ghVVNW0jy+4Nn8xLa9dkOwoaB2yQHwYx0tV4pql8k9g=",
         "test_module/MODULE.bazel": "sha256-Mj/NdAdunyuCQn3hg0PVEdFzfXkC9Ao2G9j/5o75XJ4=",
-        "test_module/sta_smoke_test.sh.in": "sha256-H99uILMpxRBmtVpyI1xj0KT7/FsBuGHL9HzPm0IOlWI=",
+        "test_module/sta_smoke_test.sh.in": "sha256-j3tYfV95nBwfYGuljtvCYsiDN1GLJM2UXBHrAuF6rE0=",
         "test_module/tiny.lib": "sha256-G5+4SIP3EEORU2vj/8FjsAB2JqhsNThiLxJ2Txeae5U=",
         "test_module/tiny.v": "sha256-4ytGwg1F1Y0gMm8O+qTwrJMYTJMzqpYzg/l01am8FLc="
     }

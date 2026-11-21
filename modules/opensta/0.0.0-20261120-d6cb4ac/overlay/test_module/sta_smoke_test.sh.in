@@ -5,9 +5,12 @@
 set -euo pipefail
 tcl="$TEST_TMPDIR/smoke.tcl"
 log="$TEST_TMPDIR/smoke.log"
-cat >"$tcl" <<TCL
-read_liberty $PWD/$2
-read_verilog $PWD/$3
+# The paths reach Tcl through the environment, so no character in them
+# is parsed as Tcl.
+export STA_SMOKE_LIB="$PWD/$2" STA_SMOKE_NET="$PWD/$3"
+cat >"$tcl" <<'TCL'
+read_liberty $env(STA_SMOKE_LIB)
+read_verilog $env(STA_SMOKE_NET)
 link_design top
 create_clock -name clk -period 10 [get_ports clk]
 set_input_delay 0 -clock clk [get_ports d]
@@ -21,13 +24,21 @@ rc=0
 "$1" -no_init -no_splash -exit "$tcl" >"$log" 2>&1 || rc=$?
 cat "$log"
 fails=0
-expect() {
-  grep -qE "$1" "$log" || { echo "FAIL: no line matches: $1"; fails=$((fails + 1)); }
-}
-[[ $rc == 0 ]] || { echo "FAIL: sta exited with $rc"; fails=$((fails + 1)); }
-# r1 clock-to-Q, then two buffers: positive slack of a few ns in 10 ns.
-expect '^WS [0-9]+\.[0-9]+'
+fail() { echo "FAIL: $*"; fails=$((fails + 1)); }
+expect() { grep -qE "$1" "$log" || fail "no line matches: $1"; }
+[[ $rc == 0 ]] || fail "sta exited with $rc"
+# sta::worst_slack prints in the library's time unit, ns. The path is
+# r1 clock-to-Q, then two buffers, then r2 setup: 0.52 ns of a 10 ns
+# period, so the slack is 9.48 ns. Allow 9 to 10 ns.
+ws=$(awk '/^WS /{print $2}' "$log")
+awk -v s="${ws:-x}" 'BEGIN{exit !(s ~ /^[0-9.eE+-]+$/ && s+0 > 9 && s+0 < 10)}' ||
+  fail "worst slack \"$ws\" is not between 9 and 10 ns"
 expect 'r2/D \(DFF\)'
 expect 'slack \(MET\)'
-expect '^Total +[0-9.eE+-]+ +[0-9.eE+-]+ +[0-9.eE+-]+ +[0-9.eE+-]+'
+# The total power is internal, switching, leakage and total, in watts.
+# Internal and leakage power come from the library, so both are above 0.
+read -r _ internal _ leakage total _ < <(grep -E '^Total ' "$log" || true)
+awk -v i="${internal:-x}" -v l="${leakage:-x}" -v t="${total:-x}" \
+  'BEGIN{exit !(i+0 > 0 && l+0 > 0 && t+0 >= i+l && i ~ /^[0-9.eE+-]+$/)}' ||
+  fail "the Total power line is missing or not above 0"
 [[ $fails == 0 ]] && echo PASS

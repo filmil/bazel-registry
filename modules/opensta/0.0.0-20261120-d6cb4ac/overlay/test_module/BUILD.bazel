@@ -1,5 +1,6 @@
 # Runs the sta binary on a two-cell library and a four-cell netlist: a
-# timing report and a power report, the two uses chip_harness has.
+# timing report and a power report. Only the binary is tested: consumers
+# of this entry run //:sta and do not link against OpenSTA.
 
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
@@ -8,7 +9,7 @@ genrule(
     name = "sta_smoke_test_sh",
     srcs = ["sta_smoke_test.sh.in"],
     outs = ["sta_smoke_test.sh"],
-    cmd = "cp $< $@",
+    cmd = "cp $< $@ && chmod +x $@",
     executable = True,
 )
 
