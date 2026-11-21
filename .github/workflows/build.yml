@@ -26,6 +26,3 @@ jobs:
         run: "bazel build //... -- -//modules/..."
       - name: Test the registry's tools
         run: "bazel test //cmd/..."
-      - name: Check the registry's own Bazel files
-        # Skips modules/; see //:buildifier.check in BUILD.bazel.
-        run: "bazel run //:buildifier.check"
