@@ -1,5 +1,7 @@
 # The upstream candidates through the flow of harness/evaluate.py, with
 # its defaults: 27 taps, a 10 ns clock, formal equivalence at 1 tap.
+# Formal of c3 took 593 s on eph4 at nice 19, so the tests are enormous
+# (3600 s).
 #
 # bazel test //... runs lint, RTL simulation and formal for every
 # candidate, the two negative controls, and the whole flow for c3 and c4,
@@ -14,7 +16,7 @@ load("@chip_harness//bazel:dot_s8.bzl", "dot_s8_candidate", "dot_s8_rejected_tes
         name = c,
         srcs = ["@chip_harness//:candidate_" + c],
         candidate = "@chip_harness//:candidates/%s/%s" % (c, f),
-        size = "large",
+        size = "enormous",
         synth_tags = tags,
     )
     for c, f, tags in [

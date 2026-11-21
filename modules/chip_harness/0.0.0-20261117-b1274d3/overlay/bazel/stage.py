@@ -4,7 +4,8 @@ Each step calls the function of upstream harness/evaluate.py that does it,
 with the tools that Bazel built, so it runs the same commands, vectors and
 pass rules as `python3 harness/evaluate.py <candidate>`. The steps:
 
-  lint      verilator --lint-only, the command of evaluate.evaluate().
+  lint      verilator --lint-only, the command of evaluate.evaluate(),
+            with --no-std added (see _tool_env).
   rtl_sim   evaluate.vectors() and evaluate.sim(): Icarus against the
             golden model.
   formal    evaluate.formal(): Yosys SAT equivalence with harness/ref.v.
@@ -48,11 +49,20 @@ def _tool_env(a, root):
     for name, path in [
         ("iverilog", a.iverilog),
         ("vvp", a.vvp),
-        ("verilator", a.verilator),
         ("yosys", a.yosys),
     ]:
         if path:
             os.symlink(_abs(path), os.path.join(bindir, name))
+    if a.verilator:
+        # Only lint runs verilator from PATH. The Bazel-built verilator has
+        # no VERILATOR_ROOT, so it cannot load include/verilated_std.sv and
+        # its waivers, and every lint stops with "Cannot find
+        # verilated_std.sv". --no-std leaves out the std:: package, as
+        # rules_verilator does. The candidates do not use it.
+        w = os.path.join(bindir, "verilator")
+        with open(w, "w") as f:
+            f.write('#!/bin/sh\nexec "%s" --no-std "$@"\n' % _abs(a.verilator))
+        os.chmod(w, 0o755)
     os.environ["PATH"] = bindir + os.pathsep + os.environ.get("PATH", "")
     if a.ivl_base:
         # The iverilog driver finds ivl, ivlpp and vvp.tgt in IVL_BASE, and

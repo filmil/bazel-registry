@@ -7,7 +7,7 @@ module(
 
 # The tools of the upstream flow (harness/evaluate.py), built from source.
 bazel_dep(name = "iverilog", version = "13.0.bcr.1")
-bazel_dep(name = "opensta", version = "0.0.0-20261120-d6cb4ac")
+bazel_dep(name = "opensta", version = "0.0.0-20261120-d6cb4ac.bcr.1")
 bazel_dep(name = "verilator", version = "5.046.bcr.6")
 bazel_dep(name = "yosys", version = "0.68.bcr.3")
 

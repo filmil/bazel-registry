@@ -4,12 +4,12 @@
     "strip_prefix": "chip-harness-b1274d396d8fbd8c4553fd0ccd5854f5873d3871",
     "overlay": {
         "BUILD.bazel": "sha256-aLB7ZzzBiKhS+3AE3veSHu+hXbf/sspQS9m1lN5DJYo=",
-        "MODULE.bazel": "sha256-l363hZcHnPa8F5DzBMNBNQRYjlNTJMPjvRg2keCbtQc=",
+        "MODULE.bazel": "sha256-4eXVMhgUu37KT3UK7sWdILtTbEOup3OCd75EowRhWhI=",
         "bazel/BUILD.bazel": "sha256-x5VzAM9fccjX2+6uCnjn+dapYgRir1gHFZhQWSjWyH4=",
         "bazel/dot_s8.bzl": "sha256-Q3Tctg63NEgVNi6OMphfQKJpZO5ix8fD0S4bGxzyY1U=",
         "bazel/gate_main.cc": "sha256-E0fVSymXpprhDJ3aUrUMAUqQy/+ob+XoRhmLr7DVcjc=",
-        "bazel/stage.py": "sha256-ndCMObG0Oyu6LHu2NQQl7dlDXV53CfRf/uaTTcjAG6s=",
-        "test_module/BUILD.bazel": "sha256-HECJIX+4CYXCfeQQy/nBhVeOnyR2+PxmDJv0P2uam4E=",
+        "bazel/stage.py": "sha256-TwLt7D8FpOTuMD+SDUi0je7ILHwYF+R+g400dszPXm4=",
+        "test_module/BUILD.bazel": "sha256-nRYftP6srUfPar/uQGa4ljQM/gnVKk0hoBFZXhX2g9E=",
         "test_module/MODULE.bazel": "sha256-/cGVRzrzi/A5ulu8nQ2ZVl4AQ2NUtrffVePSm4u1YNI="
     }
 }
