@@ -1,0 +1,21 @@
+Tcl 9 does not resolve the relative name $sta::vcd_null_time inside
+namespace eval sta, so read_vcd stopped with: can't read
+"sta::vcd_null_time": no such variable. Upstream issue:
+https://github.com/parallaxsw/OpenSTA/issues/586
+
+--- a/power/Power.tcl
++++ b/power/Power.tcl
+@@ -294,11 +294,11 @@
+     set scope $keys(-scope)
+   }
+   set mode [parse_mode keys]
+-  set begin_time $sta::vcd_null_time
++  set begin_time $::sta::vcd_null_time
+   if { [info exists keys(-begin_time)] } {
+     set begin_time $keys(-begin_time)
+   }
+-  set end_time $sta::vcd_null_time
++  set end_time $::sta::vcd_null_time
+   if { [info exists keys(-end_time)] } {
+     set end_time $keys(-end_time)
+   }

@@ -1,0 +1,14 @@
+--- a/BUILD.bazel
++++ b/BUILD.bazel
+@@ -242,6 +242,11 @@
+     "-Wno-cast-qual",
+     "-Wno-missing-braces",
+     "-Wno-unused-but-set-variable",
++] + [
++    # Registry patch: upstream sets these in its .bazelrc, which does not
++    # apply when OpenSTA is a dependency of another module.
++    "-std=c++20",
++    "-fexceptions",
+ ]
+ 
+ cc_library(

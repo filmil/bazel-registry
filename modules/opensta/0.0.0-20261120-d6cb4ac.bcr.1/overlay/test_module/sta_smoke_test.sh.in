@@ -1,0 +1,68 @@
+#!/bin/bash
+# Runs sta on tiny.lib and tiny.v: links the design, reports the worst
+# path from r1 to r2, and reports power at a fixed input activity. Then
+# reads the activity from tiny.vcd with read_vcd and reports power again.
+#   sta_smoke_test.sh <sta> <tiny.lib> <tiny.v> <tiny.vcd>
+set -euo pipefail
+tcl="$TEST_TMPDIR/smoke.tcl"
+log="$TEST_TMPDIR/smoke.log"
+# The paths reach Tcl through the environment, so no character in them
+# is parsed as Tcl.
+export STA_SMOKE_LIB="$PWD/$2" STA_SMOKE_NET="$PWD/$3" STA_SMOKE_VCD="$PWD/$4"
+cat >"$tcl" <<'TCL'
+read_liberty $env(STA_SMOKE_LIB)
+read_verilog $env(STA_SMOKE_NET)
+link_design top
+create_clock -name clk -period 10 [get_ports clk]
+set_input_delay 0 -clock clk [get_ports d]
+set_output_delay 0 -clock clk [get_ports q]
+puts "WS [sta::worst_slack -max]"
+report_checks -path_delay max -from r1/CLK -to r2/D
+set_power_activity -input -activity 0.2
+report_power
+TCL
+rc=0
+"$1" -no_init -no_splash -exit "$tcl" >"$log" 2>&1 || rc=$?
+cat "$log"
+fails=0
+fail() { echo "FAIL: $*"; fails=$((fails + 1)); }
+expect() { grep -qE "$1" "$log" || fail "no line matches: $1"; }
+[[ $rc == 0 ]] || fail "sta exited with $rc"
+# sta::worst_slack prints in the library's time unit, ns. The path is
+# r1 clock-to-Q, then two buffers, then r2 setup: 0.52 ns of a 10 ns
+# period, so the slack is 9.48 ns. Allow 9 to 10 ns.
+ws=$(awk '/^WS /{print $2}' "$log")
+awk -v s="${ws:-x}" 'BEGIN{exit !(s ~ /^[0-9.eE+-]+$/ && s+0 > 9 && s+0 < 10)}' ||
+  fail "worst slack \"$ws\" is not between 9 and 10 ns"
+expect 'r2/D \(DFF\)'
+expect 'slack \(MET\)'
+# The total power is internal, switching, leakage and total, in watts.
+# Internal and leakage power come from the library, so both are above 0.
+read -r _ internal _ leakage total _ < <(grep -E '^Total ' "$log" || true)
+awk -v i="${internal:-x}" -v l="${leakage:-x}" -v t="${total:-x}" \
+  'BEGIN{exit !(i+0 > 0 && l+0 > 0 && t+0 >= i+l && i ~ /^[0-9.eE+-]+$/)}' ||
+  fail "the Total power line is missing or not above 0"
+
+# read_vcd. Under Tcl 9, upstream's read_vcd stopped with
+# can't read "sta::vcd_null_time"; tcl9_vcd_null_time.patch fixes it.
+vtcl="$TEST_TMPDIR/vcd.tcl"
+vlog="$TEST_TMPDIR/vcd.log"
+cat >"$vtcl" <<'TCL'
+read_liberty $env(STA_SMOKE_LIB)
+read_verilog $env(STA_SMOKE_NET)
+link_design top
+create_clock -name clk -period 10 [get_ports clk]
+read_vcd -scope top $env(STA_SMOKE_VCD)
+report_activity_annotation
+report_power
+TCL
+rc=0
+"$1" -no_init -no_splash -exit "$vtcl" >"$vlog" 2>&1 || rc=$?
+cat "$vlog"
+[[ $rc == 0 ]] || fail "sta exited with $rc on read_vcd"
+grep -q "vcd_null_time" "$vlog" && fail "read_vcd hit the Tcl 9 vcd_null_time error"
+# tiny.vcd has clk, d and q, so read_vcd annotates some pins.
+grep -qE '^Annotated [1-9][0-9]* pin activities' "$vlog" ||
+  fail "read_vcd annotated no pin activities"
+grep -qE '^Total ' "$vlog" || fail "no Total power line after read_vcd"
+[[ $fails == 0 ]] && echo PASS
