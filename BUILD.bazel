@@ -8,23 +8,34 @@ load("@gazelle//:def.bzl", "gazelle")
 # gazelle:prefix github.com/filmil/bazel-registry
 gazelle(name = "gazelle")
 
-# Formats the registry's own Bazel files in place:
+# Buildifier for the registry's own Bazel files. Both targets skip
+# modules/: a published version must never change. Each version's
+# MODULE.bazel and source.json are pinned by the registry's hashes, and
+# source.json holds a hash of each overlay file, so a reformatted file
+# breaks every consumer of that version (issue 896).
+#
+# These targets ignore arguments after `--`: their mode and file set are
+# fixed here. `bazel run //:buildifier -- -mode=check` still formats.
+#
+# Formats in place:
 #   bazel run //:buildifier
-# It skips modules/. A published version must never change: source.json
-# holds a hash of each overlay file, so a reformatted overlay breaks every
-# consumer of that version (issue 896).
 buildifier(
     name = "buildifier",
     exclude_patterns = ["./modules/*"],
+    lint_mode = "warn",
 )
 
-# Reports formatting and lint findings in every Bazel file, modules/
-# included, and changes nothing:
+# Reports formatting and lint findings and changes nothing:
 #   bazel run //:buildifier.check
-# Read only the lines for the files you changed; published versions may
-# have old findings that must stay as they are.
 buildifier(
     name = "buildifier.check",
+    exclude_patterns = ["./modules/*"],
     lint_mode = "warn",
     mode = "check",
 )
+
+# To check only the files of a new entry under modules/, run the binary
+# itself with absolute paths (`bazel run` changes the working directory):
+#   bazel run @buildifier_prebuilt//:buildifier -- -mode=check -lint=warn \
+#     "$PWD"/modules/<name>/<version>/MODULE.bazel \
+#     "$PWD"/modules/<name>/<version>/overlay/BUILD.bazel
