@@ -1,0 +1,32 @@
+# Runs the sta binary on a two-cell library and a four-cell netlist: a
+# timing report, and power reports at a fixed activity and from a VCD.
+# Only the binary is tested: consumers of this entry run //:sta and do
+# not link against OpenSTA.
+
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+
+# An overlay file does not keep its executable bit.
+genrule(
+    name = "sta_smoke_test_sh",
+    srcs = ["sta_smoke_test.sh.in"],
+    outs = ["sta_smoke_test.sh"],
+    cmd = "cp $< $@ && chmod +x $@",
+    executable = True,
+)
+
+sh_test(
+    name = "sta_smoke_test",
+    srcs = [":sta_smoke_test_sh"],
+    args = [
+        "$(rootpath @opensta//:sta)",
+        "$(rootpath tiny.lib)",
+        "$(rootpath tiny.v)",
+        "$(rootpath tiny.vcd)",
+    ],
+    data = [
+        "tiny.lib",
+        "tiny.v",
+        "tiny.vcd",
+        "@opensta//:sta",
+    ],
+)

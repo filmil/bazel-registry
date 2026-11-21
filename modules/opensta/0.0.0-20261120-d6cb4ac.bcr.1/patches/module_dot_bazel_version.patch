@@ -1,0 +1,11 @@
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -13,7 +13,7 @@
+ 
+ module(
+     name = "opensta",
+-    version = "3.2.0",
++    version = "0.0.0-20261120-d6cb4ac.bcr.1",
+ )
+ 
+ bazel_dep(name = "bison", version = "3.8.2.bcr.10")

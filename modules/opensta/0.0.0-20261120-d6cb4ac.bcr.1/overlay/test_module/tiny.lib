@@ -1,0 +1,87 @@
+/* A two-cell library for the sta smoke test: one buffer, one D flip-flop. */
+library (tiny) {
+  delay_model : table_lookup;
+  time_unit : "1ns";
+  voltage_unit : "1V";
+  current_unit : "1mA";
+  capacitive_load_unit (1, pf);
+  leakage_power_unit : "1nW";
+  pulling_resistance_unit : "1kohm";
+  nom_process : 1;
+  nom_temperature : 25;
+  nom_voltage : 1.2;
+  default_max_transition : 1.0;
+  lu_table_template (tbl) {
+    variable_1 : input_net_transition;
+    variable_2 : total_output_net_capacitance;
+    index_1 ("0.01, 0.5");
+    index_2 ("0.001, 0.1");
+  }
+  lu_table_template (ctbl) {
+    variable_1 : constrained_pin_transition;
+    variable_2 : related_pin_transition;
+    index_1 ("0.01, 0.5");
+    index_2 ("0.01, 0.5");
+  }
+  power_lut_template (ptbl) {
+    variable_1 : input_transition_time;
+    variable_2 : total_output_net_capacitance;
+    index_1 ("0.01, 0.5");
+    index_2 ("0.001, 0.1");
+  }
+  cell (BUF) {
+    area : 2;
+    cell_leakage_power : 1;
+    pin (A) { direction : input; capacitance : 0.002; }
+    pin (Y) {
+      direction : output;
+      function : "A";
+      timing () {
+        related_pin : "A";
+        timing_sense : positive_unate;
+        cell_rise (tbl) { values ("0.1, 0.3", "0.2, 0.4"); }
+        cell_fall (tbl) { values ("0.1, 0.3", "0.2, 0.4"); }
+        rise_transition (tbl) { values ("0.05, 0.2", "0.1, 0.3"); }
+        fall_transition (tbl) { values ("0.05, 0.2", "0.1, 0.3"); }
+      }
+      internal_power () {
+        related_pin : "A";
+        rise_power (ptbl) { values ("0.001, 0.002", "0.001, 0.002"); }
+        fall_power (ptbl) { values ("0.001, 0.002", "0.001, 0.002"); }
+      }
+    }
+  }
+  cell (DFF) {
+    area : 6;
+    cell_leakage_power : 3;
+    ff (IQ, IQN) { clocked_on : "CLK"; next_state : "D"; }
+    pin (CLK) { direction : input; clock : true; capacitance : 0.002; }
+    pin (D) {
+      direction : input;
+      capacitance : 0.002;
+      timing () {
+        related_pin : "CLK";
+        timing_type : setup_rising;
+        rise_constraint (ctbl) { values ("0.1, 0.1", "0.1, 0.1"); }
+        fall_constraint (ctbl) { values ("0.1, 0.1", "0.1, 0.1"); }
+      }
+    }
+    pin (Q) {
+      direction : output;
+      function : "IQ";
+      timing () {
+        related_pin : "CLK";
+        timing_type : rising_edge;
+        cell_rise (tbl) { values ("0.2, 0.4", "0.3, 0.5"); }
+        cell_fall (tbl) { values ("0.2, 0.4", "0.3, 0.5"); }
+        rise_transition (tbl) { values ("0.05, 0.2", "0.1, 0.3"); }
+        fall_transition (tbl) { values ("0.05, 0.2", "0.1, 0.3"); }
+      }
+      internal_power () {
+        related_pin : "CLK";
+        rise_power (ptbl) { values ("0.002, 0.003", "0.002, 0.003"); }
+        fall_power (ptbl) { values ("0.002, 0.003", "0.002, 0.003"); }
+      }
+    }
+  }
+}
