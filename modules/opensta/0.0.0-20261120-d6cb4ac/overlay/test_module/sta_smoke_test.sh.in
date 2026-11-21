@@ -1,0 +1,33 @@
+#!/bin/bash
+# Runs sta on tiny.lib and tiny.v: links the design, reports the worst
+# path from r1 to r2, and reports power at a fixed input activity.
+#   sta_smoke_test.sh <sta> <tiny.lib> <tiny.v>
+set -euo pipefail
+tcl="$TEST_TMPDIR/smoke.tcl"
+log="$TEST_TMPDIR/smoke.log"
+cat >"$tcl" <<TCL
+read_liberty $PWD/$2
+read_verilog $PWD/$3
+link_design top
+create_clock -name clk -period 10 [get_ports clk]
+set_input_delay 0 -clock clk [get_ports d]
+set_output_delay 0 -clock clk [get_ports q]
+puts "WS [sta::worst_slack -max]"
+report_checks -path_delay max -from r1/CLK -to r2/D
+set_power_activity -input -activity 0.2
+report_power
+TCL
+rc=0
+"$1" -no_init -no_splash -exit "$tcl" >"$log" 2>&1 || rc=$?
+cat "$log"
+fails=0
+expect() {
+  grep -qE "$1" "$log" || { echo "FAIL: no line matches: $1"; fails=$((fails + 1)); }
+}
+[[ $rc == 0 ]] || { echo "FAIL: sta exited with $rc"; fails=$((fails + 1)); }
+# r1 clock-to-Q, then two buffers: positive slack of a few ns in 10 ns.
+expect '^WS [0-9]+\.[0-9]+'
+expect 'r2/D \(DFF\)'
+expect 'slack \(MET\)'
+expect '^Total +[0-9.eE+-]+ +[0-9.eE+-]+ +[0-9.eE+-]+ +[0-9.eE+-]+'
+[[ $fails == 0 ]] && echo PASS

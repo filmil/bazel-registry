@@ -1,0 +1,28 @@
+# Runs the sta binary on a two-cell library and a four-cell netlist: a
+# timing report and a power report, the two uses chip_harness has.
+
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+
+# An overlay file does not keep its executable bit.
+genrule(
+    name = "sta_smoke_test_sh",
+    srcs = ["sta_smoke_test.sh.in"],
+    outs = ["sta_smoke_test.sh"],
+    cmd = "cp $< $@",
+    executable = True,
+)
+
+sh_test(
+    name = "sta_smoke_test",
+    srcs = [":sta_smoke_test_sh"],
+    args = [
+        "$(rootpath @opensta//:sta)",
+        "$(rootpath tiny.lib)",
+        "$(rootpath tiny.v)",
+    ],
+    data = [
+        "tiny.lib",
+        "tiny.v",
+        "@opensta//:sta",
+    ],
+)

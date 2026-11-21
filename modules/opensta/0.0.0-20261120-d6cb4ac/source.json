@@ -1,0 +1,17 @@
+{
+    "url": "https://github.com/parallaxsw/OpenSTA/archive/d6cb4ac56b3ea85a801b628127af14135dcbbe4c.tar.gz",
+    "integrity": "sha256-uueDkeUwIP+d/aXbhZXUSyyL+xClgHjvRpWDTD/uXu4=",
+    "strip_prefix": "OpenSTA-d6cb4ac56b3ea85a801b628127af14135dcbbe4c",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-0j4Twz5BW1vJKjbs++QiZ4N88q1JtytDp6zfcML6aFg=",
+        "cxx20_copts.patch": "sha256-njvwZEpB+5xzYlQG7iueO54YdqWmhpgpBe/SIFAu3sw="
+    },
+    "patch_strip": 1,
+    "overlay": {
+        "test_module/BUILD.bazel": "sha256-4+GBLOiM38arJAiuFldPqhzdFBF1ORV4w9bNMtB5ccU=",
+        "test_module/MODULE.bazel": "sha256-Mj/NdAdunyuCQn3hg0PVEdFzfXkC9Ao2G9j/5o75XJ4=",
+        "test_module/sta_smoke_test.sh.in": "sha256-H99uILMpxRBmtVpyI1xj0KT7/FsBuGHL9HzPm0IOlWI=",
+        "test_module/tiny.lib": "sha256-G5+4SIP3EEORU2vj/8FjsAB2JqhsNThiLxJ2Txeae5U=",
+        "test_module/tiny.v": "sha256-4ytGwg1F1Y0gMm8O+qTwrJMYTJMzqpYzg/l01am8FLc="
+    }
+}
