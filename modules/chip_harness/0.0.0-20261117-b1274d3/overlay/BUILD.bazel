@@ -6,12 +6,21 @@ package(default_visibility = ["//visibility:public"])
 exports_files([
     "LICENSE",
     "NOTICE",
+    "harness/evaluate.py",
+    "harness/golden.py",
     "harness/ref.v",
     "harness/tb.v",
     "pdk/NOTICE",
     "pdk/sg13g2_func.v",
     "pdk/sg13g2_stdcell_typ_1p20V_25C.lib",
 ])
+
+# Each candidate's design.v or gen.py, which dot_s8_candidate takes as
+# `candidate`.
+exports_files(glob([
+    "candidates/*/design.v",
+    "candidates/*/gen.py",
+]))
 
 # harness/evaluate.py and the golden model it imports. stage.py calls
 # their functions, so each step runs the same commands as upstream.

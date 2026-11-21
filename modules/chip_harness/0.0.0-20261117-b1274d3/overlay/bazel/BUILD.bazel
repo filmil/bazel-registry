@@ -3,7 +3,10 @@ load(":dot_s8.bzl", "opt_tool")
 
 package(default_visibility = ["//visibility:public"])
 
-exports_files(["gate_main.cc"])
+exports_files([
+    "gate_main.cc",
+    "stage.py",
+])
 
 # The steps of the flow; see stage.py and dot_s8.bzl.
 py_binary(

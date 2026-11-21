@@ -17,7 +17,8 @@ pass rules as `python3 harness/evaluate.py <candidate>`. The steps:
             Verilator build of the netlist, and evaluate._verdict().
   sta       the activity run of evaluate.evaluate() (+dump), then
             evaluate.sta(): OpenSTA timing and power.
-  check_sta checks that the sta step reported slack and power.
+  check_sta checks that the sta step reported slack, and power from the
+            gate-level VCD.
 
 The test steps print the stage result as JSON and exit 0 only on a pass.
 The build steps (emit, synth, sta) write their outputs and exit 0 only
@@ -28,6 +29,7 @@ import argparse
 import importlib.util
 import json
 import os
+import shlex
 import shutil
 import sys
 import tempfile
@@ -61,7 +63,8 @@ def _tool_env(a, root):
         # rules_verilator does. The candidates do not use it.
         w = os.path.join(bindir, "verilator")
         with open(w, "w") as f:
-            f.write('#!/bin/sh\nexec "%s" --no-std "$@"\n' % _abs(a.verilator))
+            f.write('#!/bin/sh\nexec %s --no-std "$@"\n'
+                    % shlex.quote(_abs(a.verilator)))
         os.chmod(w, 0o755)
     os.environ["PATH"] = bindir + os.pathsep + os.environ.get("PATH", "")
     if a.ivl_base:
@@ -77,16 +80,14 @@ def _tool_env(a, root):
     os.environ.pop("RESULT_TAG", None)
 
 
-def _workdir_root(outs):
+def _workdir_root():
     """Where the steps work: the test's TEST_TMPDIR, or for a build step a
-    directory next to its first output, in the Bazel output tree. Never the
-    source tree: evaluate.evaluate() would use <ROOT>/work, and stage.py
-    points ROOT here too."""
+    new temporary directory, which main() removes at the end. Never the
+    source tree or the output tree: evaluate.evaluate() would use
+    <ROOT>/work, and stage.py points ROOT here too."""
     if os.environ.get("TEST_TMPDIR"):
-        return os.environ["TEST_TMPDIR"]
-    root = outs[0] + ".work"
-    os.makedirs(root, exist_ok=True)
-    return root
+        return os.environ["TEST_TMPDIR"], False
+    return tempfile.mkdtemp(prefix="chip-harness-"), True
 
 
 def _load_evaluate(path):
@@ -107,6 +108,15 @@ def _report(stage, ok, info):
 
 
 def main():
+    root, temp = _workdir_root()
+    try:
+        return _main(root)
+    finally:
+        if temp:
+            shutil.rmtree(root, ignore_errors=True)
+
+
+def _main(root):
     ap = argparse.ArgumentParser()
     ap.add_argument("step")
     ap.add_argument("--evaluate", required=True, help="harness/evaluate.py")
@@ -131,7 +141,6 @@ def main():
     a = ap.parse_args()
 
     outs = [_abs(o) for o in a.out]
-    root = _workdir_root(outs)
     _tool_env(a, root)
     ev = _load_evaluate(a.evaluate)
     ev.ROOT = root
@@ -147,7 +156,7 @@ def main():
         rc, out, t = ev.run(
             f"verilator --lint-only -Wall -Wno-fatal -Wno-DECLFILENAME "
             f"-Wno-UNUSEDSIGNAL -Wno-UNUSEDPARAM {g} --top-module dot_s8 "
-            f"{design}", wd, log="lint.log")
+            f"{shlex.quote(design)}", wd, log="lint.log")
         errs = out.count("%Error")
         warns = out.count("%Warning")
         print(out)
@@ -205,14 +214,16 @@ def main():
         print(json.dumps(res, indent=1))
         if not ok:
             print("FAIL: synth did not pass")
-            sys.stdout.write(open(os.path.join(wd, "syn.log")).read()[-2000:])
+            log = os.path.join(wd, "syn.log")
+            if os.path.exists(log):
+                sys.stdout.write(open(log).read()[-2000:])
             return 1
         return 0
 
     if a.step == "gate_sim":
         # The gate-level vectors of evaluate.evaluate(), stage 5.
         nvec = ev.vectors(n, wd, [("corner", 200, 1), ("uniform", 4000, 2)])
-        rc, out, t = ev.run(f"{_abs(a.sim)} +nvec={nvec}", wd,
+        rc, out, t = ev.run(f"{shlex.quote(_abs(a.sim))} +nvec={nvec}", wd,
                             log="gate_area_run.log")
         print(out)
         ok, info = ev._verdict(rc, out, nvec, t)
@@ -222,7 +233,8 @@ def main():
         # Outputs: the result as JSON, then sta_area.log.
         # The activity run of evaluate.evaluate(): conv vectors, +dump.
         nvec = ev.vectors(n, wd, [("conv", 4096, 7)])
-        rc, out, t = ev.run(f"{_abs(a.sim)} +nvec={nvec} +dump", wd,
+        rc, out, t = ev.run(f"{shlex.quote(_abs(a.sim))} +nvec={nvec} +dump",
+                            wd,
                             log="gate_area_run.log")
         ok, info = ev._verdict(rc, out, nvec, t)
         vcd = None
@@ -237,7 +249,11 @@ def main():
         if ok2:
             res["energy_per_op_pj"] = round(info2["power_mw"] * a.period, 2)
         json.dump(res, open(outs[0], "w"), indent=1)
-        shutil.copy(os.path.join(wd, "sta_area.log"), outs[1])
+        log = os.path.join(wd, "sta_area.log")
+        if os.path.exists(log):
+            shutil.copy(log, outs[1])
+        else:
+            open(outs[1], "w").close()
         print(json.dumps(res, indent=1))
         # As upstream: a failed activity run leaves the default activity
         # of evaluate.sta(); only an STA failure rejects the candidate.
@@ -252,7 +268,15 @@ def main():
         s = res.get("sta", {})
         ok = all(k in s for k in ("worst_slack_ns", "min_period_ns",
                                   "power_mw")) and s["power_mw"] > 0
-        return _report("sta", ok, s)
+        # Stricter than upstream, which falls back to a default activity:
+        # the power must come from the gate-level VCD of a clean run, so a
+        # broken VCD dump or read_vcd fails this test.
+        act = res.get("activity_run", {})
+        vcd = (act.get("errors") == 0 and act.get("checked", 0) > 0
+               and s.get("activity", "").startswith("gate-level VCD"))
+        if not vcd:
+            print("FAIL: the power does not come from the gate-level VCD")
+        return _report("sta", ok and vcd, s)
 
     print("unknown step: " + a.step)
     return 2

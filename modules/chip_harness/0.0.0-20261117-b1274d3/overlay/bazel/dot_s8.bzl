@@ -10,7 +10,8 @@ For a candidate named <c>, with the upstream defaults (27 taps, 10 ns):
   <c>_gate            the netlist, cell models and tb.v, built by Verilator
   <c>_gate_sim_test   the gate-level vectors on <c>_gate
   <c>_sta             OpenSTA timing and power: <c>/sta_area.json and .log
-  <c>_sta_test        checks the slack and power in <c>/sta_area.json
+  <c>_sta_test        checks the slack, and power from the gate-level VCD,
+                      in <c>/sta_area.json
 
 These are the gates of upstream harness/evaluate.py, in its order. Each
 step calls the evaluate.py function that does it; see stage.py.
@@ -67,9 +68,11 @@ opt_tool = rule(
     doc = """A tool built with -c opt, whatever the build's own mode.
 
 The tests and the build actions both run the tools from this rule, so
-each tool is built once, optimized. In the default fastbuild mode,
-Yosys and ABC run several times slower. The designs' own C++ (the
-Verilator gate builds) keeps the build's mode.""",
+each of them uses one optimized build of a tool. In the default
+fastbuild mode, Yosys and ABC run several times slower. Two builds are
+not affected: rules_verilator builds the gate models with its own
+Verilator toolchain, in the exec configuration, and the gate models'
+C++ is compiled at -O0, as evaluate.gate_build() does.""",
     attrs = {
         "actual": attr.label(
             mandatory = True,
@@ -99,8 +102,10 @@ def _stage_run_impl(ctx):
     )
     return [DefaultInfo(files = depset(ctx.outputs.outs))]
 
-# Runs stage.py once, as a build action. The tools come from opt_tool
-# targets, as for the tests, so each tool is built once.
+# Runs stage.py once, as a build action. The tools come from the same
+# opt_tool targets as the tests, in the target configuration, so tests
+# and actions share one build of each tool. This needs a host that runs
+# target binaries, as the gate simulation in the tests does anyway.
 _stage_run = rule(
     implementation = _stage_run_impl,
     attrs = {
@@ -136,6 +141,13 @@ _ALL_TOOLS = [
     ("verilator", _VERILATOR),
     ("yosys", _YOSYS),
 ]
+
+def _with_candidate(srcs, candidate):
+    """srcs with candidate added, unless srcs names it in any spelling."""
+    have = [native.package_relative_label(s) for s in srcs]
+    if native.package_relative_label(candidate) in have:
+        return srcs
+    return srcs + [candidate]
 
 def _clog2(n):
     b = 0
@@ -173,12 +185,13 @@ def dot_s8_candidate(
       taps: N, the number of taps.
       period: the clock period in ns, for gate simulation and STA.
       synth_tags: tags for synthesis and every target after it.
-      **kwargs: passed to every test, e.g. size.
+      **kwargs: passed to every test, e.g. size. Their tags are added
+        to synth_tags on the tests after synthesis.
     """
+    tags = kwargs.pop("tags", [])
     yw = 16 + _clog2(taps)
     half = "%s" % (period / 2)
-    if candidate not in srcs:
-        srcs = srcs + [candidate]
+    srcs = _with_candidate(srcs, candidate)
     _stage_test(
         name = name + "_lint_test",
         step = "lint",
@@ -187,6 +200,7 @@ def dot_s8_candidate(
         taps = taps,
         period = period,
         tools = [("verilator", _VERILATOR)],
+        tags = tags,
         **kwargs
     )
     _stage_test(
@@ -197,6 +211,7 @@ def dot_s8_candidate(
         taps = taps,
         period = period,
         tools = [("iverilog", _IVERILOG), ("ivl-base", _IVL_BASE), ("vvp", _VVP)],
+        tags = tags,
         **kwargs
     )
     _stage_test(
@@ -207,6 +222,7 @@ def dot_s8_candidate(
         taps = taps,
         period = period,
         tools = [("yosys", _YOSYS)],
+        tags = tags,
         **kwargs
     )
 
@@ -283,7 +299,7 @@ def dot_s8_candidate(
         period = period,
         tools = [],
         extra_args = ["--sim=$(rootpath :%s_gate)" % name],
-        tags = synth_tags,
+        tags = synth_tags + tags,
         **kwargs
     )
     _stage_run(
@@ -311,7 +327,7 @@ def dot_s8_candidate(
         period = period,
         tools = [],
         extra_args = ["--result=$(rootpath :%s/sta_area.json)" % name],
-        tags = synth_tags,
+        tags = synth_tags + tags,
         **kwargs
     )
 
@@ -327,8 +343,7 @@ def dot_s8_rejected_test(name, srcs, candidate, stage, taps = 27, period = 10.0,
       period: the clock period in ns.
       **kwargs: passed to the test.
     """
-    if candidate not in srcs:
-        srcs = srcs + [candidate]
+    srcs = _with_candidate(srcs, candidate)
     _stage_test(
         name = name,
         step = "reject",
