@@ -8,7 +8,23 @@ load("@gazelle//:def.bzl", "gazelle")
 # gazelle:prefix github.com/filmil/bazel-registry
 gazelle(name = "gazelle")
 
-# bazel run //:buildifier
+# Formats the registry's own Bazel files in place:
+#   bazel run //:buildifier
+# It skips modules/. A published version must never change: source.json
+# holds a hash of each overlay file, so a reformatted overlay breaks every
+# consumer of that version (issue 896).
 buildifier(
     name = "buildifier",
+    exclude_patterns = ["./modules/*"],
+)
+
+# Reports formatting and lint findings in every Bazel file, modules/
+# included, and changes nothing:
+#   bazel run //:buildifier.check
+# Read only the lines for the files you changed; published versions may
+# have old findings that must stay as they are.
+buildifier(
+    name = "buildifier.check",
+    lint_mode = "warn",
+    mode = "check",
 )
