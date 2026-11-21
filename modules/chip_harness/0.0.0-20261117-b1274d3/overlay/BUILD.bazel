@@ -1,0 +1,73 @@
+# The upstream sources, for //bazel:dot_s8.bzl and for users' own
+# candidates. Nothing here changes an upstream file.
+
+package(default_visibility = ["//visibility:public"])
+
+exports_files([
+    "LICENSE",
+    "NOTICE",
+    "harness/ref.v",
+    "harness/tb.v",
+    "pdk/NOTICE",
+    "pdk/sg13g2_func.v",
+    "pdk/sg13g2_stdcell_typ_1p20V_25C.lib",
+])
+
+# harness/evaluate.py and the golden model it imports. stage.py calls
+# their functions, so each step runs the same commands as upstream.
+filegroup(
+    name = "harness",
+    srcs = [
+        "harness/evaluate.py",
+        "harness/golden.py",
+        "harness/ref.v",
+        "harness/tb.v",
+    ],
+)
+
+# The IHP SG13G2 cell library (typical corner) and the cell models that
+# harness/lib2v.py made from it.
+filegroup(
+    name = "pdk",
+    srcs = [
+        "pdk/sg13g2_func.v",
+        "pdk/sg13g2_stdcell_typ_1p20V_25C.lib",
+    ],
+)
+
+# The generator candidates import candidates/_shared/*.py.
+filegroup(
+    name = "candidates_shared",
+    srcs = glob(["candidates/_shared/*.py"]),
+)
+
+# One filegroup per upstream candidate: design.v, or gen.py with the
+# shared generator code.
+[
+    filegroup(
+        name = "candidate_" + c,
+        srcs = ["candidates/%s/design.v" % c],
+    )
+    for c in [
+        "b0_behavioral",
+        "b1_hand_tree",
+        "x1_rare_value_bug",
+        "x2_swapped_taps",
+    ]
+]
+
+[
+    filegroup(
+        name = "candidate_" + c,
+        srcs = [
+            "candidates/%s/gen.py" % c,
+            ":candidates_shared",
+        ],
+    )
+    for c in [
+        "c1_bw_dadda",
+        "c2_booth_dadda",
+        "c3_booth_preenc",
+        "c4_booth_preenc_prefix",
+    ]
+]
