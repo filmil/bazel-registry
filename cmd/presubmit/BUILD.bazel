@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: Apache-2.0
+
+load("@rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+
+go_library(
+    name = "presubmit_lib",
+    srcs = [
+        "main.go",
+        "presubmit.go",
+    ],
+    importpath = "github.com/filmil/bazel-registry/cmd/presubmit",
+    visibility = ["//visibility:private"],
+    deps = ["@in_gopkg_yaml_v3//:yaml_v3"],
+)
+
+# Runs the presubmit.yml of changed module versions in CI; see main.go.
+#   bazel run //cmd/presubmit -- plan --repo "$PWD" --base origin/main
+go_binary(
+    name = "presubmit",
+    embed = [":presubmit_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "presubmit_test",
+    srcs = ["presubmit_test.go"],
+    embed = [":presubmit_lib"],
+)
