@@ -24,3 +24,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Build
         run: "bazel build //... -- -//modules/..."
+      - name: Check the registry's own Bazel files
+        # Skips modules/; see //:buildifier.check in BUILD.bazel.
+        run: "bazel run //:buildifier.check"
