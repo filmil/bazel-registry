@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Runs the presubmit.yml of every module version a pull request changes,
-# the way the Bazel Central Registry's presubmit does: the top-level
-# tasks' targets, then the bcr_test_module tasks, once per Bazel version
-# in the presubmit's matrix. Platforms in the matrix are ignored; every
-# job runs on ubuntu-latest. See cmd/presubmit/main.go.
+# after the model of the Bazel Central Registry's presubmit: the top-level
+# tasks on the top-level matrix's Bazel versions, then the bcr_test_module
+# tasks on the test module's. Every job runs on ubuntu-latest: matrix
+# platforms are ignored, and tasks for a named Windows or macOS platform
+# are skipped. See cmd/presubmit/main.go.
 #
 # Targets tagged manual (Vivado runs, for example) stay out, since the
 # presubmit tasks name only what CI should run.
@@ -36,9 +37,13 @@ jobs:
           fetch-depth: 0
       - name: List the changed module versions
         id: plan
+        # Values from the event reach the shell as environment variables,
+        # never as text pasted into the script.
+        env:
+          BASE_REF: ${{ github.base_ref }}
         run: |
           set -euo pipefail
-          jobs="$(bazel run //cmd/presubmit -- plan --repo "${GITHUB_WORKSPACE}" --base "origin/${{ github.base_ref }}")"
+          jobs="$(bazel run //cmd/presubmit -- plan --repo "${GITHUB_WORKSPACE}" --base "origin/${BASE_REF}")"
           echo "${jobs}"
           echo "jobs=${jobs}" >> "${GITHUB_OUTPUT}"
 
@@ -63,7 +68,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Run the presubmit
+        # The matrix comes from a pull request's presubmit.yml, so it reaches
+        # the shell only through environment variables.
+        env:
+          MODULE: ${{ matrix.module }}
+          VERSION: ${{ matrix.version }}
+          BAZEL: ${{ matrix.bazel }}
         run: |
           bazel run //cmd/presubmit -- run --repo "${GITHUB_WORKSPACE}" \
-            --module "${{ matrix.module }}" --version "${{ matrix.version }}" \
-            --bazel "${{ matrix.bazel }}"
+            --module "${MODULE}" --version "${VERSION}" --bazel "${BAZEL}"

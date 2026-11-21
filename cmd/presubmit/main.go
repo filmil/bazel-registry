@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Command presubmit runs the presubmit.yml of changed module versions in
-// CI, the way the Bazel Central Registry's presubmit does, on one host.
+// CI, after the model of the Bazel Central Registry's presubmit, on one
+// Linux host. Matrix platforms are ignored, and tasks for a named Windows
+// or macOS platform are skipped. Top-level tasks run on the top-level
+// matrix's Bazel versions, test module tasks on the test module's.
 //
 // plan prints, as a JSON list for a GitHub Actions matrix, one job per
 // module version that the pull request changes and per Bazel version its
@@ -68,13 +71,18 @@ func main() {
 }
 
 func runPlan(repo, base, defBazel string) error {
-	cmd := exec.Command("git", "-C", repo, "diff", "--name-only", base+"...HEAD", "--", "modules/")
+	cmd := exec.Command("git", "-C", repo, "diff", "-z", "--name-only", base+"...HEAD", "--", "modules/")
 	cmd.Stderr = os.Stderr
 	out, err := cmd.Output()
 	if err != nil {
 		return fmt.Errorf("git diff %s...HEAD: %w", base, err)
 	}
-	paths := strings.Fields(string(out))
+	var paths []string
+	for _, p := range strings.Split(string(out), "\x00") {
+		if p != "" {
+			paths = append(paths, p)
+		}
+	}
 	jobs, err := plan(repo, paths, defBazel)
 	if err != nil {
 		return err
@@ -90,6 +98,10 @@ func runPlan(repo, base, defBazel string) error {
 // bazelCmd runs bazel in dir with the registry flags; the Bazel version
 // comes from USE_BAZEL_VERSION.
 func bazelCmd(dir, ver, repo string, args ...string) error {
+	return bazelCmdEnv(dir, ver, repo, nil, args...)
+}
+
+func bazelCmdEnv(dir, ver, repo string, env map[string]string, args ...string) error {
 	if len(args) == 0 {
 		return nil
 	}
@@ -98,26 +110,46 @@ func bazelCmd(dir, ver, repo string, args ...string) error {
 	log.Printf("+ (cd %s && USE_BAZEL_VERSION=%s bazel %s)", dir, ver, strings.Join(full, " "))
 	cmd := exec.Command("bazel", full...)
 	cmd.Dir = dir
-	cmd.Env = append(os.Environ(), "USE_BAZEL_VERSION="+ver)
+	cmd.Env = withEnv(env, "USE_BAZEL_VERSION="+ver)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
 }
 
-// runTask builds and tests one task's targets in dir.
+func withEnv(env map[string]string, extra ...string) []string {
+	out := os.Environ()
+	for k, v := range env {
+		out = append(out, k+"="+v)
+	}
+	return append(out, extra...)
+}
+
+// runTask runs one task in dir: its shell commands, then its build and
+// test targets.
 func runTask(dir, ver, repo, name string, t Task) error {
+	if !t.linuxOnly() {
+		log.Printf("== task %s: skipped, platform %s cannot run on this Linux host", name, t.Platform)
+		return nil
+	}
 	log.Printf("== task %s", name)
+	for _, c := range t.ShellCommands {
+		log.Printf("+ (cd %s && %s)", dir, c)
+		cmd := exec.Command("bash", "-c", c)
+		cmd.Dir = dir
+		cmd.Env = withEnv(t.Environment, "USE_BAZEL_VERSION="+ver)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
+			return fmt.Errorf("task %s: shell command %q: %w", name, c, err)
+		}
+	}
 	if len(t.BuildTargets) > 0 {
-		args := append([]string{"build"}, t.BuildFlags...)
-		args = append(append(args, "--"), t.BuildTargets...)
-		if err := bazelCmd(dir, ver, repo, args...); err != nil {
+		if err := bazelCmdEnv(dir, ver, repo, t.Environment, targetArgs("build", t.BuildFlags, t.BuildTargets)...); err != nil {
 			return fmt.Errorf("task %s: build: %w", name, err)
 		}
 	}
 	if len(t.TestTargets) > 0 {
-		args := append([]string{"test"}, t.TestFlags...)
-		args = append(append(args, "--"), t.TestTargets...)
-		if err := bazelCmd(dir, ver, repo, args...); err != nil {
+		if err := bazelCmdEnv(dir, ver, repo, t.Environment, targetArgs("test", t.TestFlags, t.TestTargets)...); err != nil {
 			return fmt.Errorf("task %s: test: %w", name, err)
 		}
 	}
@@ -144,7 +176,7 @@ func runJob(repo string, j Job) error {
 			c.Env = append(os.Environ(), "USE_BAZEL_VERSION="+j.Bazel)
 			_ = c.Run()
 		}
-		_ = filepath.Walk(work, func(p string, _ os.FileInfo, _ error) error { _ = os.Chmod(p, 0o755); return nil })
+		makeWritable(work)
 		_ = os.RemoveAll(work)
 	}()
 	probe := filepath.Join(work, "probe")
@@ -156,14 +188,21 @@ func runJob(repo string, j Job) error {
 	if err := os.WriteFile(filepath.Join(probe, "MODULE.bazel"), []byte(mod), 0o644); err != nil {
 		return err
 	}
-	// The top-level tasks build the module's own targets as a dependency.
-	for _, n := range sortedTasks(ps.Tasks) {
-		if err := runTask(probe, j.Bazel, repo, n, ps.Tasks[n]); err != nil {
-			return err
+	// The top-level tasks build the module's own targets as a dependency,
+	// on the top-level matrix's Bazel versions only.
+	if contains(ps.topVersions(j.Bazel), j.Bazel) {
+		for _, n := range sortedTasks(ps.Tasks) {
+			if err := runTask(probe, j.Bazel, repo, n, ps.Tasks[n]); err != nil {
+				return err
+			}
 		}
 	}
 	if ps.TestModule == nil {
 		log.Printf("%s@%s has no bcr_test_module", j.Module, j.Version)
+		return nil
+	}
+	if !contains(ps.testModuleVersions(j.Bazel), j.Bazel) {
+		log.Printf("the test module of %s@%s does not run on Bazel %s", j.Module, j.Version, j.Bazel)
 		return nil
 	}
 	// The test module lives inside the module's source, as BCR's presubmit
@@ -172,9 +211,19 @@ func runJob(repo string, j Job) error {
 	if err := bazelCmd(probe, j.Bazel, repo, "vendor", "--vendor_dir="+vendor, "--repo=@"+j.Module); err != nil {
 		return fmt.Errorf("vendor @%s: %w", j.Module, err)
 	}
-	tm := filepath.Join(vendor, j.Module+"+", ps.TestModule.ModulePath)
+	vd, err := vendoredDir(vendor, j.Module)
+	if err != nil {
+		return err
+	}
+	// Bazel writes a lockfile and convenience symlinks in the test module,
+	// and vendored files can be read-only.
+	makeWritable(vd)
+	tm := filepath.Join(vd, ps.TestModule.ModulePath)
 	if _, err := os.Stat(filepath.Join(tm, "MODULE.bazel")); err != nil {
 		return fmt.Errorf("test module %s: %w", tm, err)
+	}
+	if err := stripRegistries(tm); err != nil {
+		return err
 	}
 	ran = append(ran, tm)
 	for _, n := range sortedTasks(ps.TestModule.Tasks) {
@@ -183,4 +232,16 @@ func runJob(repo string, j Job) error {
 		}
 	}
 	return nil
+}
+
+// makeWritable gives the owner write access to every directory and file
+// under root. It does not follow symlinks, so nothing outside root changes.
+func makeWritable(root string) {
+	_ = filepath.Walk(root, func(p string, fi os.FileInfo, err error) error {
+		if err != nil || fi.Mode()&os.ModeSymlink != 0 {
+			return nil
+		}
+		_ = os.Chmod(p, fi.Mode().Perm()|0o200)
+		return nil
+	})
 }

@@ -13,14 +13,36 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Task is one task of a presubmit.yml: targets to build and to test, and
-// the flags for each. Platform names are ignored: CI runs on one host.
+// Task is one task of a presubmit.yml: commands to run, then targets to
+// build and to test, with their flags and environment.
 type Task struct {
-	Name         string   `yaml:"name"`
-	BuildFlags   []string `yaml:"build_flags"`
-	BuildTargets []string `yaml:"build_targets"`
-	TestFlags    []string `yaml:"test_flags"`
-	TestTargets  []string `yaml:"test_targets"`
+	Name          string            `yaml:"name"`
+	Platform      string            `yaml:"platform"`
+	Environment   map[string]string `yaml:"environment"`
+	ShellCommands []string          `yaml:"shell_commands"`
+	BuildFlags    []string          `yaml:"build_flags"`
+	BuildTargets  []string          `yaml:"build_targets"`
+	TestFlags     []string          `yaml:"test_flags"`
+	TestTargets   []string          `yaml:"test_targets"`
+}
+
+// linuxOnly reports whether a task can run on a Linux host. A platform
+// given as a ${{ }} expression comes from the matrix, whose platforms CI
+// ignores; a named Windows or macOS platform cannot run here.
+func (t Task) linuxOnly() bool {
+	p := strings.ToLower(t.Platform)
+	return !strings.Contains(p, "windows") && !strings.Contains(p, "macos")
+}
+
+// targetArgs returns the command line for targets: the flags, then "--",
+// then the targets. A target list that already starts with "--", as
+// bazelci.py allows, keeps its own.
+func targetArgs(verb string, flags, targets []string) []string {
+	args := append([]string{verb}, flags...)
+	if len(targets) == 0 || targets[0] != "--" {
+		args = append(args, "--")
+	}
+	return append(args, targets...)
 }
 
 // Matrix is the part of a presubmit.yml matrix that CI uses.
@@ -63,18 +85,9 @@ func readPresubmit(repo, module, version string) (*Presubmit, error) {
 	return &ps, nil
 }
 
-// bazelVersions returns the Bazel versions a presubmit asks for: those of
-// the test module's matrix, else those of the top-level matrix, else the
-// default. A version written as a ${{ }} expression cannot be resolved
-// here and is skipped.
-func (ps *Presubmit) bazelVersions(def string) []string {
-	var vs []string
-	if ps.TestModule != nil {
-		vs = ps.TestModule.Matrix.Bazel
-	}
-	if len(vs) == 0 {
-		vs = ps.Matrix.Bazel
-	}
+// concrete drops versions written as ${{ }} expressions, which cannot be
+// resolved here, and falls back to def when none is left.
+func concrete(vs []string, def string) []string {
 	var out []string
 	for _, v := range vs {
 		if !strings.Contains(v, "${{") {
@@ -85,6 +98,50 @@ func (ps *Presubmit) bazelVersions(def string) []string {
 		out = []string{def}
 	}
 	return out
+}
+
+// topVersions returns the Bazel versions of the top-level tasks.
+func (ps *Presubmit) topVersions(def string) []string {
+	return concrete(ps.Matrix.Bazel, def)
+}
+
+// testModuleVersions returns the Bazel versions of the test module's
+// tasks; nil when there is no test module.
+func (ps *Presubmit) testModuleVersions(def string) []string {
+	if ps.TestModule == nil {
+		return nil
+	}
+	return concrete(ps.TestModule.Matrix.Bazel, def)
+}
+
+// bazelVersions returns every Bazel version a presubmit asks for: those of
+// the top-level matrix and of the test module's matrix, without repeats.
+func (ps *Presubmit) bazelVersions(def string) []string {
+	var out []string
+	seen := map[string]bool{}
+	vs := ps.topVersions(def)
+	if len(ps.Tasks) == 0 {
+		vs = nil
+	}
+	for _, v := range append(vs, ps.testModuleVersions(def)...) {
+		if !seen[v] {
+			seen[v] = true
+			out = append(out, v)
+		}
+	}
+	if len(out) == 0 {
+		out = []string{def}
+	}
+	return out
+}
+
+func contains(vs []string, v string) bool {
+	for _, x := range vs {
+		if x == v {
+			return true
+		}
+	}
+	return false
 }
 
 var versionDir = regexp.MustCompile(`^modules/([^/]+)/([^/]+)/`)
@@ -135,6 +192,43 @@ func plan(repo string, paths []string, defBazel string) ([]Job, error) {
 		}
 	}
 	return jobs, nil
+}
+
+// vendoredDir finds a module's directory under a bazel vendor dir: <name>+
+// on Bazel 8 and later, <name>~ or <name>~<version> on Bazel 7.
+func vendoredDir(vendor, module string) (string, error) {
+	es, err := os.ReadDir(vendor)
+	if err != nil {
+		return "", err
+	}
+	for _, e := range es {
+		n := e.Name()
+		if e.IsDir() && (n == module+"+" || n == module+"~" || strings.HasPrefix(n, module+"~")) {
+			return filepath.Join(vendor, n), nil
+		}
+	}
+	return "", fmt.Errorf("no vendored directory for %s in %s", module, vendor)
+}
+
+// stripRegistries removes --registry lines from a .bazelrc in dir, if any.
+// Registries in a .bazelrc come before command-line ones and would win, so
+// the test module would fetch from somewhere other than this checkout.
+func stripRegistries(dir string) error {
+	p := filepath.Join(dir, ".bazelrc")
+	b, err := os.ReadFile(p)
+	if os.IsNotExist(err) {
+		return nil
+	}
+	if err != nil {
+		return err
+	}
+	var keep []string
+	for _, l := range strings.Split(string(b), "\n") {
+		if !strings.Contains(l, "--registry") {
+			keep = append(keep, l)
+		}
+	}
+	return os.WriteFile(p, []byte(strings.Join(keep, "\n")), 0o644)
 }
 
 // sortedTasks returns a presubmit's tasks in name order, so runs repeat.
