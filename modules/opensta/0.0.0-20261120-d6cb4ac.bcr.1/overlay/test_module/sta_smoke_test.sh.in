@@ -36,12 +36,25 @@ awk -v s="${ws:-x}" 'BEGIN{exit !(s ~ /^[0-9.eE+-]+$/ && s+0 > 9 && s+0 < 10)}' 
   fail "worst slack \"$ws\" is not between 9 and 10 ns"
 expect 'r2/D \(DFF\)'
 expect 'slack \(MET\)'
-# The total power is internal, switching, leakage and total, in watts.
-# Internal and leakage power come from the library, so both are above 0.
-read -r _ internal _ leakage total _ < <(grep -E '^Total ' "$log" || true)
-awk -v i="${internal:-x}" -v l="${leakage:-x}" -v t="${total:-x}" \
-  'BEGIN{exit !(i+0 > 0 && l+0 > 0 && t+0 >= i+l && i ~ /^[0-9.eE+-]+$/)}' ||
-  fail "the Total power line is missing or not above 0"
+# The Total power line is internal, switching, leakage and total, in
+# watts. power_total <log> sets PT to the total, after checking that each
+# field is a number, that internal and leakage power are above 0 (both
+# come from the library) and that the total is at least their sum.
+power_total() {
+  local internal="" switching="" leakage="" total=""
+  PT=""
+  read -r _ internal switching leakage total _ < <(grep -E '^Total ' "$1") || true
+  if awk -v i="${internal:-x}" -v s="${switching:-x}" -v l="${leakage:-x}" -v t="${total:-x}" '
+      function num(x) { return x ~ /^[0-9]+(\.[0-9]+)?([eE][+-]?[0-9]+)?$/ }
+      BEGIN { exit !(num(i) && num(s) && num(l) && num(t) &&
+                     i+0 > 0 && l+0 > 0 && t+0 >= i+l) }'; then
+    PT="$total"
+  else
+    fail "$(basename "$1"): the Total power line is missing or wrong: $internal $switching $leakage $total"
+  fi
+}
+power_total "$log"
+fixed_total=$PT
 
 # read_vcd. Under Tcl 9, upstream's read_vcd stopped with
 # can't read "sta::vcd_null_time"; tcl9_vcd_null_time.patch fixes it.
@@ -61,8 +74,13 @@ rc=0
 cat "$vlog"
 [[ $rc == 0 ]] || fail "sta exited with $rc on read_vcd"
 grep -q "vcd_null_time" "$vlog" && fail "read_vcd hit the Tcl 9 vcd_null_time error"
-# tiny.vcd has clk, d and q, so read_vcd annotates some pins.
-grep -qE '^Annotated [1-9][0-9]* pin activities' "$vlog" ||
-  fail "read_vcd annotated no pin activities"
-grep -qE '^Total ' "$vlog" || fail "no Total power line after read_vcd"
+# tiny.vcd has clk, d and q. read_vcd annotates the three ports and the
+# four flip-flop pins on their nets: r1/CLK, r1/D, r2/CLK and r2/Q.
+grep -qE '^Annotated 7 pin activities' "$vlog" ||
+  fail "read_vcd did not annotate the 7 pins of clk, d and q"
+power_total "$vlog"
+vcd_total=$PT
+# The VCD's activity differs from the fixed 0.2, so the power must too.
+[[ -n "$vcd_total" && "$vcd_total" != "$fixed_total" ]] ||
+  fail "the power after read_vcd ($vcd_total) equals the fixed-activity power ($fixed_total)"
 [[ $fails == 0 ]] && echo PASS

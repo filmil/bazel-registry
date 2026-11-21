@@ -11,7 +11,7 @@
     "overlay": {
         "test_module/BUILD.bazel": "sha256-V+35AAFv//sCSXpnI0Lzx5izHeJqnRL4X0tQa06NA0U=",
         "test_module/MODULE.bazel": "sha256-cwUTAPtB3IG9RPckfXR6593rslZ9m/VN1swGnWyUV2U=",
-        "test_module/sta_smoke_test.sh.in": "sha256-Szk+q/aLAUr/K/xIDVlVmMRitVHe8/CSCLO5bASD5Rs=",
+        "test_module/sta_smoke_test.sh.in": "sha256-Waj89MgJ1EkTiQYNuUZka6ua9seNEJxSXbdqIpT2YYE=",
         "test_module/tiny.lib": "sha256-G5+4SIP3EEORU2vj/8FjsAB2JqhsNThiLxJ2Txeae5U=",
         "test_module/tiny.v": "sha256-4ytGwg1F1Y0gMm8O+qTwrJMYTJMzqpYzg/l01am8FLc=",
         "test_module/tiny.vcd": "sha256-dAjlcL2rDNP8sNEoqJV7K+2Kimws66H6XM31wt5/DSk="
