@@ -32,12 +32,52 @@ _HARNESS = Label("//:harness")
 _PDK = Label("//:pdk")
 _STAGE = Label("//bazel:stage")
 _STAGE_PY = Label("//bazel:stage.py")
-_IVERILOG = Label("@iverilog//:iverilog")
-_IVL_BASE = Label("@iverilog//:ivl_base")
-_VVP = Label("@iverilog//:vvp")
-_VERILATOR = Label("@verilator//:verilator")
-_YOSYS = Label("@yosys//:yosys")
-_STA = Label("@opensta//:sta")
+
+# The tools, each built once in compilation mode opt; see opt_tool in
+# //bazel:BUILD.bazel.
+_IVERILOG = Label("//bazel:iverilog")
+_IVL_BASE = Label("//bazel:ivl_base")
+_VVP = Label("//bazel:vvp")
+_VERILATOR = Label("//bazel:verilator")
+_YOSYS = Label("//bazel:yosys")
+_STA = Label("//bazel:sta")
+
+def _opt_transition_impl(_settings, _attr):
+    return {"//command_line_option:compilation_mode": "opt"}
+
+# Changes only the compilation mode, so the tools get one more
+# configuration and nothing else changes.
+_opt_transition = transition(
+    implementation = _opt_transition_impl,
+    inputs = [],
+    outputs = ["//command_line_option:compilation_mode"],
+)
+
+def _opt_tool_impl(ctx):
+    d = ctx.attr.actual[0][DefaultInfo]
+    return [DefaultInfo(
+        files = d.files,
+        runfiles = ctx.runfiles(transitive_files = d.files).merge(
+            d.default_runfiles,
+        ),
+    )]
+
+opt_tool = rule(
+    implementation = _opt_tool_impl,
+    doc = """A tool built with -c opt, whatever the build's own mode.
+
+The tests and the build actions both run the tools from this rule, so
+each tool is built once, optimized. In the default fastbuild mode,
+Yosys and ABC run several times slower. The designs' own C++ (the
+Verilator gate builds) keeps the build's mode.""",
+    attrs = {
+        "actual": attr.label(
+            mandatory = True,
+            allow_files = True,
+            cfg = _opt_transition,
+        ),
+    },
+)
 
 def _stage_run_impl(ctx):
     targets = ctx.attr.tools + ctx.attr.srcs
@@ -49,15 +89,18 @@ def _stage_run_impl(ctx):
         executable = ctx.executable._stage,
         arguments = args,
         inputs = ctx.files.srcs,
-        tools = [t[DefaultInfo].files_to_run for t in ctx.attr.tools],
+        tools = depset(transitive = [
+            t[DefaultInfo].default_runfiles.files
+            for t in ctx.attr.tools
+        ] + [t[DefaultInfo].files for t in ctx.attr.tools]),
         outputs = ctx.outputs.outs,
         mnemonic = "ChipHarness" + ctx.attr.step.capitalize().replace("_", ""),
         progress_message = "chip-harness %s %%{label}" % ctx.attr.step,
     )
     return [DefaultInfo(files = depset(ctx.outputs.outs))]
 
-# Runs stage.py once, as a build action. The tools are built for the
-# target configuration, as for the tests, so each tool is built once.
+# Runs stage.py once, as a build action. The tools come from opt_tool
+# targets, as for the tests, so each tool is built once.
 _stage_run = rule(
     implementation = _stage_run_impl,
     attrs = {
