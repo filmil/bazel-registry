@@ -1,0 +1,47 @@
+# The upstream candidates through the flow of harness/evaluate.py, with
+# its defaults: 27 taps, a 10 ns clock, formal equivalence at 1 tap.
+#
+# bazel test //... runs lint, RTL simulation and formal for every
+# candidate, the two negative controls, and the whole flow for c3 and c4,
+# whose synthesis takes seconds. Synthesis of b0, b1, c1 and c2 took 6 to
+# 37 minutes upstream, so those and the steps after them are manual:
+#   bazel test //:c2_booth_dadda_sta_test
+
+load("@chip_harness//bazel:dot_s8.bzl", "dot_s8_candidate", "dot_s8_rejected_test")
+
+[
+    dot_s8_candidate(
+        name = c,
+        srcs = ["@chip_harness//:candidate_" + c],
+        candidate = "@chip_harness//:candidates/%s/%s" % (c, f),
+        size = "large",
+        synth_tags = tags,
+    )
+    for c, f, tags in [
+        ("b0_behavioral", "design.v", ["manual"]),
+        ("b1_hand_tree", "design.v", ["manual"]),
+        ("c1_bw_dadda", "gen.py", ["manual"]),
+        ("c2_booth_dadda", "gen.py", ["manual"]),
+        ("c3_booth_preenc", "gen.py", []),
+        ("c4_booth_preenc_prefix", "gen.py", []),
+    ]
+]
+
+# The negative controls. x1 is wrong for one operand pair on tap 0, which
+# random vectors almost never hit: formal must reject it. x2 swaps taps:
+# RTL simulation must reject it.
+dot_s8_rejected_test(
+    name = "x1_rare_value_bug_rejected_test",
+    srcs = ["@chip_harness//:candidate_x1_rare_value_bug"],
+    candidate = "@chip_harness//:candidates/x1_rare_value_bug/design.v",
+    size = "large",
+    stage = "formal",
+)
+
+dot_s8_rejected_test(
+    name = "x2_swapped_taps_rejected_test",
+    srcs = ["@chip_harness//:candidate_x2_swapped_taps"],
+    candidate = "@chip_harness//:candidates/x2_swapped_taps/design.v",
+    size = "large",
+    stage = "rtl_sim",
+)

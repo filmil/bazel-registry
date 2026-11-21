@@ -1,0 +1,11 @@
+load("@rules_python//python:py_binary.bzl", "py_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+exports_files(["gate_main.cc"])
+
+# The steps of the flow; see stage.py and dot_s8.bzl.
+py_binary(
+    name = "stage",
+    srcs = ["stage.py"],
+)

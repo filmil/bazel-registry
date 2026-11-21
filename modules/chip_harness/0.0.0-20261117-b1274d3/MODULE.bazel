@@ -1,0 +1,17 @@
+module(
+    name = "chip_harness",
+    version = "0.0.0-20261117-b1274d3",
+    bazel_compatibility = [">=8.0.0"],
+    compatibility_level = 0,
+)
+
+# The tools of the upstream flow (harness/evaluate.py), built from source.
+bazel_dep(name = "iverilog", version = "13.0.bcr.1")
+bazel_dep(name = "opensta", version = "0.0.0-20261120-d6cb4ac")
+bazel_dep(name = "verilator", version = "5.046.bcr.6")
+bazel_dep(name = "yosys", version = "0.68.bcr.3")
+
+bazel_dep(name = "rules_cc", version = "0.2.22")
+bazel_dep(name = "rules_python", version = "1.7.0")
+bazel_dep(name = "rules_verilator", version = "1.1.2")
+bazel_dep(name = "rules_verilog", version = "1.4.2")
