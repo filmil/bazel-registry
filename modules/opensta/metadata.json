@@ -1,0 +1,19 @@
+{
+    "homepage": "https://github.com/parallaxsw/OpenSTA",
+    "license": "GPL-3.0-or-later",
+    "maintainers": [
+        {
+            "name": "Filip Filmar",
+            "email": "246576+filmil@users.noreply.github.com",
+            "github": "filmil",
+            "github_user_id": 246576
+        }
+    ],
+    "repository": [
+        "github:parallaxsw/OpenSTA"
+    ],
+    "versions": [
+        "0.0.0-20261120-d6cb4ac"
+    ],
+    "yanked_versions": {}
+}

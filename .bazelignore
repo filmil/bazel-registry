@@ -33,3 +33,4 @@ modules/pcie_7x/0.0.0-20260810-cd1c33f/overlay
 modules/pci_eerie/0.0.0-20261111-6bfb5ef/overlay
 modules/pci_eerie/0.0.0-20261111-6bfb5ef.bcr.1/overlay
 modules/pci_eerie/0.0.0-20261111-6bfb5ef.bcr.2/overlay
+modules/opensta/0.0.0-20261120-d6cb4ac/overlay

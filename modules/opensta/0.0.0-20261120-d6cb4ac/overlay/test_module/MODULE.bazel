@@ -1,0 +1,12 @@
+module(
+    name = "opensta_test_module",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "opensta", version = "0.0.0-20261120-d6cb4ac")
+local_path_override(
+    module_name = "opensta",
+    path = "..",
+)
+
+bazel_dep(name = "rules_shell", version = "0.8.0")
