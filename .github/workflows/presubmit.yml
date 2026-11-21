@@ -1,0 +1,79 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Runs the presubmit.yml of every module version a pull request changes,
+# after the model of the Bazel Central Registry's presubmit: the top-level
+# tasks on the top-level matrix's Bazel versions, then the bcr_test_module
+# tasks on the test module's. Every job runs on ubuntu-latest: matrix
+# platforms are ignored, and tasks for a named Windows or macOS platform
+# are skipped. See cmd/presubmit/main.go.
+#
+# Targets tagged manual (Vivado runs, for example) stay out, since the
+# presubmit tasks name only what CI should run.
+name: Presubmit
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      jobs: ${{ steps.plan.outputs.jobs }}
+    steps:
+      - name: Setup bazel
+        uses: bazel-contrib/setup-bazel@0.15.0
+        with:
+          bazelisk-cache: true
+          repository-cache: true
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # git diff against the base branch needs its history.
+          fetch-depth: 0
+      - name: List the changed module versions
+        id: plan
+        # Values from the event reach the shell as environment variables,
+        # never as text pasted into the script.
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+          jobs="$(bazel run //cmd/presubmit -- plan --repo "${GITHUB_WORKSPACE}" --base "origin/${BASE_REF}")"
+          echo "${jobs}"
+          echo "jobs=${jobs}" >> "${GITHUB_OUTPUT}"
+
+  test:
+    needs: plan
+    if: needs.plan.outputs.jobs != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.jobs) }}
+    name: ${{ matrix.module }}@${{ matrix.version }} on Bazel ${{ matrix.bazel }}
+    runs-on: ubuntu-latest
+    # Cold builds of large tools (Yosys, OpenSTA, Verilator) take a while.
+    timeout-minutes: 300
+    steps:
+      - name: Setup bazel
+        uses: bazel-contrib/setup-bazel@0.15.0
+        with:
+          bazelisk-cache: true
+          disk-cache: presubmit-${{ matrix.module }}
+          repository-cache: true
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run the presubmit
+        # The matrix comes from a pull request's presubmit.yml, so it reaches
+        # the shell only through environment variables.
+        env:
+          MODULE: ${{ matrix.module }}
+          VERSION: ${{ matrix.version }}
+          BAZEL: ${{ matrix.bazel }}
+        run: |
+          bazel run //cmd/presubmit -- run --repo "${GITHUB_WORKSPACE}" \
+            --module "${MODULE}" --version "${VERSION}" --bazel "${BAZEL}"
