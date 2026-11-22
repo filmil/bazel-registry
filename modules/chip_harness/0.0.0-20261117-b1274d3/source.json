@@ -1,0 +1,15 @@
+{
+    "url": "https://github.com/keugenek/chip-harness/archive/b1274d396d8fbd8c4553fd0ccd5854f5873d3871.tar.gz",
+    "integrity": "sha256-ybD05zrxgQ3W6Omx59ZaFAFkSz2yQdZaKWd2OxvziB8=",
+    "strip_prefix": "chip-harness-b1274d396d8fbd8c4553fd0ccd5854f5873d3871",
+    "overlay": {
+        "BUILD.bazel": "sha256-z1wJtUQ6sOR1JKhku3wFmGNjgjbLl68bX6ckOTIV8zk=",
+        "MODULE.bazel": "sha256-4eXVMhgUu37KT3UK7sWdILtTbEOup3OCd75EowRhWhI=",
+        "bazel/BUILD.bazel": "sha256-gioiF/MXj9FT7oQd5+wOKMxQWMjk6zUa7CxOguipyH4=",
+        "bazel/dot_s8.bzl": "sha256-dcJq4V9yFNAJGHRpH48I34Je3diMuwQX+cvBSUZ4qgc=",
+        "bazel/gate_main.cc": "sha256-E0fVSymXpprhDJ3aUrUMAUqQy/+ob+XoRhmLr7DVcjc=",
+        "bazel/stage.py": "sha256-09Kca+WpAvuhUHUcm4XcYILuO2R33GT+dY9RL7nbuiM=",
+        "test_module/BUILD.bazel": "sha256-H2h8I4VLyXbeZWESaiMb8lqyBP61rBdtuy6gbFTZnEg=",
+        "test_module/MODULE.bazel": "sha256-kv547f2xnoV89AytaqC6HAQmLpwHSHsn7OAdFSMvbX0="
+    }
+}

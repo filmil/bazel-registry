@@ -1,0 +1,10 @@
+module(
+    name = "chip_harness_test_module",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "chip_harness", version = "0.0.0-20261117-b1274d3")
+local_path_override(
+    module_name = "chip_harness",
+    path = "..",
+)
