@@ -37,3 +37,4 @@ modules/opensta/0.0.0-20261120-d6cb4ac/overlay
 modules/opensta/0.0.0-20261120-d6cb4ac.bcr.1/overlay
 modules/chip_harness/0.0.0-20261117-b1274d3/overlay
 modules/xezim/0.11.7/overlay
+modules/xezim/0.11.7.bcr.1/overlay
