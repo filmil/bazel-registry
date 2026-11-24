@@ -13,7 +13,8 @@
         "github:aionhw/xezim"
     ],
     "versions": [
-        "0.11.7"
+        "0.11.7",
+        "0.11.7.bcr.1"
     ],
     "yanked_versions": {}
 }
