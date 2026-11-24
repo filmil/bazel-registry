@@ -6,6 +6,8 @@ extension makes a toolchain of its own. It is not registered: only //:xezim
 uses it, through the transition in tool.bzl.
 """
 
+# rules_rust 0.75.0 has no public load for this. A newer rules_rust picked by
+# version resolution may move it; this module then needs an update.
 load("@rules_rust//rust/private:repositories.bzl", "rust_repository_set")
 
 RUST_VERSION = "1.100.0"

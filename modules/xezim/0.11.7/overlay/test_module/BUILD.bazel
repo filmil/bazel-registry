@@ -1,3 +1,4 @@
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 # Registry overlay files arrive without the executable bit, so each test
@@ -10,6 +11,7 @@ load("@rules_shell//shell:sh_test.bzl", "sh_test")
     executable = True,
 ) for name in [
     "compile_run_test",
+    "exec_check",
     "run_test",
     "version_test",
 ]]
@@ -19,9 +21,9 @@ sh_test(
     srcs = [":run_test_sh"],
     args = [
         "$(rootpath @xezim)",
-        "$(rootpath counter.sv)",
-        "pass",
+        "waves",
         "count=10",
+        "$(rootpath counter.sv)",
     ],
     data = [
         "counter.sv",
@@ -34,8 +36,9 @@ sh_test(
     srcs = [":run_test_sh"],
     args = [
         "$(rootpath @xezim)",
+        "fatal",
+        "'** Fatal: expected failure'",
         "$(rootpath fatal.sv)",
-        "fail",
     ],
     data = [
         "fatal.sv",
@@ -62,4 +65,70 @@ sh_test(
         "counter.sv",
         "@xezim",
     ],
+)
+
+cc_binary(
+    name = "dpi.so",
+    srcs = ["dpi.c"],
+    linkshared = True,
+    deps = ["@xezim//:headers"],
+)
+
+sh_test(
+    name = "dpi_test",
+    srcs = [":run_test_sh"],
+    args = [
+        "$(rootpath @xezim)",
+        "pass",
+        "dpi_add=42",
+        "--dpi-lib",
+        "$(rootpath :dpi.so)",
+        "$(rootpath dpi.sv)",
+    ],
+    data = [
+        "dpi.sv",
+        ":dpi.so",
+        "@xezim",
+    ],
+)
+
+cc_binary(
+    name = "vpi.so",
+    srcs = ["vpi.c"],
+    linkshared = True,
+    deps = ["@xezim//:headers"],
+)
+
+sh_test(
+    name = "vpi_test",
+    srcs = [":run_test_sh"],
+    args = [
+        "$(rootpath @xezim)",
+        "pass",
+        "vpi_hello=42",
+        "--vpi-lib",
+        "$(rootpath :vpi.so)",
+        "$(rootpath counter.sv)",
+    ],
+    data = [
+        "counter.sv",
+        ":vpi.so",
+        "@xezim",
+    ],
+)
+
+# xezim as a build tool, in the exec configuration.
+genrule(
+    name = "counter_out",
+    srcs = ["counter.sv"],
+    outs = ["counter_out.txt"],
+    cmd = "$(execpath @xezim) --no-cache $< > $@",
+    tools = ["@xezim"],
+)
+
+sh_test(
+    name = "exec_test",
+    srcs = [":exec_check_sh"],
+    args = ["$(rootpath :counter_out)"],
+    data = [":counter_out"],
 )

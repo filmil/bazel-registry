@@ -3,19 +3,23 @@
     "integrity": "sha256-p02iAyvuRsXfk5BjkreOB0EKv+7QEUSlPgAmEp3PBnw=",
     "strip_prefix": "xezim-0.11.7",
     "overlay": {
-        "BUILD.bazel": "sha256-mNpizXe+/RpGwTmPKTnroeq/soDQlXcZcsiWTA2q1SE=",
+        "BUILD.bazel": "sha256-1+FgudqSmSKWF6nt1F4VRzH5qBVi1Zzw8Sucs9NR5uo=",
         "Cargo.lock": "sha256-wBgRBRL66mJ5gc8TBJfDodiRQiYTCeAMFpVX47cqBOM=",
-        "MODULE.bazel": "sha256-31nn837/JzHLdIVC7zwrnyLZLzpIOZXW3RmPpi5EN88=",
+        "MODULE.bazel": "sha256-0YybMfqaziv23wRY/m599CH9HKh6GLTvlcamDUGSfds=",
         "bazel/BUILD.bazel": "sha256-Pr89ci0xZlBJ2GthwCv0kQrphj8huggFqdNs/PCeOOI=",
-        "bazel/extensions.bzl": "sha256-Sq+P7RBoKjWn+9f7kK6Tgg29Hczm3TSjSpWaveyAAaQ=",
+        "bazel/extensions.bzl": "sha256-LQq4brA/QwFcYmUwKlYyMaCaMpU7R4Bs2iVSaxoykGs=",
         "bazel/tool.bzl": "sha256-q1FnGW8GSqWktGmbQvHZAWdLhb4aIlsOTi/gU1NvS7Y=",
         "cargo-bazel-lock.json": "sha256-MU258APCM6uj2i/MZyWIJlIhGk7mC7KWwjn4anLqSAY=",
-        "test_module/BUILD.bazel": "sha256-T1V6tdlD7XvST8ZXj5ypHzKn+KvLi9y7YVNtkrTJ1Hk=",
-        "test_module/MODULE.bazel": "sha256-VlgPBrkwIg7cFAWyHrL145NjvPJbvw8Q86vbDEsWXFE=",
+        "test_module/BUILD.bazel": "sha256-sRhDQGMSM9oI3tKeOhyNi6I3HAo8rDEF2lQKchjz83g=",
+        "test_module/MODULE.bazel": "sha256-69HN5SnfjOJagnjm1wyLXDPxMkYFv2emKtDXSBfn920=",
         "test_module/compile_run_test.sh": "sha256-EMKoS/PMtqx0OaOev07WtSZWBqgTVA3IsnmPAcltSqA=",
         "test_module/counter.sv": "sha256-YjJlIlSkXMDTeO8peDxpXkhonD7gg5FwqSbDlRun5rc=",
+        "test_module/dpi.c": "sha256-oOWyVlcmigD6v1GKtHSEGlvB2Bo6ybJ9dSYRsdOMCRg=",
+        "test_module/dpi.sv": "sha256-LOo/UH1NXMPAlF3NS5vdHhbFkPgh+3YMxVqGtMhjouc=",
+        "test_module/exec_check.sh": "sha256-Hgnx9cX5/j9xpJ3pKZJT6bzchydBc+XRmwIfbQuNy1s=",
         "test_module/fatal.sv": "sha256-zVmW/hLuWHvZRKnrK6zAJL6LIxcTNbRNDiHT50Bbv/M=",
-        "test_module/run_test.sh": "sha256-5dIY0h03tCsnTXevkUScf2++3rC7rDLZ0JCluXsD1o4=",
-        "test_module/version_test.sh": "sha256-jjKJ3VWj9AcoUdOWEhESOqoRc9+SguijRLk3T5FKNos="
+        "test_module/run_test.sh": "sha256-GX7ezHZ8HNfOJtkJcM9AKr2XIYpUoDbjBbMkPcdZuWU=",
+        "test_module/version_test.sh": "sha256-jjKJ3VWj9AcoUdOWEhESOqoRc9+SguijRLk3T5FKNos=",
+        "test_module/vpi.c": "sha256-yPdrPZeIwhcYSBuHxBzJ6YTjwr++dLvjhy9sWkX9n/Q="
     }
 }

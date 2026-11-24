@@ -9,10 +9,26 @@ licenses(["notice"])
 
 exports_files(["LICENSE"])
 
+# Only Linux on x86_64 has a Rust 1.100 toolchain here (bazel/extensions.bzl).
+_COMPATIBLE = [
+    "@platforms//cpu:x86_64",
+    "@platforms//os:linux",
+]
+
 # The simulator. Use this target: it builds with Rust 1.100 in opt mode.
+# The UVM library is not built in. `-uvm` needs XEZIM_UVM_DIR to point at one.
 xezim_tool(
     name = "xezim",
     binary = ":xezim_bin",
+    target_compatible_with = _COMPATIBLE,
+    visibility = ["//visibility:public"],
+)
+
+# The headers that DPI-C and VPI libraries for xezim compile against.
+cc_library(
+    name = "headers",
+    hdrs = glob(["include/*.h"]),
+    includes = ["include"],
     visibility = ["//visibility:public"],
 )
 
@@ -33,6 +49,8 @@ cc_library(
         "src/vpi_printf_shim.c",
     ],
     copts = ["-fPIC"],
+    tags = ["manual"],
+    target_compatible_with = _COMPATIBLE,
     alwayslink = True,
 )
 
@@ -51,6 +69,9 @@ rust_library(
     link_deps = [":vpishim"],
     proc_macro_deps = all_crate_deps(proc_macro = True),
     rustc_env = _RUSTC_ENV,
+    # Only //:xezim builds this, under the Rust 1.100 transition.
+    tags = ["manual"],
+    target_compatible_with = _COMPATIBLE,
     version = "0.11.7",
     deps = all_crate_deps(normal = True),
 )
@@ -70,6 +91,9 @@ rust_binary(
     # Lets dlopen'd VPI and DPI modules resolve the vpi_* symbols.
     rustc_flags = ["-Clink-arg=-Wl,-export-dynamic"],
     rustc_env = _RUSTC_ENV,
+    # Only //:xezim builds this, under the Rust 1.100 transition.
+    tags = ["manual"],
+    target_compatible_with = _COMPATIBLE,
     version = "0.11.7",
     deps = all_crate_deps(normal = True) + [":xezim_lib"],
 )
