@@ -3,19 +3,35 @@
 # The toolchains that the xezim_toolchains extension makes.
 _TOOLCHAINS = [
     str(Label("@xezim_rust__x86_64-unknown-linux-gnu__stable//:all")),
-    str(Label("@xezim_llvm//:all")),
+    # Only the linux-x86_64 toolchain has the sysroot.
+    str(Label("@xezim_llvm//:cc-toolchain-x86_64-linux")),
+]
+
+# The consumer's C and link flags are for the consumer's compiler, not for
+# this clang, so they are cleared.
+_CLEARED = [
+    "//command_line_option:conlyopt",
+    "//command_line_option:copt",
+    "//command_line_option:cxxopt",
+    "//command_line_option:features",
+    "//command_line_option:host_conlyopt",
+    "//command_line_option:host_copt",
+    "//command_line_option:host_cxxopt",
+    "//command_line_option:host_linkopt",
+    "//command_line_option:linkopt",
+    "//command_line_option:per_file_copt",
 ]
 
 def _transition_impl(settings, _attr):
-    return {
-        "//command_line_option:compilation_mode": "opt",
-        "//command_line_option:extra_toolchains": _TOOLCHAINS + settings["//command_line_option:extra_toolchains"],
-    }
+    out = {o: [] for o in _CLEARED}
+    out["//command_line_option:compilation_mode"] = "opt"
+    out["//command_line_option:extra_toolchains"] = _TOOLCHAINS + settings["//command_line_option:extra_toolchains"]
+    return out
 
 _xezim_transition = transition(
     implementation = _transition_impl,
     inputs = ["//command_line_option:extra_toolchains"],
-    outputs = [
+    outputs = _CLEARED + [
         "//command_line_option:compilation_mode",
         "//command_line_option:extra_toolchains",
     ],

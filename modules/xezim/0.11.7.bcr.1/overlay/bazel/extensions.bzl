@@ -19,8 +19,12 @@ load("@toolchains_llvm//toolchain:sysroot.bzl", "sysroot")
 
 RUST_VERSION = "1.100.0"
 
-# toolchains_llvm 1.13.0 carries this release's checksums.
 LLVM_VERSION = "23.1.5"
+
+# Pinned here, not taken from toolchains_llvm's own table, so that a newer
+# toolchains_llvm cannot change what is downloaded.
+_LLVM_ARCHIVE = "LLVM-23.1.5-Linux-X64"
+_LLVM_SHA256 = "f72edb0b36580ece7f52e23858f00c18fad4e87395ea7ad05d7e55c39f8fc78a"
 
 # From https://static.rust-lang.org/dist/<archive>.sha256
 _SHA256S = {
@@ -34,7 +38,8 @@ _SHA256S = {
 def _xezim_toolchains_impl(module_ctx):
     # Chromium's Debian bullseye sysroot (glibc 2.31), as listed in Chromium's
     # build/linux/sysroot_scripts/sysroots.json. libffi 3.8 needs glibc 2.27
-    # or newer for memfd_create.
+    # or newer for memfd_create. Chromium keeps its sysroots by their hash;
+    # there is no second mirror.
     sysroot(
         name = "xezim_sysroot",
         sha256 = "f851add76bdae472fb6c94b4f920bc4a132d85ac607951391297f636af7e934e",
@@ -42,6 +47,13 @@ def _xezim_toolchains_impl(module_ctx):
     )
     llvm_toolchain(
         name = "xezim_llvm",
+        exec_arch = "amd64",
+        exec_os = "linux",
+        sha256 = {"linux-x86_64": _LLVM_SHA256},
+        strip_prefix = {"linux-x86_64": _LLVM_ARCHIVE},
+        urls = {"linux-x86_64": [
+            "https://github.com/llvm/llvm-project/releases/download/llvmorg-{}/{}.tar.xz".format(LLVM_VERSION, _LLVM_ARCHIVE),
+        ]},
         # The Chromium sysroots use Debian's header and library layout.
         cxx_include_layout = {"linux-x86_64": "debian"},
         llvm_version = LLVM_VERSION,

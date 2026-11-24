@@ -70,7 +70,7 @@ rust_library(
     link_deps = [":vpishim"],
     proc_macro_deps = all_crate_deps(proc_macro = True),
     rustc_env = _RUSTC_ENV,
-    # Only //:xezim builds this, under the Rust 1.100 transition.
+    # Only //:xezim builds this, with its Rust and clang toolchains.
     tags = ["manual"],
     target_compatible_with = _COMPATIBLE,
     version = "0.11.7",
@@ -92,7 +92,7 @@ rust_binary(
     # Lets dlopen'd VPI and DPI modules resolve the vpi_* symbols.
     rustc_flags = ["-Clink-arg=-Wl,-export-dynamic"],
     rustc_env = _RUSTC_ENV,
-    # Only //:xezim builds this, under the Rust 1.100 transition.
+    # Only //:xezim builds this, with its Rust and clang toolchains.
     tags = ["manual"],
     target_compatible_with = _COMPATIBLE,
     version = "0.11.7",

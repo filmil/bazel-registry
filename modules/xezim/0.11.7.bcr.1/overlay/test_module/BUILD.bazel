@@ -134,9 +134,25 @@ sh_test(
     data = [":counter_out"],
 )
 
+# The xezim that genrules get, in the exec configuration, as a plain file.
+genrule(
+    name = "xezim_exec_copy",
+    outs = ["xezim_exec"],
+    cmd = "cp $(execpath @xezim) $@",
+    tools = ["@xezim"],
+)
+
 sh_test(
     name = "hermetic_test",
     srcs = [":hermetic_test_sh"],
-    args = ["$(rootpath @xezim)"],
-    data = ["@xezim"],
+    args = [
+        "$(rootpath @xezim)",
+        "$(rootpath :xezim_exec_copy)",
+        "$(rootpath :dpi.so)",
+    ],
+    data = [
+        ":dpi.so",
+        ":xezim_exec_copy",
+        "@xezim",
+    ],
 )
