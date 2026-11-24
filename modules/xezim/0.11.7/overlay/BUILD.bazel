@@ -1,0 +1,75 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library")
+load("@xezim_crates//:defs.bzl", "aliases", "all_crate_deps")
+load("//bazel:tool.bzl", "xezim_tool")
+
+package(default_visibility = ["//visibility:private"])
+
+licenses(["notice"])
+
+exports_files(["LICENSE"])
+
+# The simulator. Use this target: it builds with Rust 1.100 in opt mode.
+xezim_tool(
+    name = "xezim",
+    binary = ":xezim_bin",
+    visibility = ["//visibility:public"],
+)
+
+# What upstream's src/build.rs stamps from git, fixed for this release.
+# `xezim -V` prints the tag line, so it also names the xezim-core rev.
+_RUSTC_ENV = {
+    "XEZIM_GIT_DATE": "2026-11-21T16:15:20-08:00",
+    "XEZIM_GIT_HASH": "76251c09",
+    "XEZIM_GIT_TAG": "0.11.7 (xezim-core ebd78860)",
+}
+
+# The C-variadic VPI and DPI helpers. alwayslink keeps them in the binary,
+# because only dlopen'd VPI and DPI modules use them.
+cc_library(
+    name = "vpishim",
+    srcs = [
+        "src/svdpi_shim.c",
+        "src/vpi_printf_shim.c",
+    ],
+    copts = ["-fPIC"],
+    alwayslink = True,
+)
+
+rust_library(
+    name = "xezim_lib",
+    srcs = glob(["src/**/*.rs"], exclude = [
+        "src/bin/**",
+        "src/build.rs",
+        "src/main.rs",
+    ]),
+    aliases = aliases(),
+    compile_data = glob(["include/*.h"]),
+    crate_name = "xezim",
+    crate_root = "src/lib.rs",
+    edition = "2024",
+    link_deps = [":vpishim"],
+    proc_macro_deps = all_crate_deps(proc_macro = True),
+    rustc_env = _RUSTC_ENV,
+    version = "0.11.7",
+    deps = all_crate_deps(normal = True),
+)
+
+rust_binary(
+    name = "xezim_bin",
+    srcs = glob(["src/**/*.rs"], exclude = [
+        "src/bin/**",
+        "src/build.rs",
+    ]),
+    aliases = aliases(),
+    compile_data = glob(["include/*.h"]),
+    crate_name = "xezim",
+    crate_root = "src/main.rs",
+    edition = "2024",
+    proc_macro_deps = all_crate_deps(proc_macro = True),
+    # Lets dlopen'd VPI and DPI modules resolve the vpi_* symbols.
+    rustc_flags = ["-Clink-arg=-Wl,-export-dynamic"],
+    rustc_env = _RUSTC_ENV,
+    version = "0.11.7",
+    deps = all_crate_deps(normal = True) + [":xezim_lib"],
+)

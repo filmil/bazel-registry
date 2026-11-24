@@ -1,0 +1,65 @@
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+
+# Registry overlay files arrive without the executable bit, so each test
+# script is copied into an executable one first.
+[genrule(
+    name = name + "_sh",
+    srcs = [name + ".sh"],
+    outs = [name + "_exe.sh"],
+    cmd = "cp $< $@ && chmod +x $@",
+    executable = True,
+) for name in [
+    "compile_run_test",
+    "run_test",
+    "version_test",
+]]
+
+sh_test(
+    name = "counter_test",
+    srcs = [":run_test_sh"],
+    args = [
+        "$(rootpath @xezim)",
+        "$(rootpath counter.sv)",
+        "pass",
+        "count=10",
+    ],
+    data = [
+        "counter.sv",
+        "@xezim",
+    ],
+)
+
+sh_test(
+    name = "fatal_test",
+    srcs = [":run_test_sh"],
+    args = [
+        "$(rootpath @xezim)",
+        "$(rootpath fatal.sv)",
+        "fail",
+    ],
+    data = [
+        "fatal.sv",
+        "@xezim",
+    ],
+)
+
+sh_test(
+    name = "version_test",
+    srcs = [":version_test_sh"],
+    args = ["$(rootpath @xezim)"],
+    data = ["@xezim"],
+)
+
+sh_test(
+    name = "compile_run_test",
+    srcs = [":compile_run_test_sh"],
+    args = [
+        "$(rootpath @xezim)",
+        "$(rootpath counter.sv)",
+        "count=10",
+    ],
+    data = [
+        "counter.sv",
+        "@xezim",
+    ],
+)
