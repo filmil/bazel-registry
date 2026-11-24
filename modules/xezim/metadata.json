@@ -1,0 +1,19 @@
+{
+    "homepage": "https://github.com/aionhw/xezim",
+    "license": "MIT OR Apache-2.0",
+    "maintainers": [
+        {
+            "name": "Filip Filmar",
+            "email": "246576+filmil@users.noreply.github.com",
+            "github": "filmil",
+            "github_user_id": 246576
+        }
+    ],
+    "repository": [
+        "github:aionhw/xezim"
+    ],
+    "versions": [
+        "0.11.7"
+    ],
+    "yanked_versions": {}
+}

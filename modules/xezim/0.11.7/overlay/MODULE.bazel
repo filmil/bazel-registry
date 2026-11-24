@@ -1,0 +1,45 @@
+module(
+    name = "xezim",
+    version = "0.11.7",
+    bazel_compatibility = [">=8.0.0"],
+    compatibility_level = 0,
+)
+
+bazel_dep(name = "libffi", version = "3.8.0")
+bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "rules_cc", version = "0.2.28")
+bazel_dep(name = "rules_rust", version = "0.75.0")
+
+# xezim needs Rust 1.100. rules_rust lets only the root module pick its Rust
+# version, and its default is older, so this module brings its own 1.100
+# toolchain. //:xezim switches to it with a transition (bazel/tool.bzl).
+# It is not registered, so it never changes a consumer's other Rust builds.
+xezim_rust = use_extension("//bazel:extensions.bzl", "xezim_rust")
+use_repo(xezim_rust, "xezim_rust__x86_64-unknown-linux-gnu__stable")
+
+# The third-party crates, pinned by the two lockfiles in this overlay.
+# xezim-core and sv-parser come from git at the rev pinned in Cargo.toml.
+crate = use_extension("@rules_rust//crate_universe:extensions.bzl", "crate")
+crate.from_cargo(
+    name = "xezim_crates",
+    cargo_lockfile = "//:Cargo.lock",
+    lockfile = "//:cargo-bazel-lock.json",
+    manifests = ["//:Cargo.toml"],
+    supported_platform_triples = ["x86_64-unknown-linux-gnu"],
+)
+
+# libffi comes from the BCR module, not from the libffi-sys build script.
+# Its vendored build runs autoconf, which is not hermetic. With the "system"
+# feature, the build script of libffi-sys 2.3.0 only adds a link flag, which
+# link_deps replaces.
+crate.annotation(
+    crate = "libffi-sys",
+    repositories = ["xezim_crates"],
+    crate_features = ["system"],
+    link_deps = ["@libffi"],
+    gen_build_script = "off",
+    # The crate repositories cannot see @libffi by its apparent name, so
+    # cargo-bazel rewrites it to the canonical one.
+    label_injections = {"@libffi": "@libffi"},
+)
+use_repo(crate, "xezim_crates")

@@ -188,6 +188,12 @@ func runJob(repo string, j Job) error {
 	if err := os.WriteFile(filepath.Join(probe, "MODULE.bazel"), []byte(mod), 0o644); err != nil {
 		return err
 	}
+	// A real consumer has a root package, and rules_rust's crate_universe
+	// fails without one, even in a dependency's extension call
+	// (https://github.com/bazelbuild/rules_rust/issues/4385).
+	if err := os.WriteFile(filepath.Join(probe, "BUILD.bazel"), nil, 0o644); err != nil {
+		return err
+	}
 	// The top-level tasks build the module's own targets as a dependency,
 	// on the top-level matrix's Bazel versions only.
 	if contains(ps.topVersions(j.Bazel), j.Bazel) {
