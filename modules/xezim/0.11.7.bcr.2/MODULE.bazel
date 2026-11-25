@@ -23,6 +23,8 @@ xezim_toolchains = use_extension("//bazel:extensions.bzl", "xezim_toolchains")
 use_repo(
     xezim_toolchains,
     "xezim_llvm",
+    # The unpacked LLVM release, for its static libunwind (//bazel:gcc_s).
+    "xezim_llvm_llvm",
     "xezim_rust__x86_64-unknown-linux-gnu__stable",
     "xezim_sysroot",
 )
