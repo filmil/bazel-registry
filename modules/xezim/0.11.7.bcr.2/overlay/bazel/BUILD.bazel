@@ -1,0 +1,31 @@
+exports_files(["tool.bzl"])
+
+load(":gcc_s.bzl", "gcc_s_shim")
+
+# Rust's std links -lgcc_s for stack unwinding, which would make xezim need
+# the host's libgcc_s.so.1 at run time. This directory holds LLVM's static
+# libunwind, from the pinned LLVM release, under the name libgcc_s.a, and no
+# libgcc_s.so, which the linker would prefer. xezim_bin passes it with
+# -Lnative, after the toolchains' own -L directories but before the
+# sysroot's default ones, where libgcc_s.so lives. That holds while no
+# toolchain directory has a libgcc_s; test_module's hermetic_test checks the
+# result needs no libgcc_s.so.
+#
+# Only the xezim binary is linked this way. Cargo build scripts and proc
+# macros, which run during the build, still load the build host's
+# libgcc_s.so.1.
+#
+# @xezim_llvm_llvm is toolchains_llvm's repository of the unpacked release
+# (its "<name>_llvm" naming), and the path is the release's own layout. A
+# toolchains_llvm that renames that repository breaks this target; the
+# module pins toolchains_llvm 1.13.0.
+gcc_s_shim(
+    name = "gcc_s",
+    archive = "@xezim_llvm_llvm//:lib/x86_64-unknown-linux-gnu/libunwind.a",
+    tags = ["manual"],
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    visibility = ["//:__pkg__"],
+)
