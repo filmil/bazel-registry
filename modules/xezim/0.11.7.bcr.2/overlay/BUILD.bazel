@@ -92,9 +92,14 @@ rust_binary(
     rustc_flags = [
         # Lets dlopen'd VPI and DPI modules resolve the vpi_* symbols.
         "-Clink-arg=-Wl,-export-dynamic",
-        # std's -lgcc_s finds LLVM's static libunwind here first, so xezim
-        # does not need the host's libgcc_s.so.1 (//bazel:gcc_s).
+        # std's -lgcc_s finds LLVM's static libunwind here before the
+        # sysroot's libgcc_s.so, so xezim does not need the host's
+        # libgcc_s.so.1 (//bazel:gcc_s).
         "-Lnative=$(execpath //bazel:gcc_s)",
+        # -export-dynamic would also export libunwind's _Unwind_* symbols,
+        # which a dlopen'd module built against the host's libgcc_s could
+        # then bind to. Keep them local; vpishim's symbols stay exported.
+        "-Clink-arg=-Wl,--exclude-libs,libgcc_s.a",
     ],
     rustc_env = _RUSTC_ENV,
     # Only //:xezim builds this, with its Rust and clang toolchains.
