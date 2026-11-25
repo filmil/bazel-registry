@@ -1,0 +1,27 @@
+{
+    "url": "https://github.com/aionhw/xezim/archive/refs/tags/0.11.7.tar.gz",
+    "integrity": "sha256-p02iAyvuRsXfk5BjkreOB0EKv+7QEUSlPgAmEp3PBnw=",
+    "strip_prefix": "xezim-0.11.7",
+    "overlay": {
+        "BUILD.bazel": "sha256-Y+/K6Deqn8g00yi+pcfjz8gLynD0is7nrVk3vzxjTqQ=",
+        "Cargo.lock": "sha256-wBgRBRL66mJ5gc8TBJfDodiRQiYTCeAMFpVX47cqBOM=",
+        "MODULE.bazel": "sha256-WoeaQrSpPjGitUULqzha9VPaiNDRXMPABi6EehfAs1A=",
+        "bazel/BUILD.bazel": "sha256-w+xJX5UYcvCZYcaRLLvx84IdYmFdD1TXlCibBzNn1rA=",
+        "bazel/extensions.bzl": "sha256-rQdt/JlourO+mW0DMMDi/oCe6FUHj4uvIrB5rPAYDo0=",
+        "bazel/gcc_s.bzl": "sha256-9jvoRfWzWr5JIX6tBh/AlOusNuJvDVjJvXPcUiPH4IE=",
+        "bazel/tool.bzl": "sha256-79Pd6AvklcqMaTpGPyZdIaLnCArQH1r+hP4frxq1knc=",
+        "cargo-bazel-lock.json": "sha256-MU258APCM6uj2i/MZyWIJlIhGk7mC7KWwjn4anLqSAY=",
+        "test_module/BUILD.bazel": "sha256-sVb760dPWXW0YzIWAH//2M9+PhcBP4WeaTGecbZFFI8=",
+        "test_module/MODULE.bazel": "sha256-69HN5SnfjOJagnjm1wyLXDPxMkYFv2emKtDXSBfn920=",
+        "test_module/compile_run_test.sh": "sha256-EMKoS/PMtqx0OaOev07WtSZWBqgTVA3IsnmPAcltSqA=",
+        "test_module/counter.sv": "sha256-YjJlIlSkXMDTeO8peDxpXkhonD7gg5FwqSbDlRun5rc=",
+        "test_module/dpi.c": "sha256-oOWyVlcmigD6v1GKtHSEGlvB2Bo6ybJ9dSYRsdOMCRg=",
+        "test_module/dpi.sv": "sha256-LOo/UH1NXMPAlF3NS5vdHhbFkPgh+3YMxVqGtMhjouc=",
+        "test_module/exec_check.sh": "sha256-Hgnx9cX5/j9xpJ3pKZJT6bzchydBc+XRmwIfbQuNy1s=",
+        "test_module/fatal.sv": "sha256-zVmW/hLuWHvZRKnrK6zAJL6LIxcTNbRNDiHT50Bbv/M=",
+        "test_module/hermetic_test.sh": "sha256-lZq2kVpy5Ccv3IilNiDOHvcw2GbVop8qyDiosxDnzVs=",
+        "test_module/run_test.sh": "sha256-GX7ezHZ8HNfOJtkJcM9AKr2XIYpUoDbjBbMkPcdZuWU=",
+        "test_module/version_test.sh": "sha256-jjKJ3VWj9AcoUdOWEhESOqoRc9+SguijRLk3T5FKNos=",
+        "test_module/vpi.c": "sha256-yPdrPZeIwhcYSBuHxBzJ6YTjwr++dLvjhy9sWkX9n/Q="
+    }
+}

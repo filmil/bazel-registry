@@ -1,0 +1,14 @@
+exports_files(["tool.bzl"])
+
+load(":gcc_s.bzl", "gcc_s_shim")
+
+# Rust's std links -lgcc_s for stack unwinding, which would make xezim need
+# the host's libgcc_s.so.1 at run time. This directory holds LLVM's static
+# libunwind, from the pinned LLVM release, under the name libgcc_s.a. It
+# goes first on xezim's library path, so the linker takes it for -lgcc_s.
+# It holds no libgcc_s.so, which the linker would prefer.
+gcc_s_shim(
+    name = "gcc_s",
+    archive = "@xezim_llvm_llvm//:lib/x86_64-unknown-linux-gnu/libunwind.a",
+    visibility = ["//:__pkg__"],
+)

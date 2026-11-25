@@ -1,0 +1,10 @@
+module(name = "xezim_test_module")
+
+bazel_dep(name = "xezim")
+local_path_override(
+    module_name = "xezim",
+    path = "..",
+)
+
+bazel_dep(name = "rules_cc", version = "0.2.28")
+bazel_dep(name = "rules_shell", version = "0.8.0")
