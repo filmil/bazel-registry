@@ -3,10 +3,10 @@
     "integrity": "sha256-p02iAyvuRsXfk5BjkreOB0EKv+7QEUSlPgAmEp3PBnw=",
     "strip_prefix": "xezim-0.11.7",
     "overlay": {
-        "BUILD.bazel": "sha256-Y+/K6Deqn8g00yi+pcfjz8gLynD0is7nrVk3vzxjTqQ=",
+        "BUILD.bazel": "sha256-cguZuBmbCf5bjeIOZvO5+j4pX7qwCu3yjpI9Z3MHt+w=",
         "Cargo.lock": "sha256-wBgRBRL66mJ5gc8TBJfDodiRQiYTCeAMFpVX47cqBOM=",
         "MODULE.bazel": "sha256-WoeaQrSpPjGitUULqzha9VPaiNDRXMPABi6EehfAs1A=",
-        "bazel/BUILD.bazel": "sha256-w+xJX5UYcvCZYcaRLLvx84IdYmFdD1TXlCibBzNn1rA=",
+        "bazel/BUILD.bazel": "sha256-qfynSJvUqKO5thuXrnnmA0cBQavhS4aviuNd+21SJdE=",
         "bazel/extensions.bzl": "sha256-rQdt/JlourO+mW0DMMDi/oCe6FUHj4uvIrB5rPAYDo0=",
         "bazel/gcc_s.bzl": "sha256-9jvoRfWzWr5JIX6tBh/AlOusNuJvDVjJvXPcUiPH4IE=",
         "bazel/tool.bzl": "sha256-79Pd6AvklcqMaTpGPyZdIaLnCArQH1r+hP4frxq1knc=",
